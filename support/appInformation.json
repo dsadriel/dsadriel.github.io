@@ -1,0 +1,19 @@
+{
+  "br.com.dsadriel.alecrim": {
+    "name": "Profitto",
+    "logo": "icons/Profitto.png",
+    "primaryColor": "#1C1366",
+    "aliases": ["br.com.dsadriel.profitto"]
+  },
+  "br.com.dsadriel.TcheOrganiza": {
+    "name": "TchêOrganiza",
+    "logo": "icons/TcheOrganiza.png",
+    "primaryColor": "#849325",
+    "aliases": ["com.github.dsadriel.TcheOrganiza"]
+  },
+  "br.com.dsadriel.Memorelo": {
+    "name": "Memorelo",
+    "logo": "icons/Memorelo.png",
+    "primaryColor": "#9587e2"
+  }
+}

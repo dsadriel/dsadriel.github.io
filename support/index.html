@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title id="pageTitle">Suporte</title>
+    <link rel="icon" type="image/png" href="" id="favicon">
+    <!-- Fonte Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background-color: #F9F9F9;
+            color: #1C1366;
+            margin: 0;
+            padding: 2rem;
+            font-size: 17px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background-color: #ffffff;
+            padding: 3rem;
+            border-radius: 16px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
+        }
+
+        .hero {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+            flex-wrap: wrap;
+            margin-bottom: 3rem;
+        }
+
+        .hero img.logo {
+            width: 10rem;
+            flex-shrink: 0;
+        }
+
+        .hero-text {
+            flex: 1;
+        }
+
+        .hero-text h1 {
+            margin: 0 0 0.5rem 0;
+            font-size: 2.5em;
+            font-weight: 700;
+        }
+
+        .hero-text h2 {
+            margin: 0 0 1rem 0;
+            font-weight: 400;
+            font-size: 1em;
+            color: #666;
+        }
+
+        .content {
+            color: #000;
+            line-height: 1.6;
+        }
+
+        .content p {
+            margin-bottom: 1.5rem;
+            font-weight: 400;
+        }
+
+        .contact-info {
+            background-color: #f8f9fa;
+            padding: 2rem;
+            border-radius: 12px;
+            margin: 2rem 0;
+            text-align: center;
+        }
+
+        .contact-info a {
+            color: #1C1366;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1.1em;
+        }
+
+        .contact-info a:hover {
+            text-decoration: underline;
+        }
+
+        .footer {
+            margin-top: 3rem;
+            padding-top: 2rem;
+            border-top: 1px solid #e0e0e0;
+            text-align: center;
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 2rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .footer-links a {
+            color: #1C1366;
+            text-decoration: none;
+            font-weight: 400;
+        }
+
+        .footer-links a:hover {
+            text-decoration: underline;
+        }
+
+        @media(max-width: 768px) {
+            .hero {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .hero-text {
+                margin-top: 1rem;
+            }
+
+            .footer-links {
+                flex-direction: column;
+                gap: 1rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="hero">
+            <img src="" alt="Logo do App" class="logo" id="appLogo">
+            <div class="hero-text">
+                <h1 id="appName">Suporte</h1>
+                <h2>Estamos aqui para ajudar</h2>
+            </div>
+        </div>
+
+        <div class="content">
+            <p id="welcomeText">Se você tiver qualquer dúvida ou problema, nossa equipe está pronta para ajudar. Entre
+                em contato conosco através do email abaixo e responderemos o mais rápido possível!</p>
+
+            <div class="contact-info">
+                <p>Entre em contato conosco:</p>
+                <a href="mailto:suporte@dsadriel.com.br" id="emailLink" title="Suporte">suporte@dsadriel.com.br</a>
+            </div>
+
+            <p>Nossa equipe de suporte está disponível para esclarecer dúvidas sobre:</p>
+            <ul>
+                <li>Funcionalidades do aplicativo</li>
+                <li>Problemas técnicos</li>
+                <li>Sugestões de melhorias</li>
+                <li>Questões sobre privacidade</li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        // Get the bundle parameter from URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const bundle = urlParams.get('bundle');
+
+        // Fetch app information from JSON file
+        if (bundle) {
+            fetch('appInformation.json')
+                .then(response => response.json())
+                .then(data => {
+                    // Try to find app by bundle ID or alias
+                    let appInfo = data[bundle];
+
+                    // If not found, search through aliases
+                    if (!appInfo) {
+                        const bundleLower = bundle.toLowerCase();
+                        for (const [key, value] of Object.entries(data)) {
+                            if (value.aliases && value.aliases.some(alias => alias.toLowerCase() === bundleLower)) {
+                                appInfo = value;
+                                break;
+                            }
+                        }
+                    }
+
+                    if (appInfo) {
+                        // Update page title
+                        document.getElementById('pageTitle').textContent = `Suporte - ${appInfo.name}`;
+
+                        // Update app name
+                        document.getElementById('appName').textContent = `Suporte - ${appInfo.name}`;
+
+                        // Update email link title
+                        const emailLink = document.getElementById('emailLink');
+                        emailLink.title = `Suporte - ${appInfo.name}`;
+
+                        // Update logo or hide if not available
+                        const logoElement = document.getElementById('appLogo');
+                        if (appInfo.logo) {
+                            logoElement.src = appInfo.logo;
+                            logoElement.alt = `Logo ${appInfo.name}`;
+                            logoElement.style.display = 'block';
+
+                            // Update favicon
+                            document.getElementById('favicon').href = appInfo.logo;
+                        } else {
+                            logoElement.style.display = 'none';
+                        }
+
+                        // Update primary color
+                        if (appInfo.primaryColor) {
+                            document.body.style.color = appInfo.primaryColor;
+                            const contactLink = document.querySelector('.contact-info a');
+                            contactLink.style.color = appInfo.primaryColor;
+                            const footerLinks = document.querySelectorAll('.footer-links a');
+                            footerLinks.forEach(link => link.style.color = appInfo.primaryColor);
+                        }
+
+
+                        document.getElementById('welcomeText').textContent =
+                            `Se você tiver qualquer dúvida ou problema com o ${appInfo.name}, nossa equipe está pronta para ajudar. Entre em contato conosco através do email abaixo e responderemos o mais rápido possível!`;
+                    }
+                })
+                .catch(error => {
+                    console.error('Error loading app information:', error);
+                });
+        } else {
+            // Hide logo if no bundle parameter
+            document.getElementById('appLogo').style.display = 'none';
+        }
+    </script>
+</body>
+
+</html>
