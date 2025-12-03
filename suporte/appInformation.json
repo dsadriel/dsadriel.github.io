@@ -3,7 +3,9 @@
     "name": "Profitto",
     "logo": "icons/Profitto.png",
     "primaryColor": "#1C1366",
-    "aliases": ["br.com.dsadriel.profitto"]
+    "aliases": ["br.com.dsadriel.profitto"],
+    "fontUrl": "https://fonts.googleapis.com/css2?family=Epilogue:wght@400;600;700&display=swap",
+    "fontFamily": "Epilogue"
   },
   "br.com.dsadriel.TcheOrganiza": {
     "name": "TchêOrganiza",
@@ -15,5 +17,12 @@
     "name": "Memorelo",
     "logo": "icons/Memorelo.png",
     "primaryColor": "#9587e2"
+  },
+  "br.com.Verbete.v1.app": {
+    "name": "DopamineNews",
+    "primaryColor": "#000",
+    "fontUrl": "https://fonts.googleapis.com/css2?family=Libre+Caslon+Text:ital,wght@0,400;0,700;1,400&display=swap",
+    "aliases": ["verbete", "dopaminenews"],
+    "email": "dopaminenews@dsadriel.com.br"
   }
 }

@@ -8,6 +8,8 @@
     <link rel="icon" type="image/png" href="" id="favicon">
     <!-- Fonte Inter -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <!-- Custom Font -->
+    <link id="customFont" rel="stylesheet" href="">
     <style>
         body {
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
@@ -144,7 +146,7 @@
 
             <div class="contact-info">
                 <p>Entre em contato conosco:</p>
-                <a href="mailto:suporte@dsadriel.com.br" id="emailLink" title="Suporte">suporte@dsadriel.com.br</a>
+                <a href="mailto:suporte@dsadriel.com.br" id="emailLink" title="Suporte"><span id="emailText">suporte@dsadriel.com.br</span></a>
             </div>
 
             <p>Nossa equipe de suporte está disponível para esclarecer dúvidas sobre:</p>
@@ -188,8 +190,21 @@
                         // Update app name
                         document.getElementById('appName').textContent = `Suporte - ${appInfo.name}`;
 
-                        // Update email link title
+                        // Update custom font if available
+                        if (appInfo.fontUrl) {
+                            document.getElementById('customFont').href = appInfo.fontUrl;
+                            if (appInfo.fontFamily) {
+                                document.body.style.fontFamily = `'${appInfo.fontFamily}', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif`;
+                            }
+                        }
+
+                        // Update email if available
                         const emailLink = document.getElementById('emailLink');
+                        const emailText = document.getElementById('emailText');
+                        if (appInfo.email) {
+                            emailLink.href = `mailto:${appInfo.email}`;
+                            emailText.textContent = appInfo.email;
+                        }
                         emailLink.title = `Suporte - ${appInfo.name}`;
 
                         // Update logo or hide if not available
