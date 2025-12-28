@@ -1,0 +1,693 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Intercâmbios UFRGS</title>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: #f5f5f5;
+            min-height: 100vh;
+            padding: 20px;
+            color: #212121;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        header {
+            margin-bottom: 40px;
+        }
+
+        h1 {
+            font-size: 32px;
+            font-weight: 500;
+            margin-bottom: 8px;
+            color: #212121;
+        }
+
+        .subtitle {
+            color: #757575;
+            font-size: 16px;
+        }
+
+        .filters {
+            background: white;
+            padding: 24px;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            margin-bottom: 24px;
+        }
+
+        .filter-group {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .filter-group.tipo-filter {
+            grid-column: 1 / -1;
+        }
+
+        .tipo-checkboxes {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 12px;
+            margin-top: 8px;
+            max-height: 200px;
+            overflow-y: auto;
+            padding: 12px;
+            background: #fafafa;
+            border-radius: 4px;
+            border: 1px solid #e0e0e0;
+        }
+
+        .checkbox-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .checkbox-item input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+            margin: 0;
+        }
+
+        .checkbox-item label {
+            margin: 0;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 400;
+        }
+
+        .filter-item {
+            display: flex;
+            flex-direction: column;
+        }
+
+        label {
+            font-weight: 500;
+            margin-bottom: 8px;
+            color: #424242;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        label .material-icons {
+            font-size: 18px;
+            color: #757575;
+        }
+
+        input, select {
+            padding: 12px;
+            border: 1px solid #e0e0e0;
+            border-radius: 4px;
+            font-size: 14px;
+            transition: border-color 0.2s;
+            font-family: inherit;
+        }
+
+        input:focus, select:focus {
+            outline: none;
+            border-color: #1976d2;
+        }
+
+        .stats {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid #e0e0e0;
+        }
+
+        .stats-text {
+            color: #616161;
+            font-size: 14px;
+        }
+
+        .view-toggle {
+            display: flex;
+            gap: 0;
+            border: 1px solid #e0e0e0;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .view-btn {
+            padding: 8px 16px;
+            border: none;
+            background: white;
+            color: #616161;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-weight: 500;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .view-btn:not(:last-child) {
+            border-right: 1px solid #e0e0e0;
+        }
+
+        .view-btn:hover {
+            background: #f5f5f5;
+        }
+
+        .view-btn.active {
+            background: #1976d2;
+            color: white;
+        }
+
+        .view-btn .material-icons {
+            font-size: 18px;
+        }
+
+        .results {
+            display: grid;
+            gap: 16px;
+        }
+
+        .results.grid-view {
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+        }
+
+        .card {
+            background: white;
+            padding: 24px;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            transition: box-shadow 0.2s;
+            position: relative;
+        }
+
+        .card:hover {
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: start;
+            margin-bottom: 16px;
+        }
+
+        .country {
+            display: inline-block;
+            background: #e3f2fd;
+            color: #1976d2;
+            padding: 4px 12px;
+            border-radius: 4px;
+            font-size: 13px;
+            font-weight: 500;
+        }
+
+        .favorite-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 4px;
+            color: #9e9e9e;
+            transition: color 0.2s;
+        }
+
+        .favorite-btn:hover {
+            color: #757575;
+        }
+
+        .favorite-btn.active {
+            color: #d32f2f;
+        }
+
+        .favorite-btn .material-icons {
+            font-size: 24px;
+        }
+
+        .institution {
+            font-size: 18px;
+            font-weight: 500;
+            color: #212121;
+            margin-bottom: 16px;
+            line-height: 1.4;
+        }
+
+        .institution a {
+            color: #1976d2;
+            text-decoration: none;
+        }
+
+        .institution a:hover {
+            text-decoration: underline;
+        }
+
+        .info-grid {
+            display: grid;
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+
+        .info-item {
+            display: flex;
+            gap: 8px;
+            font-size: 14px;
+            align-items: center;
+        }
+
+        .info-item .material-icons {
+            font-size: 18px;
+            color: #757575;
+        }
+
+        .info-label {
+            font-weight: 500;
+            color: #616161;
+        }
+
+        .info-value {
+            color: #424242;
+        }
+
+        .tipo-links {
+            margin-top: 16px;
+            padding-top: 16px;
+            border-top: 1px solid #f5f5f5;
+        }
+
+        .tipo-links a {
+            display: inline-block;
+            margin: 4px 4px 4px 0;
+            padding: 6px 12px;
+            background: #f5f5f5;
+            color: #1976d2;
+            text-decoration: none;
+            border-radius: 4px;
+            font-size: 13px;
+            transition: background 0.2s;
+        }
+
+        .tipo-links a:hover {
+            background: #e0e0e0;
+        }
+
+        .loading {
+            text-align: center;
+            color: #616161;
+            font-size: 16px;
+            padding: 40px;
+        }
+
+        .error {
+            background: #ffebee;
+            color: #c62828;
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+            border: 1px solid #ef9a9a;
+        }
+
+        .no-results {
+            text-align: center;
+            color: #616161;
+            font-size: 16px;
+            padding: 40px;
+            background: white;
+            border-radius: 8px;
+        }
+
+        .filter-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 16px;
+        }
+
+        .filter-tag {
+            background: #f5f5f5;
+            color: #424242;
+            padding: 6px 12px;
+            border-radius: 16px;
+            font-size: 13px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .filter-tag button {
+            background: none;
+            border: none;
+            color: #757575;
+            cursor: pointer;
+            padding: 0;
+            display: flex;
+            align-items: center;
+        }
+
+        .filter-tag button:hover {
+            color: #424242;
+        }
+
+        .filter-tag .material-icons {
+            font-size: 16px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Intercâmbios UFRGS</h1>
+            <p class="subtitle">Encontre sua oportunidade de intercâmbio</p>
+        </header>
+
+        <div class="filters">
+            <div class="filter-group">
+                <div class="filter-item">
+                    <label>
+                        <span class="material-icons">search</span>
+                        Buscar
+                    </label>
+                    <input type="text" id="search" placeholder="País, instituição...">
+                </div>
+                <div class="filter-item">
+                    <label>
+                        <span class="material-icons">public</span>
+                        País
+                    </label>
+                    <select id="country">
+                        <option value="">Todos os países</option>
+                    </select>
+                </div>
+                <div class="filter-item">
+                    <label>
+                        <span class="material-icons">location_on</span>
+                        Origem
+                    </label>
+                    <select id="origem">
+                        <option value="">Todas as origens</option>
+                    </select>
+                </div>
+                <div class="filter-item">
+                    <label>
+                        <span class="material-icons">filter_list</span>
+                        Filtros
+                    </label>
+                    <select id="favorites">
+                        <option value="all">Todos</option>
+                        <option value="favoritesOnly">Apenas favoritos</option>
+                    </select>
+                </div>
+            </div>
+            <div class="filter-group tipo-filter">
+                <div class="filter-item">
+                    <label>
+                        <span class="material-icons">description</span>
+                        Tipo de Convênio
+                    </label>
+                    <div class="tipo-checkboxes" id="tipoCheckboxes"></div>
+                </div>
+            </div>
+            <div class="filter-tags" id="filterTags"></div>
+            <div class="stats">
+                <div class="stats-text" id="statsText">Carregando...</div>
+                <div class="view-toggle">
+                    <button class="view-btn active" onclick="setView('grid')">
+                        <span class="material-icons">grid_view</span>
+                        Grade
+                    </button>
+                    <button class="view-btn" onclick="setView('list')">
+                        <span class="material-icons">view_list</span>
+                        Lista
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="results grid-view" id="results">
+            <div class="loading">Carregando intercâmbios...</div>
+        </div>
+    </div>
+
+    <script>
+        let allData = [];
+        let filteredData = [];
+        let favorites = new Set(JSON.parse(localStorage.getItem('favorites') || '[]'));
+        let currentView = 'grid';
+
+        async function loadData() {
+            try {
+                const apiUrl = 'https://www.ufrgs.br/relinter/wp-admin/admin-ajax.php?action=wp_ajax_ninja_tables_public_action&table_id=2192&target_action=get-all-data&default_sorting=old_first&skip_rows=0&limit_rows=0&ninja_table_public_nonce=b97b765415';
+                const proxyUrl = 'https://corsproxy.io/?' + encodeURIComponent(apiUrl);
+                
+                const response = await fetch(proxyUrl);
+                const data = await response.json();
+                allData = data;
+                filteredData = data;
+                populateFilters();
+                renderResults();
+            } catch (error) {
+                console.error('Erro:', error);
+                document.getElementById('results').innerHTML = '<div class="error">Erro ao carregar dados: ' + error.message + '</div>';
+            }
+        }
+
+        function normalizeTipo(texto) {
+            const textoLower = texto.toLowerCase();
+            
+            // Categorias principais
+            if (textoLower.includes('erasmus')) return 'Convênio Erasmus+';
+            if (textoLower.includes('mobilidade discente') || textoLower.includes('mobilidade de discente')) return 'Convênio de Mobilidade Discente';
+            if (textoLower.includes('mobilidade docente')) return 'Convênio de Mobilidade Docente';
+            if (textoLower.includes('mobilidade') && !textoLower.includes('discente') && !textoLower.includes('docente')) return 'Convênio de Mobilidade';
+            if (textoLower.includes('dupla diplomação') || textoLower.includes('dupla diplomacao')) return 'Convênio de Dupla Diplomação';
+            if (textoLower.includes('cotutela')) return 'Convênio de Cotutela';
+            if (textoLower.includes('cooperação acadêmica') || textoLower.includes('cooperacao academica')) return 'Convênio de Cooperação Acadêmica';
+            if (textoLower.includes('cooperação cultural') || textoLower.includes('cooperacao cultural')) return 'Convênio de Cooperação Cultural';
+            if (textoLower.includes('pesquisa')) return 'Convênio de Pesquisa';
+            if (textoLower.includes('ensino')) return 'Convênio de Ensino';
+            if (textoLower.includes('financiamento')) return 'Convênio de Financiamento';
+            if (textoLower.includes('ipodia')) return 'Convênio iPodia Alliance';
+            if (textoLower.includes('protocolo')) return 'Protocolo';
+            
+            return texto;
+        }
+
+        function populateFilters() {
+            const countries = [...new Set(allData.map(item => item.value.pais))].sort();
+            const origens = [...new Set(allData.map(item => item.value.origem))].sort();
+            
+            // Extrair e normalizar tipos de convênio
+            const tiposSet = new Set();
+            allData.forEach(item => {
+                const tipoText = stripHTML(item.value.tipo);
+                // Separar por ponto e vírgula
+                const tipos = tipoText.split(/[;]/).map(t => t.trim()).filter(t => t);
+                tipos.forEach(tipo => {
+                    const normalizado = normalizeTipo(tipo);
+                    tiposSet.add(normalizado);
+                });
+            });
+            const tipos = [...tiposSet].sort();
+            
+            const countrySelect = document.getElementById('country');
+            countries.forEach(country => {
+                const option = document.createElement('option');
+                option.value = country;
+                option.textContent = country;
+                countrySelect.appendChild(option);
+            });
+
+            const origemSelect = document.getElementById('origem');
+            origens.forEach(origem => {
+                const option = document.createElement('option');
+                option.value = origem;
+                option.textContent = origem;
+                origemSelect.appendChild(option);
+            });
+
+            const tipoCheckboxes = document.getElementById('tipoCheckboxes');
+            tipos.forEach((tipo, index) => {
+                const checkboxItem = document.createElement('div');
+                checkboxItem.className = 'checkbox-item';
+                checkboxItem.innerHTML = `
+                    <input type="checkbox" id="tipo_${index}" value="${tipo}" onchange="filterData()">
+                    <label for="tipo_${index}">${tipo}</label>
+                `;
+                tipoCheckboxes.appendChild(checkboxItem);
+            });
+        }
+
+        function stripHTML(html) {
+            const tmp = document.createElement('div');
+            tmp.innerHTML = html;
+            return tmp.textContent || tmp.innerText || '';
+        }
+
+        function filterData() {
+            const search = document.getElementById('search').value.toLowerCase();
+            const country = document.getElementById('country').value;
+            const origem = document.getElementById('origem').value;
+            const favFilter = document.getElementById('favorites').value;
+            
+            // Obter tipos selecionados
+            const tipoCheckboxes = document.querySelectorAll('#tipoCheckboxes input[type="checkbox"]:checked');
+            const tiposSelecionados = Array.from(tipoCheckboxes).map(cb => cb.value);
+
+            filteredData = allData.filter(item => {
+                const matchSearch = search === '' || 
+                    item.value.pais.toLowerCase().includes(search) ||
+                    stripHTML(item.value.instituicao).toLowerCase().includes(search);
+                
+                const matchCountry = country === '' || item.value.pais === country;
+                const matchOrigem = origem === '' || item.value.origem === origem;
+                
+                // Verificar se algum dos tipos normalizados corresponde aos filtros selecionados
+                let matchTipo = true;
+                if (tiposSelecionados.length > 0) {
+                    const tipoText = stripHTML(item.value.tipo);
+                    const tipos = tipoText.split(/[;]/).map(t => t.trim()).filter(t => t);
+                    const tiposNormalizados = tipos.map(t => normalizeTipo(t));
+                    matchTipo = tiposNormalizados.some(t => tiposSelecionados.includes(t));
+                }
+                
+                const matchFavorites = favFilter === 'all' || 
+                    (favFilter === 'favoritesOnly' && favorites.has(item.value.___id___));
+
+                return matchSearch && matchCountry && matchOrigem && matchTipo && matchFavorites;
+            });
+
+            updateFilterTags();
+            renderResults();
+        }
+
+        function updateFilterTags() {
+            const tags = [];
+            const search = document.getElementById('search').value;
+            const country = document.getElementById('country').value;
+            const origem = document.getElementById('origem').value;
+            const favFilter = document.getElementById('favorites').value;
+            
+            const tipoCheckboxes = document.querySelectorAll('#tipoCheckboxes input[type="checkbox"]:checked');
+            const tiposSelecionados = Array.from(tipoCheckboxes).map(cb => cb.value);
+
+            if (search) tags.push({label: `Busca: ${search}`, clear: 'search'});
+            if (country) tags.push({label: `País: ${country}`, clear: 'country'});
+            if (origem) tags.push({label: `Origem: ${origem}`, clear: 'origem'});
+            tiposSelecionados.forEach(tipo => {
+                tags.push({label: `Tipo: ${tipo}`, clear: 'tipo', tipoValue: tipo});
+            });
+            if (favFilter === 'favoritesOnly') tags.push({label: 'Apenas favoritos', clear: 'favorites'});
+
+            const tagsContainer = document.getElementById('filterTags');
+            tagsContainer.innerHTML = tags.map(tag => `
+                <div class="filter-tag">
+                    ${tag.label}
+                    <button onclick="clearFilter('${tag.clear}'${tag.tipoValue ? `, '${tag.tipoValue}'` : ''})">
+                        <span class="material-icons">close</span>
+                    </button>
+                </div>
+            `).join('');
+        }
+
+        function clearFilter(filter, tipoValue) {
+            if (filter === 'tipo' && tipoValue) {
+                // Desmarcar checkbox específico
+                const checkboxes = document.querySelectorAll('#tipoCheckboxes input[type="checkbox"]');
+                checkboxes.forEach(cb => {
+                    if (cb.value === tipoValue) cb.checked = false;
+                });
+            } else {
+                document.getElementById(filter).value = filter === 'favorites' ? 'all' : '';
+            }
+            filterData();
+        }
+
+        function toggleFavorite(id) {
+            if (favorites.has(id)) {
+                favorites.delete(id);
+            } else {
+                favorites.add(id);
+            }
+            localStorage.setItem('favorites', JSON.stringify([...favorites]));
+            renderResults();
+        }
+
+        function setView(view) {
+            currentView = view;
+            document.querySelectorAll('.view-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.closest('.view-btn').classList.add('active');
+            const results = document.getElementById('results');
+            results.className = view === 'grid' ? 'results grid-view' : 'results';
+        }
+
+        function renderResults() {
+            const results = document.getElementById('results');
+            const statsText = document.getElementById('statsText');
+            
+            statsText.textContent = `${filteredData.length} de ${allData.length} intercâmbios`;
+
+            if (filteredData.length === 0) {
+                results.innerHTML = '<div class="no-results">Nenhum intercâmbio encontrado com os filtros aplicados.</div>';
+                return;
+            }
+
+            results.innerHTML = filteredData.map(item => {
+                const isFavorite = favorites.has(item.value.___id___);
+                return `
+                    <div class="card">
+                        <div class="card-header">
+                            <span class="country">${item.value.pais}</span>
+                            <button class="favorite-btn ${isFavorite ? 'active' : ''}" onclick="toggleFavorite(${item.value.___id___})">
+                                <span class="material-icons">${isFavorite ? 'favorite' : 'favorite_border'}</span>
+                            </button>
+                        </div>
+                        <div class="institution">${item.value.instituicao}</div>
+                        <div class="info-grid">
+                            <div class="info-item">
+                                <span class="material-icons">event</span>
+                                <span class="info-label">Início:</span>
+                                <span class="info-value">${item.value.data_inicio}</span>
+                            </div>
+                            <div class="info-item">
+                                <span class="material-icons">event</span>
+                                <span class="info-label">Fim:</span>
+                                <span class="info-value">${item.value.data_fim}</span>
+                            </div>
+                            <div class="info-item">
+                                <span class="material-icons">location_on</span>
+                                <span class="info-label">Origem:</span>
+                                <span class="info-value">${item.value.origem}</span>
+                            </div>
+                        </div>
+                        <div class="tipo-links">
+                            ${item.value.tipo}
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        document.getElementById('search').addEventListener('input', filterData);
+        document.getElementById('country').addEventListener('change', filterData);
+        document.getElementById('origem').addEventListener('change', filterData);
+        document.getElementById('favorites').addEventListener('change', filterData);
+
+        loadData();
+    </script>
+</body>
+</html>
