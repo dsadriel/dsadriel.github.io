@@ -1,12 +1,54 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="refresh" content="0; url=https://github.com/dsadriel">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
     <title>Redirecting...</title>
+
+    <meta http-equiv="refresh" content="0; url=https://github.com/dsadriel" />
+
+    <style>
+        :root {
+            color-scheme: light dark;
+        }
+
+        body {
+            margin: 0;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+            text-align: center;
+        }
+
+        a {
+            color: inherit;
+            text-decoration: underline;
+        }
+    </style>
+
+    <script>
+        const lang = navigator.language || navigator.userLanguage;
+        const isPT = lang.toLowerCase().startsWith("pt");
+
+        document.addEventListener("DOMContentLoaded", () => {
+            const text = isPT
+                ? `Essa página ainda não foi implementada.<br><br>
+                   Você está sendo redirecionado para 
+                   <a href="https://github.com/dsadriel">github.com/dsadriel</a>.<br>
+                   Se nada acontecer, clique no link acima.`
+                : `This page has not been implemented yet.<br><br>
+                   You are being redirected to 
+                   <a href="https://github.com/dsadriel">github.com/dsadriel</a>.<br>
+                   If nothing happens, click on the link above.`;
+
+            document.getElementById("message").innerHTML = text;
+        });
+    </script>
 </head>
 <body>
-    <p>Redirecting to <a href="https://github.com/dsadriel">github.com/dsadriel</a>...</p>
+    <p id="message"></p>
 </body>
 </html>
