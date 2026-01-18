@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Adriel's Portfolio</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body> 
+
+
+    <div id="projects">
+            <h1>⚠️ Work In Progress ⚠️</h1>
+
+    </div>
+
+        <script>
+    async function getProjects() {
+    const response = await fetch('projects.json');
+    const projects = await response.json();
+
+
+    document.querySelector('#projects').innerHTML += projects.map(project => `
+     
+    <a href="./project/?name=${project.name}">
+        <div class="hstack">
+                <img id="icon" src="${project.icon}">
+                <div>
+                    <h1 id="name">${project.name}</h1>
+                    <p id="headline">${project.headline}</p>
+                </div>
+            </div>
+            </a>`).join('');
+
+    }
+    getProjects() ;
+
+    </script>
+</body>
+</html>

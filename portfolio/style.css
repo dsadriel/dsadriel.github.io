@@ -1,0 +1,119 @@
+.hstack {
+  display: flex; 
+  flex-direction: row;
+  gap: 1rem; 
+  align-items: center;
+}
+
+body {
+   font-family: "Noto Sans", sans-serif;
+  font-optical-sizing: auto;
+  font-style: normal;
+  font-variation-settings:
+    "wdth" 100;
+    background-color: #141414;
+    color: #fff;
+}
+
+.hstack::-webkit-scrollbar {
+  display: none;
+}
+
+header {
+display: flex;
+padding: 32px 128px;
+justify-content: space-between;
+align-items: center;
+background: rgba(20, 20, 20, 0.29);
+backdrop-filter: blur(2px);
+}
+
+header img {
+  height: 32px;
+    user-select: none;
+  -webkit-user-drag: none;
+  pointer-events: auto;
+}
+
+header a {
+  font-size: 24px;
+  color: rgba(255, 255, 255, 0.5);
+  text-decoration: none;
+}
+
+header a:hover {
+    color: rgba(255, 255, 255);
+}
+
+a {
+      color: rgba(255, 255, 255);
+  text-decoration: none;
+
+}
+
+a:hover {
+    text-decoration: underline rgba(255, 255, 255, 0.5);
+      text-decoration: none;
+}
+
+.appDetails {
+    padding: 32px 128px;
+    align-items: center !important;
+    min-height: calc(100vh - 200px);
+}
+
+.appDetails > .hstack {
+    justify-content: space-between !important;
+    gap: 200px;
+}
+
+.appDetails img {
+    max-height: 400px;
+}
+
+.appInfo {
+  max-width: 40%;
+}
+
+#bottomLogo {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  user-select: none;
+  -webkit-user-drag: none;
+  pointer-events: auto;
+}
+
+#icon {
+  width: 100px;
+}
+
+#name, #headline {
+  padding: 5px;
+  margin: 0;
+}
+
+#headline {
+  opacity: 0.7;
+  font-size: 0.9rem;
+    font-weight: 300;
+}
+
+#description {
+  font-weight: 300;
+  text-align: justify;
+}
+
+#projects {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+align-items: center;
+justify-content: center;
+gap: 20px;
+}
+
+#projects > a {
+  width: 50vw;
+}
