@@ -232,10 +232,17 @@
 
                         document.getElementById('welcomeText').textContent =
                             `Se você tiver qualquer dúvida ou problema com o ${appInfo.name}, nossa equipe está pronta para ajudar. Entre em contato conosco através do email abaixo e responderemos o mais rápido possível!`;
+                    } else {
+                        // Bundle not found - remove query parameter and reload
+                        window.history.replaceState({}, document.title, window.location.pathname);
+                        window.location.reload();
                     }
                 })
                 .catch(error => {
                     console.error('Error loading app information:', error);
+                    // On error, remove query parameter and reload
+                    window.history.replaceState({}, document.title, window.location.pathname);
+                    window.location.reload();
                 });
         } else {
             // Hide logo if no bundle parameter
