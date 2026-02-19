@@ -70,7 +70,7 @@
         "links": [
             {
                 "type": "appstore",
-                "url": "https://apps.apple.com/dopamine-news"
+                "url": "https://apps.apple.com/br/app/dopamine-news/id6755773697"
             }
         ]
     },
@@ -94,7 +94,7 @@
         "links": [
             {
                 "type": "appstore",
-                "url": "https://apps.apple.com/profitto"
+                "url": "https://apps.apple.com/br/app/profitto/id6752310169"
             }
         ]
     },
@@ -123,7 +123,7 @@
             },
             {
                 "title": "Figma Prototype",
-                "url": "https://www.figma.com/design/2zdRalKJ7yZKGaIktZ--Adriel-de-Souza?node-id=4069&t=XZBrl6eAPoK1D5Uz-1"
+                "url": "https://www.figma.com/design/2zdRalKJ7yZKGaIktZhDdJ/Memorelo---Adriel-de-Souza?node-id=40-69&t=Lmxwp2o1v09cI5Ej-1"
             }
         ]
     },
@@ -148,7 +148,7 @@
         "links": [
             {
                 "type": "github",
-                "url": "https://github.com/gstfnsk/freela-ontap"
+                "url": "https://github.com/dsadriel/freela-ontap"
             }
         ]
     }
