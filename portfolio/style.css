@@ -336,6 +336,7 @@ header nav a:hover { color: var(--text); }
   border: 1px solid var(--border);
   flex-shrink: 0;
   object-fit: cover;
+  -webkit-user-drag: none;
 }
 
 /* Team */
@@ -491,10 +492,15 @@ footer .container {
     margin-right: -16px;
     padding-left: 16px;
     padding-right: 16px;
-  }
+    user-select: none;
+    cursor: move; /* fallback if grab cursor is unsupported */
+    cursor: grab;
+    cursor: -moz-grab;
+    cursor: -webkit-grab;  }
 
   .project-images img {
     height: 380px;
+    cursor: grab;
   }
 
   .project-detail {

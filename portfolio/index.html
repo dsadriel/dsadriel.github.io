@@ -55,11 +55,10 @@
         </div>
     </footer>
 
+    <script src="./projectData.js"></script>
     <script>
         async function loadProjects() {
-            const response = await fetch('projects.json');
-            const projects = await response.json();
-
+            const projects = await fetchProjects();
             document.getElementById('projects-list').innerHTML = projects.map(p => `
                 <a class="project-item" href="project/?name=${encodeURIComponent(p.name)}">
                     <img class="project-item-icon" src="${p.icon}" alt="${p.name} icon">
@@ -71,7 +70,6 @@
                 </a>
             `).join('');
         }
-
         loadProjects();
     </script>
     <script src="../wip.js"></script>

@@ -2,11 +2,7 @@ async function getProjectInformation() {
     const urlParams = new URLSearchParams(window.location.search);
     const projectName = urlParams.get("name");
     if (!projectName) throw new Error("Project name not provided");
-
-    const response = await fetch('../projects.json');
-    const projects = await response.json();
-    const project = projects.find(p => p.name.toLowerCase() === projectName.toLowerCase());
-
+    const project = await fetchProjectByName(projectName);
     if (!project) throw new Error("Project not found: " + projectName);
     return project;
 }
@@ -79,10 +75,34 @@ async function populatePage() {
         showBlock("meta-block");
     }
 
-    // Screenshots
+    // Screenshots with horizontal drag scroll only
     if (project.images && project.images.length > 0) {
-        document.getElementById("images").innerHTML = project.images
-            .map(url => `<img src="${url}" alt="Screenshot">`).join("");
+        const imagesBlock = document.getElementById("images-block");
+        const imagesContainer = document.getElementById("images");
+        imagesContainer.innerHTML = project.images
+            .map(url => `<img src="${url}" alt="Screenshot" draggable="false">`).join("");
+
+        // Mouse drag to scroll
+        let isDown = false, startX, scrollLeft;
+        imagesContainer.addEventListener('mousedown', (e) => {
+            isDown = true;
+            imagesContainer.classList.add('dragging');
+            startX = e.pageX - imagesContainer.offsetLeft;
+            scrollLeft = imagesContainer.scrollLeft;
+        });
+
+        document.body.addEventListener('mouseup', () => {
+            isDown = false;
+            imagesContainer.classList.remove('dragging');
+        });
+
+        document.body.addEventListener('mousemove', (e) => {
+            if (!isDown) return;
+            e.preventDefault();
+            const x = e.pageX - imagesContainer.offsetLeft;
+            const walk = (x - startX) * 1.5;
+            imagesContainer.scrollLeft = scrollLeft - walk;
+        });
         showBlock("images-block");
     }
 
