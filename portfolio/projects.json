@@ -93,7 +93,7 @@
         "headline": "Connecting Freelancers with Hospitality Companies",
         "description": "A platform connecting freelancers and hospitality companies, solving the chaos and disorganization in job posting and prospecting within this sector. Features job search and filtering, company registration, job management dashboard, and direct contact via WhatsApp.",
         "icon": "https://placehold.co/150",
-        "techStack": ["React", "Node.js", "PostgreSQL", "Figma"],
+        "techStack": ["UIKit", "Swift", "CloudKit", "Figma"],
         "roles": ["iOS Developer", "Scrum Master"],
         "images": ["https://placehold.co/300x650/8B5CF6/white", "https://placehold.co/300x650/10B981/white"],
         "links": [
