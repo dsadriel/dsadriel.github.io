@@ -65,6 +65,7 @@
                         <div class="project-item-name">${p.name}</div>
                         <div class="project-item-headline">${p.headline}</div>
                     </div>
+                    ${p.date ? `<span class="project-item-date">${p.date}</span>` : ''}
                 </a>
             `).join('');
         }

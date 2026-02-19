@@ -36,6 +36,10 @@ async function populatePage() {
     document.getElementById("headline").textContent = project.headline;
     document.getElementById("description").textContent = project.description;
 
+    if (project.date) {
+        document.getElementById("date").textContent = project.date;
+    }
+
     if (project.icon) {
         document.getElementById("icon").src = project.icon;
     }
