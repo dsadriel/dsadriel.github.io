@@ -5,9 +5,6 @@
 
     if (window.location.hostname !== PROD_HOST) return;
 
-    const dismissed = localStorage.getItem(COOKIE_KEY);
-    if (dismissed && Date.now() < Number(dismissed)) return;
-
     const style = document.createElement("style");
     style.textContent = `
         #wip-banner {
@@ -85,6 +82,9 @@
         if (header) header.appendChild(banner);
         else document.body.prepend(banner);
     });
+
+    const dismissed = localStorage.getItem(COOKIE_KEY);
+    if (dismissed && Date.now() < Number(dismissed)) return;
 
     const overlay = document.createElement("div");
     overlay.id = "wip-overlay";
