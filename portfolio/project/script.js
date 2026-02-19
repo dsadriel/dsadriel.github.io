@@ -88,6 +88,10 @@ async function populatePage() {
 
     // Team
     if (project.team && project.team.length > 0) {
+        project.team.unshift({ name: "Adriel de Souza", role: project.roles.join(", "), linkedin: "https://linkedin.com/in/dsadriel" });
+
+        project.team = project.team.sort((a, b) => a.name.localeCompare(b.name));
+
         document.getElementById("team").innerHTML = project.team.map(member => {
             const inner = `<div class="team-member-info">
                 <span class="team-member-name">${escapeHtml(member.name)}</span>

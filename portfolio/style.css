@@ -340,8 +340,8 @@ header nav a:hover { color: var(--text); }
 
 /* Team */
 .team-grid {
-  display: flex;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
   gap: 12px;
 }
 
