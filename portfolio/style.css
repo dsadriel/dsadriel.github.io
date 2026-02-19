@@ -2,6 +2,7 @@
    Design tokens
    ──────────────────────────────────────────── */
 :root {
+  color-scheme: light dark;
   --bg:          #ffffff;
   --bg-subtle:   #f8f8f8;
   --text:        #0d0d0d;
@@ -9,6 +10,39 @@
   --accent:      #1a4fba;
   --border:      #e8e8e8;
   --radius:      4px;
+  --header-bg:   rgba(240, 240, 240, 0.23);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg:          #0d0d0d;
+    --bg-subtle:   #1a1a1a;
+    --text:        #f0f0f0;
+    --text-muted:  #888888;
+    --accent:      #6b97f5;
+    --border:      #2a2a2a;
+    --header-bg:   rgba(20, 20, 20, 0.5);
+  }
+}
+
+[data-theme="dark"] {
+  --bg:          #0d0d0d;
+  --bg-subtle:   #1a1a1a;
+  --text:        #f0f0f0;
+  --text-muted:  #888888;
+  --accent:      #6b97f5;
+  --border:      #2a2a2a;
+  --header-bg:   rgba(20, 20, 20, 0.5);
+}
+
+[data-theme="light"] {
+  --bg:          #ffffff;
+  --bg-subtle:   #f8f8f8;
+  --text:        #0d0d0d;
+  --text-muted:  #787878;
+  --accent:      #1a4fba;
+  --border:      #e8e8e8;
+  --header-bg:   rgba(240, 240, 240, 0.23);
 }
 
 /* ────────────────────────────────────────────
@@ -46,7 +80,7 @@ header {
   margin: 16px auto 0;
   max-width: 900px;
   width: calc(100% - 32px);
-  background: rgba(240, 240, 240, 0.23);
+  background: var(--header-bg);
   backdrop-filter: blur(24px);
   -webkit-backdrop-filter: blur(24);
   z-index: 100;
@@ -334,6 +368,30 @@ footer {
   padding: 32px 0;
   color: var(--text-muted);
   font-size: 0.8rem;
+}
+
+footer .container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+#theme-toggle {
+  background: none;
+  border: 1px solid var(--border);
+  border-radius: 100px;
+  padding: 5px 14px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  cursor: pointer;
+  font-family: inherit;
+  transition: border-color 0.15s, color 0.15s;
+}
+
+#theme-toggle:hover {
+  border-color: var(--text-muted);
+  color: var(--text);
 }
 
 #description {

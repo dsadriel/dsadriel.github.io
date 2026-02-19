@@ -11,7 +11,7 @@
     const style = document.createElement("style");
     style.textContent = `
         #wip-banner {
-            border-top: 1px solid rgba(0,0,0,0.08);
+            border-top: 1px solid rgba(128,128,128,0.2);
             margin-top: 12px;
             padding-top: 10px;
             text-align: center;
@@ -37,6 +37,7 @@
             border-radius: 16px;
             padding: 32px;
             background: #fff;
+            color: #0d0d0d;
             text-align: center;
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
         }
@@ -66,6 +67,13 @@
             transition: border-color 0.15s;
         }
         #wip-continue:hover { border-color: #0d0d0d; }
+        @media (prefers-color-scheme: dark) {
+            #wip-overlay { background: rgba(0, 0, 0, 0.85); }
+            #wip-box { background: #1a1a1a; border-color: #2a2a2a; color: #f0f0f0; }
+            #wip-box p { color: #888; }
+            #wip-continue { color: #f0f0f0; border-color: #2a2a2a; }
+            #wip-continue:hover { border-color: #f0f0f0; }
+        }
     `;
     document.head.appendChild(style);
 
