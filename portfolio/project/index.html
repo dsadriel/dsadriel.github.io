@@ -1,54 +1,74 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width">
-    <title>Projeto: </title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Project</title>
     <link rel="stylesheet" href="../style.css">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,100..900;1,100..900&display=swap"
-        rel="stylesheet">
 </head>
 
 <body>
-    <script src="script.js"></script>
-    <header style="position: sticky;" class="hstack">
-        <a href="../">←</a>
-        <img src="assets/images/a.svg">
+
+    <header>
+        <div class="container">
+            <span class="site-name">Adriel de Souza</span>
+            <nav>
+                <a href="https://github.com/dsadriel" target="_blank" rel="noopener">GitHub</a>
+                <a href="https://linkedin.com/in/dsadriel" target="_blank" rel="noopener">Connect</a>
+            </nav>
+        </div>
     </header>
-    <div class="hstack appDetails">
-        <div class="hstack" style="align-items: start !important;">
-        <div class="appInfo">
-            <div class="hstack">
-                <img id="icon" src="https://placehold.co/100">
+
+    <main>
+        <div class="container project-detail">
+
+            <a class="back-link" href="../">← All projects</a>
+
+            <div class="project-header">
+                <img id="icon" class="project-header-icon" src="https://placehold.co/80" alt="Project icon">
                 <div>
-                    <h1 id="name">Lorem ipsum</h1>
-                    <p id="headline">Lorem ipsum dolor sit amet, consectetur adipiscing elit. </p>
+                    <h1 id="name">Loading…</h1>
+                    <p class="headline" id="headline"></p>
                 </div>
             </div>
-            <p id="description">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris id porta libero. Fusce faucibus ac erat
-                ac
-                elementum. Integer interdum finibus dictum. Proin ut bibendum dolor. Sed quis dolor lorem. Aenean at
-                luctus
-                dui. Vivamus urna lectus, commodo vitae ligula eu, rhoncus mollis neque. Suspendisse nec tortor sed
-                sapien
-                cursus ornare. Sed hendrerit eu urna sit amet feugiat. Pellentesque viverra laoreet mi et dignissim.
-                Nulla
-                posuere purus molestie rhoncus vehicula.
-            </p>
 
-            <div class="hstack" id="links"></div>
-        </div>
-        <div class="hstack" id="images">
+            <div class="detail-block" id="description-block">
+                <p class="section-label">About</p>
+                <p id="description"></p>
+            </div>
+
+            <div class="detail-block" id="links-block" style="display:none">
+                <p class="section-label">Links</p>
+                <div class="project-links" id="links"></div>
+            </div>
+
+            <div class="detail-block detail-meta" id="meta-block" style="display:none">
+                <div id="roles-block" style="display:none">
+                    <p class="section-label">My role</p>
+                    <div class="tags" id="roles"></div>
+                </div>
+                <div id="tech-block" style="display:none">
+                    <p class="section-label">Tech stack</p>
+                    <div class="tags" id="tech"></div>
+                </div>
+            </div>
+
+            <div class="detail-block" id="images-block" style="display:none">
+                <p class="section-label">Screenshots</p>
+                <div class="project-images" id="images"></div>
+            </div>
 
         </div>
-        </div>
-    </div>
+    </main>
 
-    <img src="assets/images/a.png" id="bottomLogo">
+    <footer>
+        <div class="container">
+            &copy; 2026 Adriel de Souza
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
 
 </body>
 
