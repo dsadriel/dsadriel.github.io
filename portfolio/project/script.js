@@ -26,6 +26,22 @@ function linkButton(link) {
 
 function capitalize(s) { return s.charAt(0).toUpperCase() + s.slice(1); }
 
+function escapeHtml(s) {
+    return String(s)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#39;");
+}
+
+function safeUrl(url) {
+    try {
+        const parsed = new URL(url);
+        return (parsed.protocol === "https:" || parsed.protocol === "http:") ? url : null;
+    } catch { return null; }
+}
+
 function showBlock(id) { document.getElementById(id).style.display = ""; }
 
 async function populatePage() {
@@ -68,6 +84,22 @@ async function populatePage() {
         document.getElementById("images").innerHTML = project.images
             .map(url => `<img src="${url}" alt="Screenshot">`).join("");
         showBlock("images-block");
+    }
+
+    // Team
+    if (project.team && project.team.length > 0) {
+        document.getElementById("team").innerHTML = project.team.map(member => {
+            const inner = `<div class="team-member-info">
+                <span class="team-member-name">${escapeHtml(member.name)}</span>
+                <span class="team-member-role">${escapeHtml(member.role)}</span>
+            </div>`;
+            const linkedinUrl = member.linkedin ? safeUrl(member.linkedin) : null;
+            if (linkedinUrl) {
+                return `<a class="team-member" href="${linkedinUrl}" target="_blank" rel="noopener">${inner}</a>`;
+            }
+            return `<div class="team-member">${inner}</div>`;
+        }).join("");
+        showBlock("team-block");
     }
 
     // Links
