@@ -85,8 +85,8 @@ header nav a:hover { color: var(--text); }
 }
 
 .about-memoji {
-  width: 140px;
-  height: 140px;
+  width: 200px;
+  height: 200px;
   object-fit: contain;
   flex-shrink: 0;
   user-select: none;
