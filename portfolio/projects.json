@@ -1,4 +1,34 @@
 [
+        {
+        "name": "Nook416",
+        "headline": "Multiplatform Group Expense Management Made Simple",
+        "description": "Nook416 is a multiplatform app designed to simplify shared finances among friends, roommates, and travel groups. It helps users track who paid for what, split expenses by shares, and maintain a clear overview of balances to make settling up easy and transparent. The app also includes a shared shopping list to keep everyone aligned on what still needs to be purchased. Built with Flutter and Firebase, Nook416 uses a single codebase to deliver a consistent experience across iOS and Android. This project involved the full product cycle, from problem discovery and UX design to development, testing, and store publication.",
+        "icon": "https://nook416.dsadriel.com.br/AppIconRounded.png",
+        "techStack": [
+            "Flutter",
+            "Firebase",
+            "Dart"
+        ],
+        "roles": [
+            "Mobile Developer",
+            "UI/UX Designer",
+            "Product Designer"
+        ],
+        "images": [
+            "https://placehold.co/300x650/6366F1/white",
+            "https://placehold.co/300x650/EC4899/white"
+        ],
+        "links": [
+            {
+                "type": "appstore",
+                "url": "https://apps.apple.com/us/app/nook416/id6757205653"
+            },
+            {
+                "type": "playstore",
+                "url": "https://play.google.com/store/apps/details?id=br.com.dsadriel.nook416"
+            }
+        ]
+    },
     {
         "name": "Dopamine News",
         "headline": "Daily News Reading Experience Reimagined",

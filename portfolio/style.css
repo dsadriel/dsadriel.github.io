@@ -291,7 +291,6 @@ header nav a:hover { color: var(--text); }
 .link-btn img {
   height: 16px;
   width: auto;
-  filter: invert(1);
 }
 
 /* ────────────────────────────────────────────
