@@ -43,7 +43,7 @@ function showBlock(id) { document.getElementById(id).style.display = ""; }
 async function populatePage() {
     const project = await getProjectInformation();
 
-    document.title = project.name + " | Adriel's Portfolio";
+    document.title = project.name + " • Adriel's Portfolio";
     document.getElementById("name").textContent = project.name;
     document.getElementById("headline").textContent = project.headline;
     document.getElementById("description").textContent = project.description;
