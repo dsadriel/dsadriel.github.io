@@ -43,7 +43,7 @@ function showBlock(id) { document.getElementById(id).style.display = ""; }
 async function populatePage() {
     const project = await getProjectInformation();
 
-    document.title = project.name + " — Adriel de Souza";
+    document.title = project.name + " | Adriel's Portfolio";
     document.getElementById("name").textContent = project.name;
     document.getElementById("headline").textContent = project.headline;
     document.getElementById("description").textContent = project.description;
@@ -108,7 +108,7 @@ async function populatePage() {
 
     // Team
     if (project.team && project.team.length > 0) {
-        project.team.unshift({ name: "Adriel de Souza", role: project.roles.join(", "), linkedin: "https://linkedin.com/in/dsadriel" });
+        project.team.unshift({ name: "Adriel de Souza", role: project.roles.join(", ")});
 
         project.team = project.team.sort((a, b) => a.name.localeCompare(b.name));
 
@@ -119,7 +119,9 @@ async function populatePage() {
             </div>`;
             const linkedinUrl = member.linkedin ? safeUrl(member.linkedin) : null;
             if (linkedinUrl) {
-                return `<a class="team-member" href="${linkedinUrl}" target="_blank" rel="noopener">${inner}</a>`;
+                // Use external link arrow image
+                const arrow = `<img class="external-arrow" src="../assets/images/arrow.svg" alt="External link" style="margin-left:4px;vertical-align:middle;width:1em;height:1em;">`;
+                return `<a class="team-member" href="${linkedinUrl}" target="_blank" rel="noopener">${inner}${arrow}</a>`;
             }
             return `<div class="team-member">${inner}</div>`;
         }).join("");

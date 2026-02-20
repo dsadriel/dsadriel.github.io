@@ -1,7 +1,7 @@
 [
     {
         "name": "Nook416",
-        "date": "2026",
+        "date": "jan/2026",
         "headline": "Multiplatform Group Expense Management Made Simple",
         "description": "Nook416 is a multiplatform app designed to simplify shared finances among friends, roommates, and travel groups. It helps users track who paid for what, split expenses by shares, and maintain a clear overview of balances to make settling up easy and transparent. The app also includes a shared shopping list to keep everyone aligned on what still needs to be purchased. Built with Flutter and Firebase, Nook416 uses a single codebase to deliver a consistent experience across iOS and Android. This project involved the full product cycle, from problem discovery and UX design to development, testing, and store publication.",
         "autoImages": {
@@ -30,6 +30,7 @@
     },
     {
         "name": "Dopamine News",
+        "date": "nov/2025",
         "headline": "Daily News Reading Experience Reimagined",
         "description": "Dopamine is a daily news reading app designed to bring the experience of a physical newspaper into a digital format. It combines curated news, puzzles, and daily horoscopes to offer a calm and intentional way to stay informed. Built with SwiftUI and SceneKit for 3D animations that enhance depth and reinforce its editorial identity. A main technical challenge was implementing a custom word search interaction, mapping finger gestures to grid positions for a natural and intuitive user experience.",
         "autoImages": {
@@ -76,6 +77,7 @@
     },
     {
         "name": "Profitto",
+        "date": "oct/2025",
         "headline": "Financial Management for Small Businesses",
         "description": "A comprehensive financial management solution for small business owners: streamline sales tracking, inventory control, pricing strategies, and performance insights — all in one intuitive platform designed to solve the complexity of managing multiple spreadsheets and disconnected tools.",
         "autoImages": {
@@ -91,6 +93,28 @@
             "iOS Developer",
             "Scrum Master"
         ],
+        "team": [
+            {
+                "name": "Carolina Silva dos Santos",
+                "role": "iOS Developer",
+                "linkedin": "https://www.linkedin.com/in/carolina-silva-dos-santos-a320111a7"
+            },
+            {
+                "name": "Martina Nogueira da Gama Adegas",
+                "role": "Product Designer, Product Owner",
+                "linkedin": "https://www.linkedin.com/in/martina-nogueira-da-gama-adegas"
+            },
+            {
+                "name": "Bárbara Dapper",
+                "role": "iOS Developer",
+                "linkedin": "https://www.linkedin.com/in/b%C3%A1rbara-dapper"
+            },
+            {
+                "name": "Bruna Marschner",
+                "role": "iOS Developer",
+                "linkedin": "https://www.linkedin.com/in/brunamarschner"
+            }
+        ],
         "links": [
             {
                 "type": "appstore",
@@ -100,6 +124,7 @@
     },
     {
         "name": "Memorelo",
+        "date": "sep/2025",
         "headline": "Record and Celebrate Family Memories",
         "description": "A mobile application designed to help families record and celebrate memories, track developmental milestones, and strengthen their bonds. It provides a secure, shared space for families to document their journey together with a timeline, gallery, and activity suggestions.",
         "autoImages": {
@@ -129,6 +154,7 @@
     },
     {
         "name": "Freela onTap",
+        "date": "jun/2025",
         "headline": "Connecting Freelancers with Hospitality Companies",
         "description": "A platform connecting freelancers and hospitality companies, solving the chaos and disorganization in job posting and prospecting within this sector. Features job search and filtering, company registration, job management dashboard, and direct contact via WhatsApp.",
         "autoImages": {
@@ -144,6 +170,28 @@
         "roles": [
             "iOS Developer",
             "Scrum Master"
+        ],
+        "team": [
+            {
+                "name": "Gustavo Ferreira Bassani",
+                "role": "iOS Developer",
+                "linkedin": "https://www.linkedin.com/in/gustavofbassani"
+            },
+            {
+                "name": "Giulia Stefainski",
+                "role": "iOS Developer",
+                "linkedin": "https://www.linkedin.com/in/giulia-cs"
+            },
+            {
+                "name": "Vinicius Cadore",
+                "role": "UX/UI Designer",
+                "linkedin": "https://www.linkedin.com/in/cadoreee"
+            },
+            {
+                "name": "Ana Poletto",
+                "role": "iOS Developer",
+                "linkedin": "https://www.linkedin.com/in/ana-poletto-2a7222318"
+            }
         ],
         "links": [
             {
