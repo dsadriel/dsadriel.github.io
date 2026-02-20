@@ -23,6 +23,10 @@
     --border: #2a2a2a;
     --header-bg: rgba(20, 20, 20, 0.5);
   }
+
+  .external-arrow {
+    filter: invert(1);
+  }
 }
 
 [data-theme="dark"] {
@@ -33,6 +37,10 @@
   --accent: #6b97f5;
   --border: #2a2a2a;
   --header-bg: rgba(20, 20, 20, 0.5);
+}
+
+[data-theme="dark"] .external-arrow {
+  filter: invert(1);
 }
 
 [data-theme="light"] {
