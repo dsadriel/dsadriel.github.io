@@ -75,7 +75,7 @@ async function populatePage() {
         showBlock("meta-block");
     }
 
-    // Screenshots with horizontal drag scroll only
+    // Screenshots with horizontal drag scroll and click-to-preview modal
     if (project.images && project.images.length > 0) {
         const imagesBlock = document.getElementById("images-block");
         const imagesContainer = document.getElementById("images");
@@ -83,9 +83,10 @@ async function populatePage() {
             .map(url => `<img src="${url}" alt="Screenshot" draggable="false">`).join("");
 
         // Mouse drag to scroll
-        let isDown = false, startX, scrollLeft;
+        let isDown = false, startX, scrollLeft, didDrag = false;
         imagesContainer.addEventListener('mousedown', (e) => {
             isDown = true;
+            didDrag = false;
             imagesContainer.classList.add('dragging');
             startX = e.pageX - imagesContainer.offsetLeft;
             scrollLeft = imagesContainer.scrollLeft;
@@ -101,8 +102,13 @@ async function populatePage() {
             e.preventDefault();
             const x = e.pageX - imagesContainer.offsetLeft;
             const walk = (x - startX) * 1.5;
+            if (Math.abs(walk) > 4) didDrag = true;
             imagesContainer.scrollLeft = scrollLeft - walk;
         });
+
+        // Image preview modal
+        initImageModal(imagesContainer, project.images, () => didDrag);
+
         showBlock("images-block");
     }
 

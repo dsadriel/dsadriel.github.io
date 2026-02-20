@@ -1,0 +1,124 @@
+/* ────────────────────────────────────────────
+   Image preview modal
+   ──────────────────────────────────────────── */
+.img-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.85);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s ease;
+}
+
+.img-modal.open {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.img-modal-dialog {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  max-height: 95vh;
+  padding: 16px;
+}
+
+.img-modal-close {
+  align-self: flex-end;
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: none;
+  color: #fff;
+  font-size: 1.2rem;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.15s;
+  flex-shrink: 0;
+}
+
+.img-modal-close:hover {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+.img-modal-content {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.img-modal-img {
+  max-width: calc(90vw - 120px);
+  max-height: 78vh;
+  object-fit: contain;
+  border-radius: 8px;
+  user-select: none;
+  -webkit-user-drag: none;
+  box-shadow: 0 8px 40px rgba(0, 0, 0, 0.6);
+}
+
+.img-modal-btn {
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: none;
+  color: #fff;
+  font-size: 1.5rem;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.15s;
+  flex-shrink: 0;
+}
+
+.img-modal-btn:hover {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+.img-modal-dots {
+  display: none;
+  gap: 8px;
+  justify-content: center;
+}
+
+.img-modal-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.35);
+  transition: background 0.15s;
+  flex-shrink: 0;
+}
+
+.img-modal-dot.active {
+  background: #fff;
+}
+
+@media (max-width: 600px) {
+  .img-modal-btn {
+    display: none;
+  }
+
+  .img-modal-dots {
+    display: flex;
+  }
+
+  .img-modal-img {
+    max-width: 92vw;
+    max-height: 74vh;
+  }
+}

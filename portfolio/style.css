@@ -379,10 +379,7 @@ header nav a:hover {
   flex-shrink: 0;
   object-fit: cover;
   -webkit-user-drag: none;
-  cursor: move;
-  cursor: grab;
-  cursor: -moz-grab;
-  cursor: -webkit-grab;
+  cursor: zoom-in;
 }
 
 /* Team */
