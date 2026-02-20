@@ -371,10 +371,91 @@ header nav a:hover {
   flex-shrink: 0;
   object-fit: cover;
   -webkit-user-drag: none;
-  cursor: move;
-  cursor: grab;
-  cursor: -moz-grab;
-  cursor: -webkit-grab;
+  cursor: zoom-in;
+}
+
+/* ────────────────────────────────────────────
+   Image preview modal
+   ──────────────────────────────────────────── */
+.img-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.85);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s ease;
+}
+
+.img-modal.open {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.img-modal-img {
+  max-width: 90vw;
+  max-height: 90vh;
+  object-fit: contain;
+  border-radius: 8px;
+  user-select: none;
+  -webkit-user-drag: none;
+  box-shadow: 0 8px 40px rgba(0, 0, 0, 0.6);
+}
+
+.img-modal-btn {
+  position: fixed;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: none;
+  color: #fff;
+  font-size: 1.5rem;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.15s;
+  z-index: 1001;
+}
+
+.img-modal-btn:hover {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+.img-modal-prev { left: 16px; }
+.img-modal-next { right: 16px; }
+
+.img-modal-close {
+  position: fixed;
+  top: 16px;
+  right: 16px;
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: none;
+  color: #fff;
+  font-size: 1.2rem;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.15s;
+  z-index: 1001;
+}
+
+.img-modal-close:hover {
+  background: rgba(255, 255, 255, 0.3);
 }
 
 /* Team */

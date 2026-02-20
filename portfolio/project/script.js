@@ -75,7 +75,7 @@ async function populatePage() {
         showBlock("meta-block");
     }
 
-    // Screenshots with horizontal drag scroll only
+    // Screenshots with horizontal drag scroll and click-to-preview modal
     if (project.images && project.images.length > 0) {
         const imagesBlock = document.getElementById("images-block");
         const imagesContainer = document.getElementById("images");
@@ -83,9 +83,10 @@ async function populatePage() {
             .map(url => `<img src="${url}" alt="Screenshot" draggable="false">`).join("");
 
         // Mouse drag to scroll
-        let isDown = false, startX, scrollLeft;
+        let isDown = false, startX, scrollLeft, didDrag = false;
         imagesContainer.addEventListener('mousedown', (e) => {
             isDown = true;
+            didDrag = false;
             imagesContainer.classList.add('dragging');
             startX = e.pageX - imagesContainer.offsetLeft;
             scrollLeft = imagesContainer.scrollLeft;
@@ -101,8 +102,89 @@ async function populatePage() {
             e.preventDefault();
             const x = e.pageX - imagesContainer.offsetLeft;
             const walk = (x - startX) * 1.5;
+            if (Math.abs(walk) > 4) didDrag = true;
             imagesContainer.scrollLeft = scrollLeft - walk;
         });
+
+        // Image preview modal
+        const images = project.images;
+        let currentIndex = 0;
+
+        const modal = document.createElement('div');
+        modal.className = 'img-modal';
+        modal.innerHTML = `
+            <button class="img-modal-close" aria-label="Close">✕</button>
+            <button class="img-modal-btn img-modal-prev" aria-label="Previous">‹</button>
+            <img class="img-modal-img" src="" alt="Screenshot preview">
+            <button class="img-modal-btn img-modal-next" aria-label="Next">›</button>
+        `;
+        document.body.appendChild(modal);
+
+        const modalImg = modal.querySelector('.img-modal-img');
+        const prevBtn = modal.querySelector('.img-modal-prev');
+        const nextBtn = modal.querySelector('.img-modal-next');
+        const closeBtn = modal.querySelector('.img-modal-close');
+
+        function openModal(index) {
+            currentIndex = index;
+            modalImg.src = images[currentIndex];
+            modal.classList.add('open');
+            document.body.style.overflow = 'hidden';
+            updateNavButtons();
+        }
+
+        function closeModal() {
+            modal.classList.remove('open');
+            document.body.style.overflow = '';
+        }
+
+        function showImage(index) {
+            currentIndex = (index + images.length) % images.length;
+            modalImg.src = images[currentIndex];
+            updateNavButtons();
+        }
+
+        function updateNavButtons() {
+            prevBtn.style.display = images.length <= 1 ? 'none' : '';
+            nextBtn.style.display = images.length <= 1 ? 'none' : '';
+        }
+
+        imagesContainer.querySelectorAll('img').forEach((img, idx) => {
+            img.addEventListener('click', () => {
+                if (!didDrag) openModal(idx);
+            });
+        });
+
+        closeBtn.addEventListener('click', closeModal);
+        prevBtn.addEventListener('click', () => showImage(currentIndex - 1));
+        nextBtn.addEventListener('click', () => showImage(currentIndex + 1));
+
+        // Click on backdrop closes modal
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) closeModal();
+        });
+
+        // Keyboard navigation
+        document.addEventListener('keydown', (e) => {
+            if (!modal.classList.contains('open')) return;
+            if (e.key === 'Escape') closeModal();
+            if (e.key === 'ArrowLeft') showImage(currentIndex - 1);
+            if (e.key === 'ArrowRight') showImage(currentIndex + 1);
+        });
+
+        // Touch swipe support
+        let touchStartX = 0;
+        modal.addEventListener('touchstart', (e) => {
+            touchStartX = e.changedTouches[0].screenX;
+        }, { passive: true });
+        modal.addEventListener('touchend', (e) => {
+            const dx = e.changedTouches[0].screenX - touchStartX;
+            if (Math.abs(dx) > 40) {
+                if (dx < 0) showImage(currentIndex + 1);
+                else showImage(currentIndex - 1);
+            }
+        }, { passive: true });
+
         showBlock("images-block");
     }
 
