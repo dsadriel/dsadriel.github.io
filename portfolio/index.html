@@ -39,6 +39,7 @@
             <nav>
                 <a href="https://github.com/dsadriel" target="_blank" rel="noopener">GitHub</a>
                 <a href="https://linkedin.com/in/dsadriel" target="_blank" rel="noopener">Connect</a>
+                <a href="/portfolio/assets/adriel-de-souza-cv.pdf" download class="btn-cv">Download CV</a>
             </nav>
         </div>
     </header>
@@ -63,6 +64,11 @@
                 document.getElementById('memoji').src = `assets/memoji/${n}.png`;
             </script>
 
+            <section class="skills-section">
+                <p class="section-label">Skills</p>
+                <div class="skills-tags" id="skills-list"></div>
+            </section>
+
             <section class="projects-section">
                 <p class="section-label">Projects</p>
                 <div id="projects-list"></div>
@@ -85,13 +91,18 @@
             document.getElementById('projects-list').innerHTML = projects.map(p => `
                 <a class="project-item" href="project/?name=${encodeURIComponent(p.name)}">
                     <img class="project-item-icon" src="${p.icon}" alt="${p.name} icon">
-                    <div>
+                    <div class="project-item-info">
                         <div class="project-item-name">${p.name}</div>
                         <div class="project-item-headline">${p.headline}</div>
+                        ${p.techStack && p.techStack.length ? `<div class="project-item-tags">${p.techStack.map(t => `<span class="project-tag">${t}</span>`).join('')}</div>` : ''}
                     </div>
                     ${p.date ? `<span class="project-item-date">${p.date}</span>` : ''}
                 </a>
             `).join('');
+
+            const allSkills = [...new Set(projects.flatMap(p => p.techStack || []))];
+            document.getElementById('skills-list').innerHTML = allSkills
+                .map(s => `<span class="tag">${s}</span>`).join('');
         }
         loadProjects();
     </script>
