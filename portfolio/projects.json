@@ -1,5 +1,32 @@
 [
     {
+        "name": "WildSet",
+        "date": "feb/2026",
+        "headline": "Learning Set Theory Through Nature Conservation",
+        "description": "An interactive App Playground created for the Apple Swift Student Challenge 2026. It transforms the abstract learning of Set Theory into an environmental conservation mission in the Brazilian Pantanal. Players act as Guardians, using interactive Venn Diagrams and native drag-and-drop mechanics to classify real species into habitats, learning about Universal Sets, Intersections, Unions, and Complements in a tangible, accessible way.",
+        "autoImages": {
+            "icon": true,
+            "screenshotCount": 7
+        },
+        "techStack": [
+            "SwiftUI",
+            "Swift Concurrency",
+            "AVFoundation",
+            "QuickLook",
+            "Figma"
+        ],
+        "roles": [
+            "iOS Developer",
+            "Product Designer"
+        ],
+        "links": [
+            {
+                "type": "github",
+                "url": "https://github.com/dsadriel/WildSet.swiftpm"
+            }
+        ]
+    },
+    {
         "name": "Nook416",
         "date": "jan/2026",
         "headline": "Multiplatform Group Expense Management Made Simple",
