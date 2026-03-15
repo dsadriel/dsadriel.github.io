@@ -10,8 +10,6 @@
 
     function apply(theme) {
         root.setAttribute("data-theme", theme);
-        const btn = document.getElementById("theme-toggle");
-        if (btn) btn.textContent = theme === "dark" ? "☀️" : "🌑";
     }
 
     function toggle() {
