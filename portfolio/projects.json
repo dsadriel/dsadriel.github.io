@@ -1,4 +1,54 @@
 [
+     {
+        "name": "K*LL THE TIGER",
+        "date": "mar/2025",
+        "headline": "A Satirical Survivors Arcade Shooter",
+        "description": "K*LL THE TIGER is an endless survivors-style action game that uses sharp satire to comment on the comical state of bookmakers in Brazil. Players step into the role of a resilient pig fighting back against relentless waves of greedy \"Betting Tigers\" who have stolen the village's fortune. Designed for endless replayability, the game challenges players to survive escalating waves of enemies, reclaim stolen coins, and completely rebuild their destroyed village.<br><b>Key Features:</b><br>- Dual Joystick Controls: Built specifically for mobile, players move with the left joystick and aim with the right, while the weapon fires automatically.<br> - Permanent Progression: Defeated tigers drop coins that must be collected before they disappear. These coins are permanently saved and used between runs to buy houses and restore the village.<br>- Escalating Survival Challenge: The tiger waves grow faster and stronger with every passing second. Players can only take three hits, but dynamic power-ups like extra lives and shields spawn to help extend the run.<br>- Global Competition: Integrated with Game Center to feature live, global leaderboards.<br>- Offline Play: Fully functional and playable without an internet connection.",
+        "autoImages": {
+            "icon": true,
+            "screenshotCount": 6,
+            "videoCount": 1
+        },
+        "techStack": [
+            "SwiftUI",
+            "SpriteKit",
+            "GameCenter",
+            "GamePlayKit",
+            "Google AdMob",
+            "Swift"
+        ],
+        "roles": [
+            "iOS Developer"
+        ],
+        "team": [
+            {
+                "name": "Pedro Kosciuk Lima",
+                "role": "UI/UX Designer",
+                "linkedin": "https://www.linkedin.com/in/pedro-kosciuk-lima-a29855207/"
+            },
+            {
+                "name": "Alex Fraga",
+                "role": "iOS Developer",
+                "linkedin": "https://www.linkedin.com/in/alex-fraga1/"
+            },
+            {
+                "name": "Diogo Camargo",
+                "role": "iOS Developer",
+                "linkedin": "https://www.linkedin.com/in/diogo-pcamargo/"
+            },
+            {
+                "name": "Júlia Fazenda Ruiz",
+                "role": "iOS Developer",
+                "linkedin": "https://www.linkedin.com/in/julia-fazenda-ruiz/"
+            }
+        ],
+        "links": [
+            {
+                "type": "appstore",
+                "url": "https://apps.apple.com/us/app/kill-the-tiger/id6760663002"
+            }
+        ]
+    },
     {
         "name": "WildSet",
         "date": "feb/2026",
@@ -6,7 +56,8 @@
         "description": "An interactive App Playground created for the Apple Swift Student Challenge 2026. It transforms the abstract learning of Set Theory into an environmental conservation mission in the Brazilian Pantanal. Players act as Guardians, using interactive Venn Diagrams and native drag-and-drop mechanics to classify real species into habitats, learning about Universal Sets, Intersections, Unions, and Complements in a tangible, accessible way.",
         "autoImages": {
             "icon": true,
-            "screenshotCount": 7
+            "screenshotCount": 7,
+            "videoCount": 0
         },
         "techStack": [
             "SwiftUI",
@@ -62,7 +113,8 @@
         "description": "Dopamine is a daily news reading app designed to bring the experience of a physical newspaper into a digital format. It combines curated news, puzzles, and daily horoscopes to offer a calm and intentional way to stay informed. Built with SwiftUI and SceneKit for 3D animations that enhance depth and reinforce its editorial identity. A main technical challenge was implementing a custom word search interaction, mapping finger gestures to grid positions for a natural and intuitive user experience.",
         "autoImages": {
             "icon": true,
-            "screenshotCount": 7
+            "screenshotCount": 7,
+            "videoCount": 0
         },
         "techStack": [
             "SwiftUI",
@@ -156,7 +208,8 @@
         "description": "A mobile application designed to help families record and celebrate memories, track developmental milestones, and strengthen their bonds. It provides a secure, shared space for families to document their journey together with a timeline, gallery, and activity suggestions.",
         "autoImages": {
             "icon": true,
-            "screenshotCount": 5
+            "screenshotCount": 5,
+            "videoCount": 0
         },
         "techStack": [
             "SwiftUI",
@@ -227,4 +280,4 @@
             }
         ]
     }
-]
+]       
