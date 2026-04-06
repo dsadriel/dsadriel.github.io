@@ -379,9 +379,10 @@ header nav a:hover {
   display: none;
 }
 
-.project-images img {
-  height: 500px;
-  width: auto;
+  .project-images img,
+  .project-images video {
+  max-height: 380px;
+  max-width: 90% !important;
   border-radius: 12px;
   border: 1px solid var(--border);
   flex-shrink: 0;
@@ -522,7 +523,6 @@ footer .container {
 }
 
 #description {
-  font-weight: 300;
   text-align: justify;
 }
 
@@ -573,10 +573,6 @@ footer .container {
     margin-right: -16px;
     padding-left: 16px;
     padding-right: 16px;
-  }
-
-  .project-images img {
-    height: 380px;
   }
 
   .project-detail {

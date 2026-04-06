@@ -46,7 +46,7 @@ async function populatePage() {
     document.title = project.name + " • Adriel's Portfolio";
     document.getElementById("name").textContent = project.name;
     document.getElementById("headline").textContent = project.headline;
-    document.getElementById("description").textContent = project.description;
+    document.getElementById("description").innerHTML = project.description;
 
     if (project.date) {
         document.getElementById("date").textContent = project.date;
@@ -75,12 +75,31 @@ async function populatePage() {
         showBlock("meta-block");
     }
 
-    // Screenshots with horizontal drag scroll only
-    if (project.images && project.images.length > 0) {
+    // Media gallery with horizontal drag scroll only
+    const hasImages = project.images && project.images.length > 0;
+    const hasVideos = project.videos && project.videos.length > 0;
+
+    if (hasImages || hasVideos) {
         const imagesBlock = document.getElementById("images-block");
         const imagesContainer = document.getElementById("images");
-        imagesContainer.innerHTML = project.images
-            .map(url => `<img src="${url}" alt="Screenshot" draggable="false">`).join("");
+
+        let mediaHtml = "";
+        
+        // Add videos first if any
+        if (hasVideos) {
+            mediaHtml += project.videos.map(url => `
+                <video src="${url}" controls autoplay loop muted draggable="false"></video>
+            `).join("");
+        }
+
+        // Add images
+        if (hasImages) {
+            mediaHtml += project.images.map(url => `
+                <img src="${url}" alt="Screenshot" draggable="false">
+            `).join("");
+        }
+
+        imagesContainer.innerHTML = mediaHtml;
 
         // Mouse drag to scroll
         let isDown = false, startX, scrollLeft;
