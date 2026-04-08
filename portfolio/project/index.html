@@ -27,6 +27,44 @@ gtag('config', 'G-LES5WJQPEQ');
     padding-bottom: 100px;
   }
 
+  /* Breadcrumb Nav Styles */
+  .nav-breadcrumb {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+
+  .nav-back-link {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--text-muted);
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 500;
+    transition: color 0.2s;
+  }
+
+  .nav-back-link:hover {
+    color: var(--blue);
+  }
+
+  .nav-back-link img {
+    opacity: 0.6;
+    transition: opacity 0.2s, transform 0.2s;
+  }
+
+  .nav-back-link:hover img {
+    opacity: 1;
+    filter: invert(1) sepia(1) saturate(5) hue-rotate(175deg); /* Match blue color */
+  }
+
+  .nav-sep {
+    color: var(--surface-2);
+    font-weight: 300;
+    font-size: 18px;
+  }
+
   .back-link {
     display: inline-flex;
     align-items: center;
@@ -218,32 +256,34 @@ gtag('config', 'G-LES5WJQPEQ');
   }
 
   @media (max-width: 800px) {
-    .project-detail-header { flex-direction: column; gap: 24px; }
-    .project-detail-grid { grid-template-columns: 1fr; gap: 48px; }
-    .project-detail-content { padding: 120px 24px 64px; }
-    .team-section { padding: 24px; margin-left: -24px; margin-right: -24px; border-left: none; border-right: none; }
+  .nav-links { display: none; }
+  .project-detail-header { flex-direction: column; gap: 24px; }
+  .project-detail-grid { grid-template-columns: 1fr; gap: 48px; }
+  .project-detail-content { padding: 120px 24px 64px; }
+  .team-section { padding: 24px; margin-left: -24px; margin-right: -24px; border-left: none; border-right: none; }
   }
-</style>
-</head>
-<body>
+  </style>
+  </head>
+  <body>
 
-<nav>
-  <a href="../#hero" class="nav-logo">adriel<span>.</span></a>
-  <ul class="nav-links">
-    <li><a href="../#work">work</a></li>
-    <li><a href="../#skills-experience">about</a></li>
-    <li><a href="../#contact">contact</a></li>
-  </ul>
-</nav>
-
-<main class="project-detail-content">
-  <a href="../" class="btn btn-ghost" style="margin-bottom: 48px; display: inline-flex; align-items: center; gap: 12px;">
-    <img src="../assets/images/arrow.svg" alt="" style="width: 14px; height: 14px; transform: rotate(-135deg); filter: invert(1); opacity: 0.8;">
-    Back to projects
+  <nav>
+  <div class="nav-breadcrumb">
+  <a href="../" class="nav-back-link">
+    <img src="../assets/images/arrow.svg" alt="" style="width: 12px; height: 12px; transform: rotate(-135deg); filter: invert(1);">
+    back
   </a>
+  <span class="nav-sep">/</span>
+  <a href="../#hero" class="nav-logo">adriel<span>.</span></a>
+  </div>
+  <ul class="nav-links">
+  <li><a href="../#work">work</a></li>
+  <li><a href="../#skills-experience">about</a></li>
+  <li><a href="../#contact">contact</a></li>
+  </ul>
+  </nav>
 
-  <header class="project-detail-header">
-    <img id="project-icon" src="" alt="" class="project-detail-icon">
+  <main class="project-detail-content">
+  <header class="project-detail-header">    <img id="project-icon" src="" alt="" class="project-detail-icon">
     <div class="project-detail-title-wrap">
       <h1 id="project-name">Loading...</h1>
       <p id="project-headline" class="project-detail-headline"></p>
