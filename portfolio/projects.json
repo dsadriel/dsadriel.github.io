@@ -3,288 +3,205 @@
     "name": "K*LL THE TIGER",
     "type": "mobile-apps",
     "date": "mar/2025",
-    "headline": "A Satirical Survivors Arcade Shooter",
-    "description": "K*LL THE TIGER is an endless survivors-style action game that uses sharp satire to comment on the comical state of bookmakers in Brazil. Players step into the role of a resilient pig fighting back against relentless waves of greedy \"Betting Tigers\" who have stolen the village's fortune. Designed for endless replayability, the game challenges players to survive escalating waves of enemies, reclaim stolen coins, and completely rebuild their destroyed village.<br><b>Key Features:</b><br>- Dual Joystick Controls: Built specifically for mobile, players move with the left joystick and aim with the right, while the weapon fires automatically.<br> - Permanent Progression: Defeated tigers drop coins that must be collected before they disappear. These coins are permanently saved and used between runs to buy houses and restore the village.<br>- Escalating Survival Challenge: The tiger waves grow faster and stronger with every passing second. Players can only take three hits, but dynamic power-ups like extra lives and shields spawn to help extend the run.<br>- Global Competition: Integrated with Game Center to feature live, global leaderboards.<br>- Offline Play: Fully functional and playable without an internet connection.",
+    "headline": {
+      "en": "A Satirical Survivors Arcade Shooter",
+      "pt": "Um Shooter Arcade Satírico de Sobrevivência"
+    },
+    "description": {
+      "en": "K*LL THE TIGER is an endless survivors-style action game that uses sharp satire to comment on the comical state of bookmakers in Brazil. Players step into the role of a resilient pig fighting back against relentless waves of greedy \"Betting Tigers\" who have stolen the village's fortune. Designed for endless replayability, the game challenges players to survive escalating waves of enemies, reclaim stolen coins, and completely rebuild their destroyed village.<br><b>Key Features:</b><br>- Dual Joystick Controls: Built specifically for mobile, players move with the left joystick and aim with the right, while the weapon fires automatically.<br> - Permanent Progression: Defeated tigers drop coins that must be collected before they disappear. These coins are permanently saved and used between runs to buy houses and restore the village.<br>- Escalating Survival Challenge: The tiger waves grow faster and stronger with every passing second. Players can only take three hits, but dynamic power-ups like extra lives and shields spawn to help extend the run.<br>- Global Competition: Integrated with Game Center to feature live, global leaderboards.<br>- Offline Play: Fully functional and playable without an internet connection.",
+      "pt": "K*LL THE TIGER é um jogo de ação no estilo survivors que utiliza sátira ácida para comentar sobre o estado atual das casas de apostas no Brasil. O jogador assume o papel de um porco resiliente lutando contra hordas implacáveis de \"Tigres de Apostas\" gananciosos que roubaram a fortuna da vila. Projetado para replayability infinita, o jogo desafia o jogador a sobreviver a ondas crescentes de inimigos, recuperar moedas roubadas e reconstruir completamente sua vila destruída.<br><b>Destaques:</b><br>- Controles Dual Joystick: Criado especificamente para mobile, o jogador se move com o joystick esquerdo e mira com o direito, enquanto a arma dispara automaticamente.<br>- Progressão Permanente: Tigres derrotados derrubam moedas que devem ser coletadas. Essas moedas são salvas permanentemente e usadas entre as partidas para comprar casas e restaurar a vila.<br>- Desafio de Sobrevivência Escalável: As ondas de tigres ficam mais rápidas e fortes a cada segundo. O jogador pode receber apenas três golpes, mas power-ups dinâmicos como vidas extras e escudos surgem para ajudar a estender a partida.<br>- Competição Global: Integrado com Game Center para rankings globais ao vivo.<br>- Jogo Offline: Totalmente funcional e jogável sem conexão com a internet."
+    },
     "autoImages": {
       "icon": true,
       "screenshotCount": 6,
       "videoCount": 1
     },
-    "techStack": [
-      "SwiftUI",
-      "SpriteKit",
-      "GameCenter",
-      "GamePlayKit",
-      "Google AdMob",
-      "Swift"
-    ],
-    "roles": [
-      "iOS Developer"
-    ],
+    "techStack": ["SwiftUI", "SpriteKit", "GameCenter", "GamePlayKit", "Google AdMob", "Swift"],
+    "roles": {
+      "en": ["iOS Developer"],
+      "pt": ["Desenvolvedor iOS"]
+    },
     "team": [
-      {
-        "name": "Pedro Kosciuk Lima",
-        "role": "UI/UX Designer",
-        "linkedin": "https://www.linkedin.com/in/pedro-kosciuk-lima-a29855207/"
-      },
-      {
-        "name": "Alex Fraga",
-        "role": "iOS Developer",
-        "linkedin": "https://www.linkedin.com/in/alex-fraga1/"
-      },
-      {
-        "name": "Diogo Camargo",
-        "role": "iOS Developer",
-        "linkedin": "https://www.linkedin.com/in/diogo-pcamargo/"
-      },
-      {
-        "name": "Júlia Fazenda Ruiz",
-        "role": "iOS Developer",
-        "linkedin": "https://www.linkedin.com/in/julia-fazenda-ruiz/"
-      }
+      { "name": "Pedro Kosciuk Lima", "role": "UI/UX Designer", "linkedin": "https://www.linkedin.com/in/pedro-kosciuk-lima-a29855207/" },
+      { "name": "Alex Fraga", "role": "iOS Developer", "linkedin": "https://www.linkedin.com/in/alex-fraga1/" },
+      { "name": "Diogo Camargo", "role": "iOS Developer", "linkedin": "https://www.linkedin.com/in/diogo-pcamargo/" },
+      { "name": "Júlia Fazenda Ruiz", "role": "iOS Developer", "linkedin": "https://www.linkedin.com/in/julia-fazenda-ruiz/" }
     ],
     "links": [
-      {
-        "type": "AppStore",
-        "url": "https://apps.apple.com/us/app/kill-the-tiger/id6760663002"
-      }
+      { "type": "AppStore", "url": "https://apps.apple.com/us/app/kill-the-tiger/id6760663002" }
     ]
   },
   {
     "name": "WildSet",
     "type": "mobile-apps",
     "date": "feb/2026",
-    "headline": "Learning Set Theory Through Nature Conservation",
-    "description": "An interactive App Playground created for the Apple Swift Student Challenge 2026. It transforms the abstract learning of Set Theory into an environmental conservation mission in the Brazilian Pantanal. Players act as Guardians, using interactive Venn Diagrams and native drag-and-drop mechanics to classify real species into habitats, learning about Universal Sets, Intersections, Unions, and Complements in a tangible, accessible way.",
+    "headline": {
+      "en": "Learning Set Theory Through Nature Conservation",
+      "pt": "Aprendendo Teoria dos Conjuntos através da Conservação da Natureza"
+    },
+    "description": {
+      "en": "An interactive App Playground created for the Apple Swift Student Challenge 2026. It transforms the abstract learning of Set Theory into an environmental conservation mission in the Brazilian Pantanal. Players act as Guardians, using interactive Venn Diagrams and native drag-and-drop mechanics to classify real species into habitats, learning about Universal Sets, Intersections, Unions, and Complements in a tangible, accessible way.",
+      "pt": "Um App Playground interativo criado para o Apple Swift Student Challenge 2026. Ele transforma o aprendizado abstrato da Teoria dos Conjuntos em uma missão de conservação ambiental no Pantanal brasileiro. Os jogadores atuam como Guardiões, usando Diagramas de Venn interativos e mecânicas nativas de drag-and-drop para classificar espécies reais em habitats, aprendendo sobre Conjuntos Universais, Interseções, Uniões e Complementos de forma tangível e acessível."
+    },
     "autoImages": {
       "icon": true,
       "screenshotCount": 7,
       "videoCount": 0
     },
-    "techStack": [
-      "SwiftUI",
-      "Swift Concurrency",
-      "AVFoundation",
-      "QuickLook",
-      "Figma"
-    ],
-    "roles": [
-      "iOS Developer",
-      "Product Designer"
-    ],
+    "techStack": ["SwiftUI", "Swift Concurrency", "AVFoundation", "QuickLook", "Figma"],
+    "roles": {
+      "en": ["iOS Developer", "Product Designer"],
+      "pt": ["Desenvolvedor iOS", "Product Designer"]
+    },
     "links": [
-      {
-        "type": "GitHub",
-        "url": "https://github.com/dsadriel/WildSet.swiftpm"
-      }
+      { "type": "GitHub", "url": "https://github.com/dsadriel/WildSet.swiftpm" }
     ]
   },
   {
     "name": "Nook416",
     "type": "mobile-apps",
     "date": "jan/2026",
-    "headline": "Multiplatform Group Expense Management Made Simple",
-    "description": "Nook416 is a multiplatform app designed to simplify shared finances among friends, roommates, and travel groups. It helps users track who paid for what, split expenses by shares, and maintain a clear overview of balances to make settling up easy and transparent. The app also includes a shared shopping list to keep everyone aligned on what still needs to be purchased. Built with Flutter and Firebase, Nook416 uses a single codebase to deliver a consistent experience across iOS and Android. This project involved the full product cycle, from problem discovery and UX design to development, testing, and store publication.",
+    "headline": {
+      "en": "Multiplatform Group Expense Management Made Simple",
+      "pt": "Gestão de Gastos em Grupo Multiplataforma Facilitada"
+    },
+    "description": {
+      "en": "Nook416 is a multiplatform app designed to simplify shared finances among friends, roommates, and travel groups. It helps users track who paid for what, split expenses by shares, and maintain a clear overview of balances to make settling up easy and transparent. The app also includes a shared shopping list to keep everyone aligned on what still needs to be purchased. Built with Flutter and Firebase, Nook416 uses a single codebase to deliver a consistent experience across iOS and Android. This project involved the full product cycle, from problem discovery and UX design to development, testing, and store publication.",
+      "pt": "Nook416 é um app multiplataforma projetado para simplificar finanças compartilhadas entre amigos, colegas de quarto e grupos de viagem. Ajuda os usuários a rastrear quem pagou o quê, dividir despesas por cotas e manter uma visão clara dos saldos para tornar os acertos fáceis e transparentes. O app também inclui uma lista de compras compartilhada para manter todos alinhados sobre o que ainda precisa ser comprado. Criado com Flutter e Firebase, o Nook416 usa uma única base de código para oferecer uma experiência consistente no iOS e Android. Este projeto envolveu o ciclo completo do produto, desde a descoberta do problema e design UX até o desenvolvimento, testes e publicação nas lojas."
+    },
     "autoImages": {
       "icon": true,
       "screenshotCount": 4
     },
-    "techStack": [
-      "Flutter",
-      "Firebase",
-      "Dart"
-    ],
-    "roles": [
-      "Mobile Developer",
-      "Product Designer"
-    ],
+    "techStack": ["Flutter", "Firebase", "Dart"],
+    "roles": {
+      "en": ["Mobile Developer", "Product Designer"],
+      "pt": ["Desenvolvedor Mobile", "Product Designer"]
+    },
     "links": [
-      {
-        "type": "AppStore",
-        "url": "https://apps.apple.com/us/app/nook416/id6757205653"
-      },
-      {
-        "type": "playstore",
-        "url": "https://play.google.com/store/apps/details?id=br.com.dsadriel.nook416"
-      }
+      { "type": "AppStore", "url": "https://apps.apple.com/us/app/nook416/id6757205653" },
+      { "type": "playstore", "url": "https://play.google.com/store/apps/details?id=br.com.dsadriel.nook416" }
     ]
   },
   {
     "name": "Dopamine News",
     "type": "mobile-apps",
     "date": "nov/2025",
-    "headline": "Daily News Reading Experience Reimagined",
-    "description": "Dopamine is a daily news reading app designed to bring the experience of a physical newspaper into a digital format. It combines curated news, puzzles, and daily horoscopes to offer a calm and intentional way to stay informed. Built with SwiftUI and SceneKit for 3D animations that enhance depth and reinforce its editorial identity. A main technical challenge was implementing a custom word search interaction, mapping finger gestures to grid positions for a natural and intuitive user experience.",
+    "headline": {
+      "en": "Daily News Reading Experience Reimagined",
+      "pt": "Experiência Diária de Leitura de Notícias Reimaginada"
+    },
+    "description": {
+      "en": "Dopamine is a daily news reading app designed to bring the experience of a physical newspaper into a digital format. It combines curated news, puzzles, and daily horoscopes to offer a calm and intentional way to stay informed. Built with SwiftUI and SceneKit for 3D animations that enhance depth and reinforce its editorial identity. A main technical challenge was implementing a custom word search interaction, mapping finger gestures to grid positions for a natural and intuitive user experience.",
+      "pt": "Dopamine é um app de leitura diária de notícias projetado para trazer a experiência de um jornal físico para o formato digital. Combina notícias curadas, quebra-cabeças e horóscopos diários para oferecer uma maneira calma e intencional de se manter informado. Criado com SwiftUI e SceneKit para animações 3D que aumentam a profundidade e reforçam sua identidade editorial. Um dos principais desafios técnicos foi a implementação de uma interação personalizada de caça-palavras, mapeando gestos de dedo para posições na grade para uma experiência de usuário natural e intuitiva."
+    },
     "autoImages": {
       "icon": true,
       "screenshotCount": 7,
       "videoCount": 0
     },
-    "techStack": [
-      "SwiftUI",
-      "SceneKit",
-      "Swift"
-    ],
-    "roles": [
-      "iOS Developer",
-      "Scrum Master"
-    ],
+    "techStack": ["SwiftUI", "SceneKit", "Swift"],
+    "roles": {
+      "en": ["iOS Developer", "Scrum Master"],
+      "pt": ["Desenvolvedor iOS", "Scrum Master"]
+    },
     "team": [
-      {
-        "name": "Rafaela Julianotte da Silva",
-        "role": "Product Designer, Product Owner",
-        "linkedin": "https://linkedin.com/in/rafajulianotte"
-      },
-      {
-        "name": "Antonio Costa Jr.",
-        "role": "iOS Developer, Scrum Master",
-        "linkedin": "https://linkedin.com/in/antoniocosta001"
-      },
-      {
-        "name": "Vítor Bruno",
-        "role": "iOS Developer, Product Owner",
-        "linkedin": "https://linkedin.com/in/vitor-bruno-243975258"
-      },
-      {
-        "name": "Gabriel Kowaleski",
-        "role": "iOS Developer",
-        "linkedin": "https://linkedin.com/in/gabriel-kowaleski"
-      }
+      { "name": "Rafaela Julianotte da Silva", "role": "Product Designer, Product Owner", "linkedin": "https://linkedin.com/in/rafajulianotte" },
+      { "name": "Antonio Costa Jr.", "role": "iOS Developer, Scrum Master", "linkedin": "https://linkedin.com/in/antoniocosta001" },
+      { "name": "Vítor Bruno", "role": "iOS Developer, Product Owner", "linkedin": "https://linkedin.com/in/vitor-bruno-243975258" },
+      { "name": "Gabriel Kowaleski", "role": "iOS Developer", "linkedin": "https://linkedin.com/in/gabriel-kowaleski" }
     ],
     "links": [
-      {
-        "type": "AppStore",
-        "url": "https://apps.apple.com/br/app/dopamine-news/id6755773697"
-      }
+      { "type": "AppStore", "url": "https://apps.apple.com/br/app/dopamine-news/id6755773697" }
     ]
   },
   {
     "name": "Profitto",
     "type": "mobile-apps",
     "date": "oct/2025",
-    "headline": "Financial Management for Small Businesses",
-    "description": "A comprehensive financial management solution for small business owners: streamline sales tracking, inventory control, pricing strategies, and performance insights — all in one intuitive platform designed to solve the complexity of managing multiple spreadsheets and disconnected tools.",
+    "headline": {
+      "en": "Financial Management for Small Businesses",
+      "pt": "Gestão Financeira para Pequenos Negócios"
+    },
+    "description": {
+      "en": "A comprehensive financial management solution for small business owners: streamline sales tracking, inventory control, pricing strategies, and performance insights — all in one intuitive platform designed to solve the complexity of managing multiple spreadsheets and disconnected tools.",
+      "pt": "Uma solução abrangente de gestão financeira para proprietários de pequenos negócios: simplifique o rastreamento de vendas, controle de estoque, estratégias de precificação e insights de desempenho — tudo em uma plataforma intuitiva projetada para resolver a complexidade de gerenciar múltiplas planilhas e ferramentas desconectadas."
+    },
     "autoImages": {
       "icon": true,
       "screenshotCount": 0
     },
-    "techStack": [
-      "SwiftUI",
-      "Swift",
-      "Core Data"
-    ],
-    "roles": [
-      "iOS Developer",
-      "Scrum Master"
-    ],
+    "techStack": ["SwiftUI", "Swift", "Core Data"],
+    "roles": {
+      "en": ["iOS Developer", "Scrum Master"],
+      "pt": ["Desenvolvedor iOS", "Scrum Master"]
+    },
     "team": [
-      {
-        "name": "Carolina Silva dos Santos",
-        "role": "iOS Developer",
-        "linkedin": "https://www.linkedin.com/in/carolina-silva-dos-santos-a320111a7"
-      },
-      {
-        "name": "Martina Nogueira da Gama Adegas",
-        "role": "Product Designer, Product Owner",
-        "linkedin": "https://www.linkedin.com/in/martina-nogueira-da-gama-adegas"
-      },
-      {
-        "name": "Bárbara Dapper",
-        "role": "iOS Developer",
-        "linkedin": "https://www.linkedin.com/in/b%C3%A1rbara-dapper"
-      },
-      {
-        "name": "Bruna Marschner",
-        "role": "iOS Developer",
-        "linkedin": "https://www.linkedin.com/in/brunamarschner"
-      }
+      { "name": "Carolina Silva dos Santos", "role": "iOS Developer", "linkedin": "https://www.linkedin.com/in/carolina-silva-dos-santos-a320111a7" },
+      { "name": "Martina Nogueira da Gama Adegas", "role": "Product Designer, Product Owner", "linkedin": "https://www.linkedin.com/in/martina-nogueira-da-gama-adegas" },
+      { "name": "Bárbara Dapper", "role": "iOS Developer", "linkedin": "https://www.linkedin.com/in/b%C3%A1rbara-dapper" },
+      { "name": "Bruna Marschner", "role": "iOS Developer", "linkedin": "https://www.linkedin.com/in/brunamarschner" }
     ],
     "links": [
-      {
-        "type": "AppStore",
-        "url": "https://apps.apple.com/br/app/profitto/id6752310169"
-      }
+      { "type": "AppStore", "url": "https://apps.apple.com/br/app/profitto/id6752310169" }
     ]
   },
   {
     "name": "Memorelo",
     "type": "mobile-apps",
     "date": "sep/2025",
-    "headline": "Record and Celebrate Family Memories",
-    "description": "A mobile application designed to help families record and celebrate memories, track developmental milestones, and strengthen their bonds. It provides a secure, shared space for families to document their journey together with a timeline, gallery, and activity suggestions.",
+    "headline": {
+      "en": "Record and Celebrate Family Memories",
+      "pt": "Registre e Celebre Memórias de Família"
+    },
+    "description": {
+      "en": "A mobile application designed to help families record and celebrate memories, track developmental milestones, and strengthen their bonds. It provides a secure, shared space for families to document their journey together with a timeline, gallery, and activity suggestions.",
+      "pt": "Um aplicativo mobile projetado para ajudar as famílias a registrar e celebrar memórias, acompanhar marcos de desenvolvimento e fortalecer seus laços. Oferece um espaço seguro e compartilhado para as famílias documentarem sua jornada juntas com uma linha do tempo, galeria e sugestões de atividades."
+    },
     "autoImages": {
       "icon": true,
       "screenshotCount": 5,
       "videoCount": 0
     },
-    "techStack": [
-      "SwiftUI",
-      "Swift",
-      "CloudKit",
-      "Figma"
-    ],
-    "roles": [
-      "iOS Developer",
-      "Product Designer"
-    ],
+    "techStack": ["SwiftUI", "Swift", "CloudKit", "Figma"],
+    "roles": {
+      "en": ["iOS Developer", "Product Designer"],
+      "pt": ["Desenvolvedor iOS", "Product Designer"]
+    },
     "links": [
-      {
-        "type": "GitHub",
-        "url": "https://github.com/dsadriel/Memorelo"
-      },
-      {
-        "title": "Figma Prototype",
-        "url": "https://www.figma.com/design/2zdRalKJ7yZKGaIktZhDdJ/Memorelo---Adriel-de-Souza?node-id=40-69&t=Lmxwp2o1v09cI5Ej-1"
-      }
+      { "type": "GitHub", "url": "https://github.com/dsadriel/Memorelo" },
+      { "title": "Figma Prototype", "url": "https://www.figma.com/design/2zdRalKJ7yZKGaIktZhDdJ/Memorelo---Adriel-de-Souza?node-id=40-69&t=Lmxwp2o1v09cI5Ej-1" }
     ]
   },
   {
     "name": "Freela onTap",
     "type": "mobile-apps",
     "date": "jun/2025",
-    "headline": "Connecting Freelancers with Hospitality Companies",
-    "description": "A platform connecting freelancers and hospitality companies, solving the chaos and disorganization in job posting and prospecting within this sector. Features job search and filtering, company registration, job management dashboard, and direct contact via WhatsApp.",
+    "headline": {
+      "en": "Connecting Freelancers with Hospitality Companies",
+      "pt": "Conectando Freelancers a Empresas de Hospitalidade"
+    },
+    "description": {
+      "en": "A platform connecting freelancers and hospitality companies, solving the chaos and disorganization in job posting and prospecting within this sector. Features job search and filtering, company registration, job management dashboard, and direct contact via WhatsApp.",
+      "pt": "Uma plataforma que conecta freelancers e empresas de hospitalidade, resolvendo o caos e a desorganização na publicação e prospecção de vagas neste setor. Apresenta busca e filtragem de vagas, cadastro de empresas, painel de gerenciamento de vagas e contato direto via WhatsApp."
+    },
     "autoImages": {
       "icon": true,
       "screenshotCount": 0
     },
-    "techStack": [
-      "UIKit",
-      "Swift",
-      "CloudKit",
-      "Figma"
-    ],
-    "roles": [
-      "iOS Developer",
-      "Scrum Master"
-    ],
+    "techStack": ["UIKit", "Swift", "CloudKit", "Figma"],
+    "roles": {
+      "en": ["iOS Developer", "Scrum Master"],
+      "pt": ["Desenvolvedor iOS", "Scrum Master"]
+    },
     "team": [
-      {
-        "name": "Gustavo Ferreira Bassani",
-        "role": "iOS Developer",
-        "linkedin": "https://www.linkedin.com/in/gustavofbassani"
-      },
-      {
-        "name": "Giulia Stefainski",
-        "role": "iOS Developer",
-        "linkedin": "https://www.linkedin.com/in/giulia-cs"
-      },
-      {
-        "name": "Vinicius Cadore",
-        "role": "UX/UI Designer",
-        "linkedin": "https://www.linkedin.com/in/cadoreee"
-      },
-      {
-        "name": "Ana Poletto",
-        "role": "iOS Developer",
-        "linkedin": "https://www.linkedin.com/in/ana-poletto-2a7222318"
-      }
+      { "name": "Gustavo Ferreira Bassani", "role": "iOS Developer", "linkedin": "https://www.linkedin.com/in/gustavofbassani" },
+      { "name": "Giulia Stefainski", "role": "iOS Developer", "linkedin": "https://www.linkedin.com/in/giulia-cs" },
+      { "name": "Vinicius Cadore", "role": "UX/UI Designer", "linkedin": "https://www.linkedin.com/in/cadoreee" },
+      { "name": "Ana Poletto", "role": "iOS Developer", "linkedin": "https://www.linkedin.com/in/ana-poletto-2a7222318" }
     ],
     "links": [
-      {
-        "type": "GitHub",
-        "url": "https://github.com/dsadriel/freela-ontap"
-      }
+      { "type": "GitHub", "url": "https://github.com/dsadriel/freela-ontap" }
     ]
   }
 ]

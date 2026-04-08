@@ -39,11 +39,16 @@ function showBlock(id) { document.getElementById(id).style.display = "block"; }
 
 async function populatePage() {
     const project = await getProjectInformation();
+    const currentLang = localStorage.getItem('lang') || 'en';
+
+    const headline = project.headline[currentLang] || project.headline['en'];
+    const description = project.description[currentLang] || project.description['en'];
+    const roles = project.roles[currentLang] || project.roles['en'];
 
     document.title = `${project.name} — Adriel`;
     document.getElementById("project-name").textContent = project.name;
-    document.getElementById("project-headline").textContent = project.headline;
-    document.getElementById("project-description").innerHTML = project.description;
+    document.getElementById("project-headline").textContent = headline;
+    document.getElementById("project-description").innerHTML = description;
 
     if (project.icon) {
         document.getElementById("project-icon").src = project.icon;
@@ -51,8 +56,8 @@ async function populatePage() {
     }
 
     // Roles
-    if (project.roles && project.roles.length > 0) {
-        document.getElementById("project-roles").innerHTML = project.roles
+    if (roles && roles.length > 0) {
+        document.getElementById("project-roles").innerHTML = roles
             .map(r => `<span class="detail-tag">${r}</span>`).join("");
         showBlock("roles-block");
     }
@@ -109,7 +114,7 @@ async function populatePage() {
         const teamWithAdriel = [...project.team];
         // Only add Adriel if not already there (though usually he's the one adding himself)
         if (!teamWithAdriel.find(m => m.name.includes("Adriel"))) {
-            teamWithAdriel.unshift({ name: "Adriel de Souza", role: project.roles.join(", ")});
+            teamWithAdriel.unshift({ name: "Adriel de Souza", role: roles.join(", ")});
         }
 
         document.getElementById("team-grid").innerHTML = teamWithAdriel.map(member => {

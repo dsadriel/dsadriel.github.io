@@ -36,24 +36,29 @@ gtag('config', 'G-LES5WJQPEQ');
 
 <nav>
   <a href="#hero" class="nav-logo">adriel<span>.</span></a>
-  <ul class="nav-links">
-    <li><a href="#work">work</a></li>
-    <li><a href="#skills-experience">about</a></li>
-    <li><a href="#contact">contact</a></li>
-  </ul>
+  <div style="display: flex; align-items: center;">
+    <ul class="nav-links">
+      <li><a href="#work" data-i18n="nav.work">work</a></li>
+      <li><a href="#skills-experience" data-i18n="nav.about">about</a></li>
+      <li><a href="#contact" data-i18n="nav.contact">contact</a></li>
+    </ul>
+    <button class="lang-toggle" id="lang-toggle" aria-label="Toggle language">
+      PT-BR
+    </button>
+  </div>
 </nav>
 
 <section id="hero">
   <div class="hero-text">
-    <div class="hero-eyebrow fade-up">Software Engineer</div>
+    <div class="hero-eyebrow fade-up" data-i18n="hero.eyebrow">Software Engineer</div>
     <h1 class="fade-up">Adriel</h1>
-    <p class="hero-desc fade-up">
+    <p class="hero-desc fade-up" data-i18n="hero.desc">
       Developer based in Porto Alegre, studying Computer Science at UFRGS.
       I build apps and tools aiming to make life simpler and more enjoyable —
       from native iOS apps to full-stack platforms.
     </p>
     <div class="hero-links fade-up">
-      <a href="#work" class="btn btn-primary">View my work</a>
+      <a href="#work" class="btn btn-primary" data-i18n="hero.work">View my work</a>
       <a href="https://github.com/dsadriel" target="_blank" class="btn btn-ghost">
         GitHub
       </a>
@@ -77,12 +82,12 @@ gtag('config', 'G-LES5WJQPEQ');
 
 <section id="work">
   <div class="work-header">
-    <h2 class="section-label">my work</h2>
+    <h2 class="section-label" data-i18n="work.label">my work</h2>
     <div class="filter-tabs">
-      <button class="tab active" onclick="filterProjects('all', this)">all projects</button>
-      <button class="tab" onclick="filterProjects('mobile', this)">mobile apps</button>
-      <button class="tab" onclick="filterProjects('uni', this)">uni projects</button>
-      <button class="tab" onclick="filterProjects('other', this)">others</button>
+      <button class="tab active" onclick="filterProjects('all', this)" data-i18n="work.all">all projects</button>
+      <button class="tab" onclick="filterProjects('mobile', this)" data-i18n="work.mobile">mobile apps</button>
+      <button class="tab" onclick="filterProjects('uni', this)" data-i18n="work.uni">uni projects</button>
+      <button class="tab" onclick="filterProjects('other', this)" data-i18n="work.other">others</button>
     </div>
   </div>
 
@@ -93,20 +98,20 @@ gtag('config', 'G-LES5WJQPEQ');
 
 <section id="skills-experience">
   <div class="col">
-    <h2 class="section-label">skills</h2>
+    <h2 class="section-label" data-i18n="skills.label">skills</h2>
     <div id="skills-container"></div>
 
-    <h2 class="section-label" style="margin-top: 64px;">education</h2>
+    <h2 class="section-label" style="margin-top: 64px;" data-i18n="edu.label">education</h2>
     <div id="education-container"></div>
   </div>
 
   <div class="col">
-    <h2 class="section-label">experience</h2>
+    <h2 class="section-label" data-i18n="exp.label">experience</h2>
     <div id="experience-container"></div>
-    
+
     <div style="display: flex; justify-content: flex-end;">
-      <a href="assets/cv.pdf" target="_blank" class="download-cv">
-        <img src="assets/images/Arrow.svg" alt="" style="width: 14px; height: 14px; transform: rotate(90deg); filter: brightness(0);">
+      <a href="assets/cv.pdf" target="_blank" class="download-cv" data-i18n="exp.download">
+        <img src="assets/images/arrow.svg" alt="" style="width: 14px; height: 14px; transform: rotate(90deg); filter: brightness(0) invert(1);">
         Download CV
       </a>
     </div>
@@ -115,13 +120,13 @@ gtag('config', 'G-LES5WJQPEQ');
 
 
 <section id="contact">
-  <div class="contact-headline">
+  <div class="contact-headline" data-i18n="contact.headline">
     Let's build something<br><span>great together.</span>
   </div>
-  <p class="contact-sub">Open to freelance projects, job opportunities, or just a good conversation about software.</p>
+  <p class="contact-sub" data-i18n="contact.sub">Open to freelance projects, job opportunities, or just a good conversation about software.</p>
   <div class="contact-actions">
-    <a href="mailto:contato@dsadriel.com.br" class="btn btn-primary">
-      <img src="assets/images/Email.svg" alt="Email" style="width: 16px; height: 16px; filter: brightness(0);">
+    <a href="mailto:contato@dsadriel.com.br" class="btn btn-primary" data-i18n="contact.email">
+      <img src="assets/images/email.svg" alt="Email" style="width: 16px; height: 16px; filter: brightness(0) invert(1);">
       Send me an email
     </a>
   </div>
@@ -144,46 +149,59 @@ gtag('config', 'G-LES5WJQPEQ');
 
 <footer>
   <span>© 2026 Adriel de Souza</span>
-  <span>Porto Alegre, Brasil</span>
+  <span data-i18n="footer.address">Porto Alegre, Brasil</span>
 </footer>
 
+<script src="lang.js"></script>
 <script src="projectData.js"></script>
 <script>
 let allProjects = [];
+let resumeData = {};
 
 async function init() {
-  const [rawProjects, resumeData] = await Promise.all([
+  const [rawProjects, rawResume] = await Promise.all([
     fetchProjects(),
     fetch('resume.json').then(r => r.json())
   ]);
+  
+  resumeData = rawResume;
 
   allProjects = rawProjects.map(p => {
+    // Localization
+    const headline = p.headline[currentLang] || p.headline['en'];
+    const description = p.description[currentLang] || p.description['en'];
+    const roles = p.roles[currentLang] || p.roles['en'];
+
     // Categorization logic
     let tag = 'other';
     const tech = p.techStack ? p.techStack.join(' ').toLowerCase() : '';
-    const desc = (p.headline + ' ' + p.description).toLowerCase();
+    const desc = (headline + ' ' + description).toLowerCase();
     
-    if (tech.includes('swift') || tech.includes('flutter') || tech.includes('uikit') || p.roles.some(r => r.toLowerCase().includes('ios') || r.toLowerCase().includes('mobile'))) {
+    if (tech.includes('swift') || tech.includes('flutter') || tech.includes('uikit') || roles.some(r => r.toLowerCase().includes('ios') || r.toLowerCase().includes('mobile'))) {
       tag = 'mobile';
     }
     
-    if (desc.includes('swift student challenge') || desc.includes('uni') || desc.includes('university')) {
+    if (desc.includes('swift student challenge') || desc.includes('uni') || desc.includes('university') || desc.includes('acadêmico')) {
       tag = 'uni';
     }
 
     return {
       ...p,
+      headline,
+      description,
       tag: tag,
-      tagLabel: p.roles[0] || 'Project',
+      tagLabel: roles[0] || 'Project',
       skills: p.techStack ? p.techStack.slice(0, 3) : [] // Limit to 3 skills for card
     };
   });
 
   renderProjects();
-  renderResume(resumeData);
+  renderResume();
+  if (typeof updateLanguage === 'function') updateLanguage();
 }
 
-function renderResume(data) {
+function renderResume() {
+  const data = resumeData[currentLang] || resumeData['en'];
   // Skills
   const skillsContainer = document.getElementById('skills-container');
   skillsContainer.innerHTML = data.skills.map(cat => `
@@ -233,7 +251,8 @@ function renderProjects(filter = 'all') {
   const filtered = filter === 'all' ? allProjects : allProjects.filter(p => p.tag === filter);
   
   if (filtered.length === 0) {
-    grid.innerHTML = `<div class="empty-state">No work for this category so far.</div>`;
+    const emptyMsg = translations[currentLang]['work.empty'] || "No work for this category so far.";
+    grid.innerHTML = `<div class="empty-state">${emptyMsg}</div>`;
   } else {
     grid.innerHTML = filtered.map((p) => {
       const hasCover = !!p.coverImage;

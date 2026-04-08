@@ -268,18 +268,21 @@ gtag('config', 'G-LES5WJQPEQ');
 
   <nav>
   <div class="nav-breadcrumb">
-  <a href="../" class="nav-back-link">
-    <img src="../assets/images/Arrow.svg" alt="" style="width: 12px; height: 12px; transform: rotate(-135deg); filter: invert(1);">
+  <a href="../" class="nav-back-link" data-i18n="nav.back">
+    <img src="../assets/images/arrow.svg" alt="" style="width: 12px; height: 12px; transform: rotate(-135deg); filter: var(--icon-filter);">
     back
   </a>
   <span class="nav-sep">/</span>
   <a href="../#hero" class="nav-logo">adriel<span>.</span></a>
   </div>
-  <ul class="nav-links">
-  <li><a href="../#work">work</a></li>
-  <li><a href="../#skills-experience">about</a></li>
-  <li><a href="../#contact">contact</a></li>
-  </ul>
+  <div style="display: flex; align-items: center;">
+    <ul class="nav-links">
+      <li><a href="../#work" data-i18n="nav.work">work</a></li>
+      <li><a href="../#skills-experience" data-i18n="nav.about">about</a></li>
+      <li><a href="../#contact" data-i18n="nav.contact">contact</a></li>
+    </ul>
+    <button class="lang-toggle" id="lang-toggle" aria-label="Toggle language">PT-BR</button>
+  </div>
   </nav>
 
   <main class="project-detail-content">
@@ -291,45 +294,46 @@ gtag('config', 'G-LES5WJQPEQ');
   </header>
 
   <div class="media-gallery" id="media-gallery" style="display: none;">
-    <div class="detail-section-title">Gallery</div>
+    <div class="detail-section-title" data-i18n="project.gallery">Gallery</div>
     <div class="media-scroll" id="media-scroll"></div>
   </div>
 
   <div class="project-detail-grid">
     <div class="detail-main">
-      <div class="detail-section-title">About the project</div>
+      <div class="detail-section-title" data-i18n="project.about">About the project</div>
       <div id="project-description" class="project-description"></div>
     </div>
 
     <aside class="detail-sidebar">
       <div id="links-block" style="display: none;">
-        <div class="sidebar-item-title">Links</div>
+        <div class="sidebar-item-title" data-i18n="project.links">Links</div>
         <div class="project-links" id="project-links"></div>
       </div>
 
       <div id="tech-block" style="display: none;">
-        <div class="sidebar-item-title">Technologies</div>
+        <div class="sidebar-item-title" data-i18n="project.tech">Technologies</div>
         <div class="detail-tags" id="project-tech"></div>
       </div>
 
       <div id="roles-block" style="display: none;">
-        <div class="sidebar-item-title">My Roles</div>
+        <div class="sidebar-item-title" data-i18n="project.roles">My Roles</div>
         <div class="detail-tags" id="project-roles"></div>
       </div>
     </aside>
   </div>
 
   <section class="team-section" id="team-section" style="display: none;">
-    <div class="detail-section-title">The Team</div>
+    <div class="detail-section-title" data-i18n="project.team">The Team</div>
     <div class="team-grid" id="team-grid"></div>
   </section>
 </main>
 
 <footer>
   <span>© 2026 Adriel de Souza</span>
-  <span>Porto Alegre, Brasil</span>
+  <span data-i18n="footer.address">Porto Alegre, Brasil</span>
 </footer>
 
+<script src="../lang.js"></script>
 <script src="../projectData.js"></script>
 <script src="script.js"></script>
 </body>
