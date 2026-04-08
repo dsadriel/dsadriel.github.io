@@ -680,6 +680,7 @@ footer {
 @media (max-width: 900px) {
   nav { padding: 16px 24px; }
   .nav-links { gap: 20px; }
+  .nav-links li:last-child { display: none; }
   #hero { 
     grid-template-columns: 1fr; 
     padding: 120px 24px 80px;
