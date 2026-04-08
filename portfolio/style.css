@@ -700,7 +700,7 @@ footer {
   section { padding: 80px 24px; }
   .projects-grid { grid-template-columns: repeat(2, 1fr); }
   #skills-experience { grid-template-columns: 1fr; gap: 64px; }
-  footer { flex-direction: column; gap: 12px; text-align: center; }
+  footer { padding: 32px 24px; flex-direction: column; gap: 12px; text-align: center; }
 }
 
 @media (max-width: 560px) {
