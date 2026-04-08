@@ -114,7 +114,7 @@ async function populatePage() {
 
         document.getElementById("team-grid").innerHTML = teamWithAdriel.map(member => {
             const linkedinUrl = member.linkedin ? safeUrl(member.linkedin) : null;
-            const arrowIcon = `<img src="../assets/images/arrow.svg" class="member-link-icon" style="filter: invert(1); opacity: 0.5;">`;
+            const arrowIcon = `<img src="../assets/images/Arrow.svg" class="member-link-icon" style="filter: invert(1); opacity: 0.5;">`;
             
             const content = `
                 <span class="member-name">${escapeHtml(member.name)}${linkedinUrl ? arrowIcon : ""}</span>
