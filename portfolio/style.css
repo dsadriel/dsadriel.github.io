@@ -153,6 +153,10 @@ h1 {
 
 
 /* ─── HERO PHOTO ─── */
+.hero-photo-wrap {
+  position: relative;
+}
+
 .hero-photo-frame {
 width: 360px; 
 height: 454px;
@@ -651,8 +655,48 @@ footer {
 @media (max-width: 900px) {
   nav { padding: 16px 24px; }
   .nav-links { gap: 20px; }
-  #hero { grid-template-columns: 1fr; padding: 120px 24px 80px; }
-  .hero-photo-wrap { display: none; }
+  #hero { 
+    grid-template-columns: 1fr; 
+    padding: 120px 24px 80px;
+    text-align: center;
+    justify-items: center;
+  }
+  .hero-text {
+    order: 2;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  h1 {
+    order: 1;
+    margin-bottom: 8px;
+  }
+  .hero-eyebrow {
+    order: 2;
+    margin-bottom: 24px;
+  }
+  .hero-eyebrow::before {
+    display: none;
+  }
+  .hero-desc {
+    order: 3;
+    margin: 0 auto 36px;
+  }
+  .hero-links {
+    order: 4;
+    justify-content: center;
+  }
+  .hero-photo-wrap { 
+    display: block;
+    margin: 0 auto 16px;
+    width: fit-content;
+    order: 1;
+  }
+  .hero-photo-frame {
+    width: min(280px, 65vw);
+    height: auto;
+    aspect-ratio: 360 / 454;
+  }
   section { padding: 80px 24px; }
   .projects-grid { grid-template-columns: repeat(2, 1fr); }
   #skills-experience { grid-template-columns: 1fr; gap: 64px; }
