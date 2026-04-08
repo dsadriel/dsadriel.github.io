@@ -1,283 +1,290 @@
 [
-     {
-        "name": "K*LL THE TIGER",
-        "date": "mar/2025",
-        "headline": "A Satirical Survivors Arcade Shooter",
-        "description": "K*LL THE TIGER is an endless survivors-style action game that uses sharp satire to comment on the comical state of bookmakers in Brazil. Players step into the role of a resilient pig fighting back against relentless waves of greedy \"Betting Tigers\" who have stolen the village's fortune. Designed for endless replayability, the game challenges players to survive escalating waves of enemies, reclaim stolen coins, and completely rebuild their destroyed village.<br><b>Key Features:</b><br>- Dual Joystick Controls: Built specifically for mobile, players move with the left joystick and aim with the right, while the weapon fires automatically.<br> - Permanent Progression: Defeated tigers drop coins that must be collected before they disappear. These coins are permanently saved and used between runs to buy houses and restore the village.<br>- Escalating Survival Challenge: The tiger waves grow faster and stronger with every passing second. Players can only take three hits, but dynamic power-ups like extra lives and shields spawn to help extend the run.<br>- Global Competition: Integrated with Game Center to feature live, global leaderboards.<br>- Offline Play: Fully functional and playable without an internet connection.",
-        "autoImages": {
-            "icon": true,
-            "screenshotCount": 6,
-            "videoCount": 1
-        },
-        "techStack": [
-            "SwiftUI",
-            "SpriteKit",
-            "GameCenter",
-            "GamePlayKit",
-            "Google AdMob",
-            "Swift"
-        ],
-        "roles": [
-            "iOS Developer"
-        ],
-        "team": [
-            {
-                "name": "Pedro Kosciuk Lima",
-                "role": "UI/UX Designer",
-                "linkedin": "https://www.linkedin.com/in/pedro-kosciuk-lima-a29855207/"
-            },
-            {
-                "name": "Alex Fraga",
-                "role": "iOS Developer",
-                "linkedin": "https://www.linkedin.com/in/alex-fraga1/"
-            },
-            {
-                "name": "Diogo Camargo",
-                "role": "iOS Developer",
-                "linkedin": "https://www.linkedin.com/in/diogo-pcamargo/"
-            },
-            {
-                "name": "Júlia Fazenda Ruiz",
-                "role": "iOS Developer",
-                "linkedin": "https://www.linkedin.com/in/julia-fazenda-ruiz/"
-            }
-        ],
-        "links": [
-            {
-                "type": "appstore",
-                "url": "https://apps.apple.com/us/app/kill-the-tiger/id6760663002"
-            }
-        ]
+  {
+    "name": "K*LL THE TIGER",
+    "type": "mobile-apps",
+    "date": "mar/2025",
+    "headline": "A Satirical Survivors Arcade Shooter",
+    "description": "K*LL THE TIGER is an endless survivors-style action game that uses sharp satire to comment on the comical state of bookmakers in Brazil. Players step into the role of a resilient pig fighting back against relentless waves of greedy \"Betting Tigers\" who have stolen the village's fortune. Designed for endless replayability, the game challenges players to survive escalating waves of enemies, reclaim stolen coins, and completely rebuild their destroyed village.<br><b>Key Features:</b><br>- Dual Joystick Controls: Built specifically for mobile, players move with the left joystick and aim with the right, while the weapon fires automatically.<br> - Permanent Progression: Defeated tigers drop coins that must be collected before they disappear. These coins are permanently saved and used between runs to buy houses and restore the village.<br>- Escalating Survival Challenge: The tiger waves grow faster and stronger with every passing second. Players can only take three hits, but dynamic power-ups like extra lives and shields spawn to help extend the run.<br>- Global Competition: Integrated with Game Center to feature live, global leaderboards.<br>- Offline Play: Fully functional and playable without an internet connection.",
+    "autoImages": {
+      "icon": true,
+      "screenshotCount": 6,
+      "videoCount": 1
     },
-    {
-        "name": "WildSet",
-        "date": "feb/2026",
-        "headline": "Learning Set Theory Through Nature Conservation",
-        "description": "An interactive App Playground created for the Apple Swift Student Challenge 2026. It transforms the abstract learning of Set Theory into an environmental conservation mission in the Brazilian Pantanal. Players act as Guardians, using interactive Venn Diagrams and native drag-and-drop mechanics to classify real species into habitats, learning about Universal Sets, Intersections, Unions, and Complements in a tangible, accessible way.",
-        "autoImages": {
-            "icon": true,
-            "screenshotCount": 7,
-            "videoCount": 0
-        },
-        "techStack": [
-            "SwiftUI",
-            "Swift Concurrency",
-            "AVFoundation",
-            "QuickLook",
-            "Figma"
-        ],
-        "roles": [
-            "iOS Developer",
-            "Product Designer"
-        ],
-        "links": [
-            {
-                "type": "github",
-                "url": "https://github.com/dsadriel/WildSet.swiftpm"
-            }
-        ]
+    "techStack": [
+      "SwiftUI",
+      "SpriteKit",
+      "GameCenter",
+      "GamePlayKit",
+      "Google AdMob",
+      "Swift"
+    ],
+    "roles": [
+      "iOS Developer"
+    ],
+    "team": [
+      {
+        "name": "Pedro Kosciuk Lima",
+        "role": "UI/UX Designer",
+        "linkedin": "https://www.linkedin.com/in/pedro-kosciuk-lima-a29855207/"
+      },
+      {
+        "name": "Alex Fraga",
+        "role": "iOS Developer",
+        "linkedin": "https://www.linkedin.com/in/alex-fraga1/"
+      },
+      {
+        "name": "Diogo Camargo",
+        "role": "iOS Developer",
+        "linkedin": "https://www.linkedin.com/in/diogo-pcamargo/"
+      },
+      {
+        "name": "Júlia Fazenda Ruiz",
+        "role": "iOS Developer",
+        "linkedin": "https://www.linkedin.com/in/julia-fazenda-ruiz/"
+      }
+    ],
+    "links": [
+      {
+        "type": "AppStore",
+        "url": "https://apps.apple.com/us/app/kill-the-tiger/id6760663002"
+      }
+    ]
+  },
+  {
+    "name": "WildSet",
+    "type": "mobile-apps",
+    "date": "feb/2026",
+    "headline": "Learning Set Theory Through Nature Conservation",
+    "description": "An interactive App Playground created for the Apple Swift Student Challenge 2026. It transforms the abstract learning of Set Theory into an environmental conservation mission in the Brazilian Pantanal. Players act as Guardians, using interactive Venn Diagrams and native drag-and-drop mechanics to classify real species into habitats, learning about Universal Sets, Intersections, Unions, and Complements in a tangible, accessible way.",
+    "autoImages": {
+      "icon": true,
+      "screenshotCount": 7,
+      "videoCount": 0
     },
-    {
-        "name": "Nook416",
-        "date": "jan/2026",
-        "headline": "Multiplatform Group Expense Management Made Simple",
-        "description": "Nook416 is a multiplatform app designed to simplify shared finances among friends, roommates, and travel groups. It helps users track who paid for what, split expenses by shares, and maintain a clear overview of balances to make settling up easy and transparent. The app also includes a shared shopping list to keep everyone aligned on what still needs to be purchased. Built with Flutter and Firebase, Nook416 uses a single codebase to deliver a consistent experience across iOS and Android. This project involved the full product cycle, from problem discovery and UX design to development, testing, and store publication.",
-        "autoImages": {
-            "icon": true,
-            "screenshotCount": 4
-        },
-        "techStack": [
-            "Flutter",
-            "Firebase",
-            "Dart"
-        ],
-        "roles": [
-            "Mobile Developer",
-            "Product Designer"
-        ],
-        "links": [
-            {
-                "type": "appstore",
-                "url": "https://apps.apple.com/us/app/nook416/id6757205653"
-            },
-            {
-                "type": "playstore",
-                "url": "https://play.google.com/store/apps/details?id=br.com.dsadriel.nook416"
-            }
-        ]
+    "techStack": [
+      "SwiftUI",
+      "Swift Concurrency",
+      "AVFoundation",
+      "QuickLook",
+      "Figma"
+    ],
+    "roles": [
+      "iOS Developer",
+      "Product Designer"
+    ],
+    "links": [
+      {
+        "type": "GitHub",
+        "url": "https://github.com/dsadriel/WildSet.swiftpm"
+      }
+    ]
+  },
+  {
+    "name": "Nook416",
+    "type": "mobile-apps",
+    "date": "jan/2026",
+    "headline": "Multiplatform Group Expense Management Made Simple",
+    "description": "Nook416 is a multiplatform app designed to simplify shared finances among friends, roommates, and travel groups. It helps users track who paid for what, split expenses by shares, and maintain a clear overview of balances to make settling up easy and transparent. The app also includes a shared shopping list to keep everyone aligned on what still needs to be purchased. Built with Flutter and Firebase, Nook416 uses a single codebase to deliver a consistent experience across iOS and Android. This project involved the full product cycle, from problem discovery and UX design to development, testing, and store publication.",
+    "autoImages": {
+      "icon": true,
+      "screenshotCount": 4
     },
-    {
-        "name": "Dopamine News",
-        "date": "nov/2025",
-        "headline": "Daily News Reading Experience Reimagined",
-        "description": "Dopamine is a daily news reading app designed to bring the experience of a physical newspaper into a digital format. It combines curated news, puzzles, and daily horoscopes to offer a calm and intentional way to stay informed. Built with SwiftUI and SceneKit for 3D animations that enhance depth and reinforce its editorial identity. A main technical challenge was implementing a custom word search interaction, mapping finger gestures to grid positions for a natural and intuitive user experience.",
-        "autoImages": {
-            "icon": true,
-            "screenshotCount": 7,
-            "videoCount": 0
-        },
-        "techStack": [
-            "SwiftUI",
-            "SceneKit",
-            "Swift"
-        ],
-        "roles": [
-            "iOS Developer",
-            "Scrum Master"
-        ],
-        "team": [
-            {
-                "name": "Rafaela Julianotte da Silva",
-                "role": "Product Designer, Product Owner",
-                "linkedin": "https://linkedin.com/in/rafajulianotte"
-            },
-            {
-                "name": "Antonio Costa Jr.",
-                "role": "iOS Developer, Scrum Master",
-                "linkedin": "https://linkedin.com/in/antoniocosta001"
-            },
-            {
-                "name": "Vítor Bruno",
-                "role": "iOS Developer, Product Owner",
-                "linkedin": "https://linkedin.com/in/vitor-bruno-243975258"
-            },
-            {
-                "name": "Gabriel Kowaleski",
-                "role": "iOS Developer",
-                "linkedin": "https://linkedin.com/in/gabriel-kowaleski"
-            }
-        ],
-        "links": [
-            {
-                "type": "appstore",
-                "url": "https://apps.apple.com/br/app/dopamine-news/id6755773697"
-            }
-        ]
+    "techStack": [
+      "Flutter",
+      "Firebase",
+      "Dart"
+    ],
+    "roles": [
+      "Mobile Developer",
+      "Product Designer"
+    ],
+    "links": [
+      {
+        "type": "AppStore",
+        "url": "https://apps.apple.com/us/app/nook416/id6757205653"
+      },
+      {
+        "type": "playstore",
+        "url": "https://play.google.com/store/apps/details?id=br.com.dsadriel.nook416"
+      }
+    ]
+  },
+  {
+    "name": "Dopamine News",
+    "type": "mobile-apps",
+    "date": "nov/2025",
+    "headline": "Daily News Reading Experience Reimagined",
+    "description": "Dopamine is a daily news reading app designed to bring the experience of a physical newspaper into a digital format. It combines curated news, puzzles, and daily horoscopes to offer a calm and intentional way to stay informed. Built with SwiftUI and SceneKit for 3D animations that enhance depth and reinforce its editorial identity. A main technical challenge was implementing a custom word search interaction, mapping finger gestures to grid positions for a natural and intuitive user experience.",
+    "autoImages": {
+      "icon": true,
+      "screenshotCount": 7,
+      "videoCount": 0
     },
-    {
-        "name": "Profitto",
-        "date": "oct/2025",
-        "headline": "Financial Management for Small Businesses",
-        "description": "A comprehensive financial management solution for small business owners: streamline sales tracking, inventory control, pricing strategies, and performance insights — all in one intuitive platform designed to solve the complexity of managing multiple spreadsheets and disconnected tools.",
-        "autoImages": {
-            "icon": true,
-            "screenshotCount": 0
-        },
-        "techStack": [
-            "SwiftUI",
-            "Swift",
-            "Core Data"
-        ],
-        "roles": [
-            "iOS Developer",
-            "Scrum Master"
-        ],
-        "team": [
-            {
-                "name": "Carolina Silva dos Santos",
-                "role": "iOS Developer",
-                "linkedin": "https://www.linkedin.com/in/carolina-silva-dos-santos-a320111a7"
-            },
-            {
-                "name": "Martina Nogueira da Gama Adegas",
-                "role": "Product Designer, Product Owner",
-                "linkedin": "https://www.linkedin.com/in/martina-nogueira-da-gama-adegas"
-            },
-            {
-                "name": "Bárbara Dapper",
-                "role": "iOS Developer",
-                "linkedin": "https://www.linkedin.com/in/b%C3%A1rbara-dapper"
-            },
-            {
-                "name": "Bruna Marschner",
-                "role": "iOS Developer",
-                "linkedin": "https://www.linkedin.com/in/brunamarschner"
-            }
-        ],
-        "links": [
-            {
-                "type": "appstore",
-                "url": "https://apps.apple.com/br/app/profitto/id6752310169"
-            }
-        ]
+    "techStack": [
+      "SwiftUI",
+      "SceneKit",
+      "Swift"
+    ],
+    "roles": [
+      "iOS Developer",
+      "Scrum Master"
+    ],
+    "team": [
+      {
+        "name": "Rafaela Julianotte da Silva",
+        "role": "Product Designer, Product Owner",
+        "linkedin": "https://linkedin.com/in/rafajulianotte"
+      },
+      {
+        "name": "Antonio Costa Jr.",
+        "role": "iOS Developer, Scrum Master",
+        "linkedin": "https://linkedin.com/in/antoniocosta001"
+      },
+      {
+        "name": "Vítor Bruno",
+        "role": "iOS Developer, Product Owner",
+        "linkedin": "https://linkedin.com/in/vitor-bruno-243975258"
+      },
+      {
+        "name": "Gabriel Kowaleski",
+        "role": "iOS Developer",
+        "linkedin": "https://linkedin.com/in/gabriel-kowaleski"
+      }
+    ],
+    "links": [
+      {
+        "type": "AppStore",
+        "url": "https://apps.apple.com/br/app/dopamine-news/id6755773697"
+      }
+    ]
+  },
+  {
+    "name": "Profitto",
+    "type": "mobile-apps",
+    "date": "oct/2025",
+    "headline": "Financial Management for Small Businesses",
+    "description": "A comprehensive financial management solution for small business owners: streamline sales tracking, inventory control, pricing strategies, and performance insights — all in one intuitive platform designed to solve the complexity of managing multiple spreadsheets and disconnected tools.",
+    "autoImages": {
+      "icon": true,
+      "screenshotCount": 0
     },
-    {
-        "name": "Memorelo",
-        "date": "sep/2025",
-        "headline": "Record and Celebrate Family Memories",
-        "description": "A mobile application designed to help families record and celebrate memories, track developmental milestones, and strengthen their bonds. It provides a secure, shared space for families to document their journey together with a timeline, gallery, and activity suggestions.",
-        "autoImages": {
-            "icon": true,
-            "screenshotCount": 5,
-            "videoCount": 0
-        },
-        "techStack": [
-            "SwiftUI",
-            "Swift",
-            "CloudKit",
-            "Figma"
-        ],
-        "roles": [
-            "iOS Developer",
-            "Product Designer"
-        ],
-        "links": [
-            {
-                "type": "github",
-                "url": "https://github.com/dsadriel/Memorelo"
-            },
-            {
-                "title": "Figma Prototype",
-                "url": "https://www.figma.com/design/2zdRalKJ7yZKGaIktZhDdJ/Memorelo---Adriel-de-Souza?node-id=40-69&t=Lmxwp2o1v09cI5Ej-1"
-            }
-        ]
+    "techStack": [
+      "SwiftUI",
+      "Swift",
+      "Core Data"
+    ],
+    "roles": [
+      "iOS Developer",
+      "Scrum Master"
+    ],
+    "team": [
+      {
+        "name": "Carolina Silva dos Santos",
+        "role": "iOS Developer",
+        "linkedin": "https://www.linkedin.com/in/carolina-silva-dos-santos-a320111a7"
+      },
+      {
+        "name": "Martina Nogueira da Gama Adegas",
+        "role": "Product Designer, Product Owner",
+        "linkedin": "https://www.linkedin.com/in/martina-nogueira-da-gama-adegas"
+      },
+      {
+        "name": "Bárbara Dapper",
+        "role": "iOS Developer",
+        "linkedin": "https://www.linkedin.com/in/b%C3%A1rbara-dapper"
+      },
+      {
+        "name": "Bruna Marschner",
+        "role": "iOS Developer",
+        "linkedin": "https://www.linkedin.com/in/brunamarschner"
+      }
+    ],
+    "links": [
+      {
+        "type": "AppStore",
+        "url": "https://apps.apple.com/br/app/profitto/id6752310169"
+      }
+    ]
+  },
+  {
+    "name": "Memorelo",
+    "type": "mobile-apps",
+    "date": "sep/2025",
+    "headline": "Record and Celebrate Family Memories",
+    "description": "A mobile application designed to help families record and celebrate memories, track developmental milestones, and strengthen their bonds. It provides a secure, shared space for families to document their journey together with a timeline, gallery, and activity suggestions.",
+    "autoImages": {
+      "icon": true,
+      "screenshotCount": 5,
+      "videoCount": 0
     },
-    {
-        "name": "Freela onTap",
-        "date": "jun/2025",
-        "headline": "Connecting Freelancers with Hospitality Companies",
-        "description": "A platform connecting freelancers and hospitality companies, solving the chaos and disorganization in job posting and prospecting within this sector. Features job search and filtering, company registration, job management dashboard, and direct contact via WhatsApp.",
-        "autoImages": {
-            "icon": true,
-            "screenshotCount": 0
-        },
-        "techStack": [
-            "UIKit",
-            "Swift",
-            "CloudKit",
-            "Figma"
-        ],
-        "roles": [
-            "iOS Developer",
-            "Scrum Master"
-        ],
-        "team": [
-            {
-                "name": "Gustavo Ferreira Bassani",
-                "role": "iOS Developer",
-                "linkedin": "https://www.linkedin.com/in/gustavofbassani"
-            },
-            {
-                "name": "Giulia Stefainski",
-                "role": "iOS Developer",
-                "linkedin": "https://www.linkedin.com/in/giulia-cs"
-            },
-            {
-                "name": "Vinicius Cadore",
-                "role": "UX/UI Designer",
-                "linkedin": "https://www.linkedin.com/in/cadoreee"
-            },
-            {
-                "name": "Ana Poletto",
-                "role": "iOS Developer",
-                "linkedin": "https://www.linkedin.com/in/ana-poletto-2a7222318"
-            }
-        ],
-        "links": [
-            {
-                "type": "github",
-                "url": "https://github.com/dsadriel/freela-ontap"
-            }
-        ]
-    }
-]       
+    "techStack": [
+      "SwiftUI",
+      "Swift",
+      "CloudKit",
+      "Figma"
+    ],
+    "roles": [
+      "iOS Developer",
+      "Product Designer"
+    ],
+    "links": [
+      {
+        "type": "GitHub",
+        "url": "https://github.com/dsadriel/Memorelo"
+      },
+      {
+        "title": "Figma Prototype",
+        "url": "https://www.figma.com/design/2zdRalKJ7yZKGaIktZhDdJ/Memorelo---Adriel-de-Souza?node-id=40-69&t=Lmxwp2o1v09cI5Ej-1"
+      }
+    ]
+  },
+  {
+    "name": "Freela onTap",
+    "type": "mobile-apps",
+    "date": "jun/2025",
+    "headline": "Connecting Freelancers with Hospitality Companies",
+    "description": "A platform connecting freelancers and hospitality companies, solving the chaos and disorganization in job posting and prospecting within this sector. Features job search and filtering, company registration, job management dashboard, and direct contact via WhatsApp.",
+    "autoImages": {
+      "icon": true,
+      "screenshotCount": 0
+    },
+    "techStack": [
+      "UIKit",
+      "Swift",
+      "CloudKit",
+      "Figma"
+    ],
+    "roles": [
+      "iOS Developer",
+      "Scrum Master"
+    ],
+    "team": [
+      {
+        "name": "Gustavo Ferreira Bassani",
+        "role": "iOS Developer",
+        "linkedin": "https://www.linkedin.com/in/gustavofbassani"
+      },
+      {
+        "name": "Giulia Stefainski",
+        "role": "iOS Developer",
+        "linkedin": "https://www.linkedin.com/in/giulia-cs"
+      },
+      {
+        "name": "Vinicius Cadore",
+        "role": "UX/UI Designer",
+        "linkedin": "https://www.linkedin.com/in/cadoreee"
+      },
+      {
+        "name": "Ana Poletto",
+        "role": "iOS Developer",
+        "linkedin": "https://www.linkedin.com/in/ana-poletto-2a7222318"
+      }
+    ],
+    "links": [
+      {
+        "type": "GitHub",
+        "url": "https://github.com/dsadriel/freela-ontap"
+      }
+    ]
+  }
+]

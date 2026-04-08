@@ -8,16 +8,13 @@ async function getProjectInformation() {
 }
 
 function linkButton(link) {
-    if (link.type) {
-        return `<a class="link-btn" href="${link.url}" target="_blank" rel="noopener">
-            <img src="../assets/images/${link.type}.svg" alt="${link.type}">
-            ${capitalize(link.type)}
-        </a>`;
-    }
-    if (link.title) {
-        return `<a class="link-btn" href="${link.url}" target="_blank" rel="noopener">${link.title}</a>`;
-    }
-    return "";
+    const label = link.title || capitalize(link.type || "Link");
+    const iconPath = link.type ? `../assets/images/${link.type}.svg` : null;
+    
+    return `<a class="link-btn" href="${link.url}" target="_blank" rel="noopener">
+        ${iconPath ? `<img src="${iconPath}" alt="${link.type}" onerror="this.style.display='none'">` : ""}
+        <span>${label}</span>
+    </a>`;
 }
 
 function capitalize(s) { return s.charAt(0).toUpperCase() + s.slice(1); }
@@ -38,126 +35,108 @@ function safeUrl(url) {
     } catch { return null; }
 }
 
-function showBlock(id) { document.getElementById(id).style.display = ""; }
+function showBlock(id) { document.getElementById(id).style.display = "block"; }
 
 async function populatePage() {
     const project = await getProjectInformation();
 
-    document.title = project.name + " • Adriel's Portfolio";
-    document.getElementById("name").textContent = project.name;
-    document.getElementById("headline").textContent = project.headline;
-    document.getElementById("description").innerHTML = project.description;
-
-    if (project.date) {
-        document.getElementById("date").textContent = project.date;
-    }
+    document.title = `${project.name} — Adriel`;
+    document.getElementById("project-name").textContent = project.name;
+    document.getElementById("project-headline").textContent = project.headline;
+    document.getElementById("project-description").innerHTML = project.description;
 
     if (project.icon) {
-        document.getElementById("icon").src = project.icon;
+        document.getElementById("project-icon").src = project.icon;
+        document.getElementById("project-icon").alt = project.name;
     }
 
     // Roles
     if (project.roles && project.roles.length > 0) {
-        document.getElementById("roles").innerHTML = project.roles
-            .map(r => `<span class="tag tag-accent">${r}</span>`).join("");
+        document.getElementById("project-roles").innerHTML = project.roles
+            .map(r => `<span class="detail-tag">${r}</span>`).join("");
         showBlock("roles-block");
     }
 
     // Tech stack
     if (project.techStack && project.techStack.length > 0) {
-        document.getElementById("tech").innerHTML = project.techStack
-            .map(t => `<span class="tag">${t}</span>`).join("");
+        document.getElementById("project-tech").innerHTML = project.techStack
+            .map(t => `<span class="detail-tag">${t}</span>`).join("");
         showBlock("tech-block");
     }
 
-    // Show meta row if either column has content
-    if ((project.roles && project.roles.length > 0) || (project.techStack && project.techStack.length > 0)) {
-        showBlock("meta-block");
-    }
-
-    // Media gallery with horizontal drag scroll only
+    // Media gallery
     const hasImages = project.images && project.images.length > 0;
     const hasVideos = project.videos && project.videos.length > 0;
 
     if (hasImages || hasVideos) {
-        const imagesBlock = document.getElementById("images-block");
-        const imagesContainer = document.getElementById("images");
-
+        const scrollContainer = document.getElementById("media-scroll");
         let mediaHtml = "";
         
-        // Add videos first if any
         if (hasVideos) {
             mediaHtml += project.videos.map(url => `
                 <video src="${url}" controls autoplay loop muted draggable="false"></video>
             `).join("");
         }
 
-        // Add images
         if (hasImages) {
             mediaHtml += project.images.map(url => `
                 <img src="${url}" alt="Screenshot" draggable="false">
             `).join("");
         }
 
-        imagesContainer.innerHTML = mediaHtml;
+        scrollContainer.innerHTML = mediaHtml;
+        showBlock("media-gallery");
 
-        // Mouse drag to scroll
+        // Drag to scroll
         let isDown = false, startX, scrollLeft;
-        imagesContainer.addEventListener('mousedown', (e) => {
+        scrollContainer.addEventListener('mousedown', (e) => {
             isDown = true;
-            imagesContainer.classList.add('dragging');
-            startX = e.pageX - imagesContainer.offsetLeft;
-            scrollLeft = imagesContainer.scrollLeft;
+            startX = e.pageX - scrollContainer.offsetLeft;
+            scrollLeft = scrollContainer.scrollLeft;
         });
-
-        document.body.addEventListener('mouseup', () => {
-            isDown = false;
-            imagesContainer.classList.remove('dragging');
-        });
-
-        document.body.addEventListener('mousemove', (e) => {
+        window.addEventListener('mouseup', () => isDown = false);
+        window.addEventListener('mousemove', (e) => {
             if (!isDown) return;
             e.preventDefault();
-            const x = e.pageX - imagesContainer.offsetLeft;
-            const walk = (x - startX) * 1.5;
-            imagesContainer.scrollLeft = scrollLeft - walk;
+            const x = e.pageX - scrollContainer.offsetLeft;
+            const walk = (x - startX) * 2;
+            scrollContainer.scrollLeft = scrollLeft - walk;
         });
-
-        showBlock("images-block");
     }
 
     // Team
     if (project.team && project.team.length > 0) {
-        project.team.unshift({ name: "Adriel de Souza", role: project.roles.join(", ")});
+        const teamWithAdriel = [...project.team];
+        // Only add Adriel if not already there (though usually he's the one adding himself)
+        if (!teamWithAdriel.find(m => m.name.includes("Adriel"))) {
+            teamWithAdriel.unshift({ name: "Adriel de Souza", role: project.roles.join(", ")});
+        }
 
-        project.team = project.team.sort((a, b) => a.name.localeCompare(b.name));
-
-        document.getElementById("team").innerHTML = project.team.map(member => {
-            const inner = `<div class="team-member-info">
-                <span class="team-member-name">${escapeHtml(member.name)}</span>
-                <span class="team-member-role">${escapeHtml(member.role)}</span>
-            </div>`;
+        document.getElementById("team-grid").innerHTML = teamWithAdriel.map(member => {
             const linkedinUrl = member.linkedin ? safeUrl(member.linkedin) : null;
-            if (linkedinUrl) {
-                // Use external link arrow image
-                const arrow = `<img class="external-arrow" src="../assets/images/arrow.svg" alt="External link" style="margin-left:4px;vertical-align:middle;width:1em;height:1em;">`;
-                return `<a class="team-member" href="${linkedinUrl}" target="_blank" rel="noopener">${inner}${arrow}</a>`;
-            }
-            return `<div class="team-member">${inner}</div>`;
+            const arrowIcon = `<img src="../assets/images/arrow.svg" class="member-link-icon" style="filter: invert(1); opacity: 0.5;">`;
+            
+            const content = `
+                <span class="member-name">${escapeHtml(member.name)}${linkedinUrl ? arrowIcon : ""}</span>
+                <span class="member-role">${escapeHtml(member.role)}</span>
+            `;
+
+            return linkedinUrl 
+                ? `<a class="team-member" href="${linkedinUrl}" target="_blank" rel="noopener">${content}</a>`
+                : `<div class="team-member">${content}</div>`;
         }).join("");
-        showBlock("team-block");
+        showBlock("team-section");
     }
 
     // Links
     if (project.links && project.links.length > 0) {
-        document.getElementById("links").innerHTML = project.links
+        document.getElementById("project-links").innerHTML = project.links
             .map(linkButton).join("");
         showBlock("links-block");
     }
 }
 
 populatePage().catch(err => {
-    document.getElementById("name").textContent = "Project not found";
-    document.getElementById("headline").textContent = err.message;
+    document.getElementById("project-name").textContent = "Project not found";
+    document.getElementById("project-headline").textContent = err.message;
 });
-

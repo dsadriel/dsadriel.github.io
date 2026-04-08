@@ -8,6 +8,9 @@ async function fetchProjects() {
             if (project.autoImages.icon) {
                 project.icon = `/portfolio/assets/projects/${name}/icon.png`;
             }
+            if (project.autoImages.cover) {
+                project.coverImage = `/portfolio/assets/projects/${name}/cover.png`;
+            }
             if (project.autoImages.screenshotCount > 0) {
                 project.images = Array.from({ length: project.autoImages.screenshotCount }, (_, i) =>
                     `/portfolio/assets/projects/${name}/${i + 1}.png`

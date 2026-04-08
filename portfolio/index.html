@@ -1,124 +1,299 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Adriel — Software Engineer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+<link rel="icon" href="/portfolio/assets/images/favicon.png">
 
-    <!-- Primary Meta Tags -->
-    <title>Adriel de Souza • Portfolio</title>
-    <meta name="title" content="Adriel de Souza • Portfolio" />
-    <meta name="description"
-        content="I'm a developer based in Porto Alegre, studying Computer Science at UFRGS.I build apps and tools aiming to make life simpler and more enjoyable, from native iOS apps to full-stack platforms. Here are some things I've worked on." />
-    <link rel="icon" href="/portfolio/assets/images/favicon.png">
-
-    <!-- Open Graph / Facebook -->
-    <meta property="og:type" content="website" />
-    <meta property="og:title" content="Adriel de Souza • Portfolio" />
-    <meta property="og:description"
-        content="I'm a developer based in Porto Alegre, studying Computer Science at UFRGS.I build apps and tools aiming to make life simpler and more enjoyable, from native iOS apps to full-stack platforms. Here are some things I've worked on." />
-    <meta property="og:image" content="/portfolio/assets/images/og.png" />
-
-    <!-- X (Twitter) -->
-    <meta property="twitter:card" content="summary_large_image" />
-    <meta property="twitter:title" content="Adriel de Souza • Portfolio" />
-    <meta property="twitter:description"
-        content="I'm a developer based in Porto Alegre, studying Computer Science at UFRGS.I build apps and tools aiming to make life simpler and more enjoyable, from native iOS apps to full-stack platforms. Here are some things I've worked on." />
-    <meta property="og:image" content="/portfolio/assets/images/og.png" />
-
-    <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-LES5WJQPEQ"></script>
-    <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
-
-    gtag('config', 'G-LES5WJQPEQ');
-    </script>
-
-    <link rel="stylesheet" href="style.css">
-    <script src="theme.js"></script>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-LES5WJQPEQ"></script>
+<script>
+window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+gtag('config', 'G-LES5WJQPEQ');
+</script>
+<style>
+  .empty-state {
+    grid-column: 1 / -1;
+    padding: 64px;
+    text-align: center;
+    background: var(--surface-0);
+    border: 1px dashed var(--surface-2);
+    color: var(--text-muted);
+    font-family: 'Syne', sans-serif;
+    font-weight: 600;
+    font-size: 18px;
+  }
+</style>
 </head>
-
 <body>
 
-    <header>
-        <div class="container">
-            <a href="/portfolio" class="site-name">Adriel de Souza</a>
-            <nav>
-                <a href="https://github.com/dsadriel" target="_blank" rel="noopener">GitHub</a>
-                <a href="https://linkedin.com/in/dsadriel" target="_blank" rel="noopener">LinkedIn</a>
-            </nav>
-        </div>
-    </header>
+<nav>
+  <a href="#hero" class="nav-logo">adriel<span>.</span></a>
+  <ul class="nav-links">
+    <li><a href="#work">work</a></li>
+    <li><a href="#skills-experience">about</a></li>
+    <li><a href="#contact">contact</a></li>
+  </ul>
+</nav>
 
-    <main>
-        <div class="container">
-            <section class="about">
-                <div class="about-inner">
-                    <div>
-                        <h1>Hi, I'm <span>Adriel</span>.</h1>
-                        <p>
-                            I'm a developer based in Porto Alegre, studying Computer Science at UFRGS.
-                            I build apps and tools aiming to make life simpler and more enjoyable,
-                            from native iOS apps to full-stack platforms. Here are some things I've worked on.
-                        </p>
-                    </div>
-                    <img id="memoji" alt="Adriel's Memoji" class="about-memoji">
-                </div>
-            </section>
-            <script>
-                const n = Math.floor(Math.random() * 6) + 1;
-                document.getElementById('memoji').src = `assets/memoji/${n}.png`;
-            </script>
+<section id="hero">
+  <div class="hero-text">
+    <div class="hero-eyebrow fade-up">Software Engineer</div>
+    <h1 class="fade-up">Adriel</h1>
+    <p class="hero-desc fade-up">
+      Developer based in Porto Alegre, studying Computer Science at UFRGS.
+      I build apps and tools aiming to make life simpler and more enjoyable —
+      from native iOS apps to full-stack platforms.
+    </p>
+    <div class="hero-links fade-up">
+      <a href="#work" class="btn btn-primary">View my work</a>
+      <a href="https://github.com/dsadriel" target="_blank" class="btn btn-ghost">
+        GitHub
+      </a>
+      <a href="https://linkedin.com/in/dsadriel" target="_blank" class="btn btn-ghost">
+        LinkedIn
+      </a>
+    </div>
+  </div>
 
-            <section class="projects-section">
-                <p class="section-label">Projects</p>
-                <div id="projects-list"></div>
-            </section>
+ <div class="hero-photo-wrap fade-up">
+  <div class="hero-photo-frame">
+    <div class="photo-bg"></div>
+    
+    <img src="assets/images/hero-image-cutout.png" alt="Adriel" class="photo-layer photo-overlay">
+    
+    <img src="assets/images/hero-image-bg.png" alt="Adriel" class="photo-layer photo-main">
+  </div>
+  <div class="hero-photo-tag">iOS Developer @ Apple Academy</div>
+</div>
+</section>
 
-        </div>
-    </main>
+<section id="work">
+  <div class="work-header">
+    <h2 class="section-label">my work</h2>
+    <div class="filter-tabs">
+      <button class="tab active" onclick="filterProjects('all', this)">all projects</button>
+      <button class="tab" onclick="filterProjects('mobile', this)">mobile apps</button>
+      <button class="tab" onclick="filterProjects('uni', this)">uni projects</button>
+      <button class="tab" onclick="filterProjects('other', this)">others</button>
+    </div>
+  </div>
 
-    <footer>
-        <div class="container">
-            <span>&copy; 2026 Adriel de Souza</span>
-            <button id="theme-toggle" aria-label="Toggle light/dark theme">
-                <span class="theme-opt" data-for="light">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                        <circle cx="12" cy="12" r="4"/>
-                        <line x1="12" y1="2" x2="12" y2="6"/><line x1="12" y1="18" x2="12" y2="22"/>
-                        <line x1="4.22" y1="4.22" x2="7.05" y2="7.05"/><line x1="16.95" y1="16.95" x2="19.78" y2="19.78"/>
-                        <line x1="2" y1="12" x2="6" y2="12"/><line x1="18" y1="12" x2="22" y2="12"/>
-                        <line x1="4.22" y1="19.78" x2="7.05" y2="16.95"/><line x1="16.95" y1="7.05" x2="19.78" y2="4.22"/>
-                    </svg>
-                </span>
-                <span class="theme-opt" data-for="dark">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
-                    </svg>
-                </span>
-            </button>
-        </div>
-    </footer>
+  <div class="projects-grid" id="projects-grid">
+    <!-- Projects will be injected here -->
+  </div>
+</section>
 
-    <script src="./projectData.js"></script>
-    <script>
-        async function loadProjects() {
-            const projects = await fetchProjects();
-            document.getElementById('projects-list').innerHTML = projects.map(p => `
-                <a class="project-item" href="project/?name=${encodeURIComponent(p.name)}">
-                    <img class="project-item-icon" src="${p.icon}" alt="${p.name} icon">
-                    <div>
-                        <div class="project-item-name">${p.name}</div>
-                        <div class="project-item-headline">${p.headline}</div>
-                    </div>
-                    ${p.date ? `<span class="project-item-date">${p.date}</span>` : ''}
-                </a>
-            `).join('');
-        }
-        loadProjects();
-    </script>
+<section id="skills-experience">
+  <div class="col">
+    <h2 class="section-label">skills</h2>
+    <div id="skills-container"></div>
+
+    <h2 class="section-label" style="margin-top: 64px;">education</h2>
+    <div id="education-container"></div>
+  </div>
+
+  <div class="col">
+    <h2 class="section-label">experience</h2>
+    <div id="experience-container"></div>
+    
+    <div style="display: flex; justify-content: flex-end;">
+      <a href="assets/cv.pdf" target="_blank" class="download-cv">
+        <img src="assets/images/arrow.svg" alt="" style="width: 14px; height: 14px; transform: rotate(90deg); filter: brightness(0);">
+        Download CV
+      </a>
+    </div>
+  </div>
+</section>
+
+
+<section id="contact">
+  <div class="contact-headline">
+    Let's build something<br><span>great together.</span>
+  </div>
+  <p class="contact-sub">Open to freelance projects, job opportunities, or just a good conversation about software.</p>
+  <div class="contact-actions">
+    <a href="mailto:contato@dsadriel.com.br" class="btn btn-primary">
+      <img src="assets/images/email.svg" alt="Email" style="width: 16px; height: 16px; filter: brightness(0);">
+      Send me an email
+    </a>
+  </div>
+  <div class="social-links">
+    <a href="https://github.com/dsadriel" target="_blank" class="social-link">
+      <div class="social-icon">
+        <img src="assets/images/github.svg" alt="GitHub">
+      </div>
+      GitHub
+    </a>
+    <div class="divider"></div>
+    <a href="https://linkedin.com/in/dsadriel" target="_blank" class="social-link">
+      <div class="social-icon">
+        <img src="assets/images/linkedin.svg" alt="LinkedIn">
+      </div>
+      LinkedIn
+    </a>
+  </div>
+</section>
+
+<footer>
+  <span>© 2026 Adriel de Souza</span>
+  <span>Porto Alegre, Brasil</span>
+</footer>
+
+<script src="projectData.js"></script>
+<script>
+let allProjects = [];
+
+async function init() {
+  const [rawProjects, resumeData] = await Promise.all([
+    fetchProjects(),
+    fetch('resume.json').then(r => r.json())
+  ]);
+
+  allProjects = rawProjects.map(p => {
+    // Categorization logic
+    let tag = 'other';
+    const tech = p.techStack ? p.techStack.join(' ').toLowerCase() : '';
+    const desc = (p.headline + ' ' + p.description).toLowerCase();
+    
+    if (tech.includes('swift') || tech.includes('flutter') || tech.includes('uikit') || p.roles.some(r => r.toLowerCase().includes('ios') || r.toLowerCase().includes('mobile'))) {
+      tag = 'mobile';
+    }
+    
+    if (desc.includes('swift student challenge') || desc.includes('uni') || desc.includes('university')) {
+      tag = 'uni';
+    }
+
+    return {
+      ...p,
+      tag: tag,
+      tagLabel: p.roles[0] || 'Project',
+      skills: p.techStack ? p.techStack.slice(0, 3) : [] // Limit to 3 skills for card
+    };
+  });
+
+  renderProjects();
+  renderResume(resumeData);
+}
+
+function renderResume(data) {
+  // Skills
+  const skillsContainer = document.getElementById('skills-container');
+  skillsContainer.innerHTML = data.skills.map(cat => `
+    <div class="skill-category">
+      <div class="skill-category-title">${cat.category}</div>
+      <div class="skill-tags">
+        ${cat.tags.map(t => `<span class="skill-tag">${t}</span>`).join('')}
+      </div>
+    </div>
+  `).join('');
+
+  // Education
+  const eduContainer = document.getElementById('education-container');
+  eduContainer.innerHTML = data.education.map(edu => `
+      <div>
+        <div class="edu-degree">${edu.degree}</div>
+        <div class="edu-school">${edu.school}</div>
+        <div class="edu-period">${edu.period}</div>
+        <div class="edu-desc">${edu.description}</div>
+      </div>
+  `).join('');
+
+  // Experience
+  const expContainer = document.getElementById('experience-container');
+  expContainer.innerHTML = data.experience.map(exp => `
+    <div class="exp-item">
+      <div class="exp-meta">
+        <div class="exp-role">${exp.role}</div>
+        <div class="exp-period">${exp.period}</div>
+      </div>
+      <div class="exp-company">${exp.company}</div>
+      <div class="exp-desc">${exp.description}</div>
+    </div>
+  `).join('');
+
+  // Apply fade-up to new items
+  document.querySelectorAll('#skills-experience .skill-category, #skills-experience .edu-card, #skills-experience .exp-item').forEach(el => {
+    el.style.opacity = '0';
+    el.style.transform = 'translateY(16px)';
+    el.style.transition = 'opacity 0.4s ease, transform 0.4s ease';
+    observer.observe(el);
+  });
+}
+
+function renderProjects(filter = 'all') {
+  const grid = document.getElementById('projects-grid');
+  const filtered = filter === 'all' ? allProjects : allProjects.filter(p => p.tag === filter);
+  
+  if (filtered.length === 0) {
+    grid.innerHTML = `<div class="empty-state">No work for this category so far.</div>`;
+  } else {
+    grid.innerHTML = filtered.map((p) => {
+      const hasCover = !!p.coverImage;
+      
+      let thumbContent = "";
+      if (hasCover) {
+        thumbContent = `<img src="${p.coverImage}" alt="${p.name} cover">`;
+      } else {
+        const icons = Array(100).fill(`<img src="${p.icon}" alt="">`).join('');
+        thumbContent = `<div class="icon-grid">${icons}</div>`;
+      }
+
+      return `
+        <a href="project/?name=${encodeURIComponent(p.name)}" class="project-card">
+          <div class="project-thumb ${hasCover ? '' : 'has-no-cover'}" ${hasCover ? '' : 'style="background-color: #2563eb;"'}>
+            ${thumbContent}
+            <div class="project-thumb-icon" style="display:none;">▢</div>
+          </div>
+          <div class="project-info">
+            <div class="project-name">${p.name}</div>
+            <div class="project-desc">${p.headline}</div>
+            <div class="project-footer">
+              <div class="project-tag">${p.tagLabel}</div>
+              <div class="project-skills">
+                ${p.skills.map(s => `<span class="project-skill">${s}</span>`).join('')}
+              </div>
+            </div>
+          </div>
+        </a>
+      `;
+    }).join('');
+  }
+  
+  // Re-apply animations for new elements
+  const cards = grid.querySelectorAll('.project-card, .empty-state');
+  cards.forEach(el => {
+    el.style.opacity = '0';
+    el.style.transform = 'translateY(16px)';
+    el.style.transition = 'opacity 0.4s ease, transform 0.4s ease';
+    observer.observe(el);
+  });
+}
+
+function filterProjects(filter, btn) {
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  btn.classList.add('active');
+  renderProjects(filter);
+}
+
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.style.opacity = '1';
+      e.target.style.transform = 'translateY(0)';
+      observer.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.1 });
+
+init();
+</script>
 </body>
-
 </html>

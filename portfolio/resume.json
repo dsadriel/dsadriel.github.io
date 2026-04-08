@@ -1,0 +1,38 @@
+{
+  "skills": [
+    {
+      "category": "Languages",
+      "tags": ["Swift", "Dart", "JavaScript", "PHP", "HTML5 / CSS3", "Portuguese", "English"]
+    },
+    {
+      "category": "Frameworks",
+      "tags": ["SwiftUI", "UIKit", "Flutter", "Tailwind CSS"]
+    },
+    {
+      "category": "Tools & Architecture",
+      "tags": ["Xcode", "SwiftData", "CloudKit", "Firebase", "Xcode Cloud", "Git", "Figma", "MVVM / MVC", "Agile (Scrum)"]
+    }
+ ],
+  "education": [
+    {
+      "degree": "B.Sc. Computer Science",
+      "school": "UFRGS — Universidade Federal do Rio Grande do Sul",
+      "period": "2023 — Expected Graduation: Nov 2027",
+      "description": "Strong foundation in algorithms, data structures, and software engineering. Complemented by practical experience in systems, databases, and computer graphics — with a focus on applying theory to real-world problems."
+    }
+  ],
+  "experience": [
+    {
+      "role": "iOS Developer",
+      "period": "Feb 2025 — Present",
+      "company": "Apple Developer Academy",
+      "description": "Shipping apps to the App Store using SwiftUI, SwiftData, CloudKit, and MVVM architecture. Served as Scrum Master and Reference Developer across teams of up to 12 developers, leading Agile processes, managing CI/CD with Xcode Cloud, and mentoring peers on Swift best practices. Contributed across the full product lifecycle, from user research and Figma wireframes to production-ready implementations."
+    },
+    {
+      "role": "Web Developer & Visual Communication",
+      "period": "Nov 2023 — Feb 2025",
+      "company": "Instituto de Informática (UFRGS)",
+      "description": "Experienced in maintaining and improving institutional platforms using HTML, CSS, PHP, and JavaScript. Contributed to building a new departmental website with a focus on visual consistency and responsive design using Tailwind CSS."
+    }
+  ]
+}
