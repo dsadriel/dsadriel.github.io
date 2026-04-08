@@ -22,10 +22,10 @@
       "pt": ["Desenvolvedor iOS"]
     },
     "team": [
-      { "name": "Pedro Kosciuk Lima", "role": "UI/UX Designer", "linkedin": "https://www.linkedin.com/in/pedro-kosciuk-lima-a29855207/" },
-      { "name": "Alex Fraga", "role": "iOS Developer", "linkedin": "https://www.linkedin.com/in/alex-fraga1/" },
-      { "name": "Diogo Camargo", "role": "iOS Developer", "linkedin": "https://www.linkedin.com/in/diogo-pcamargo/" },
-      { "name": "Júlia Fazenda Ruiz", "role": "iOS Developer", "linkedin": "https://www.linkedin.com/in/julia-fazenda-ruiz/" }
+      { "name": "Pedro Kosciuk Lima", "role": { "en": "UI/UX Designer", "pt": "Designer UI/UX" }, "linkedin": "https://www.linkedin.com/in/pedro-kosciuk-lima-a29855207/" },
+      { "name": "Alex Fraga", "role": { "en": "iOS Developer", "pt": "Desenvolvedor iOS" }, "linkedin": "https://www.linkedin.com/in/alex-fraga1/" },
+      { "name": "Diogo Camargo", "role": { "en": "iOS Developer", "pt": "Desenvolvedor iOS" }, "linkedin": "https://www.linkedin.com/in/diogo-pcamargo/" },
+      { "name": "Júlia Fazenda Ruiz", "role": { "en": "iOS Developer", "pt": "Desenvolvedor iOS" }, "linkedin": "https://www.linkedin.com/in/julia-fazenda-ruiz/" }
     ],
     "links": [
       { "type": "AppStore", "url": "https://apps.apple.com/us/app/kill-the-tiger/id6760663002" }
@@ -106,10 +106,10 @@
       "pt": ["Desenvolvedor iOS", "Scrum Master"]
     },
     "team": [
-      { "name": "Rafaela Julianotte da Silva", "role": "Product Designer, Product Owner", "linkedin": "https://linkedin.com/in/rafajulianotte" },
-      { "name": "Antonio Costa Jr.", "role": "iOS Developer, Scrum Master", "linkedin": "https://linkedin.com/in/antoniocosta001" },
-      { "name": "Vítor Bruno", "role": "iOS Developer, Product Owner", "linkedin": "https://linkedin.com/in/vitor-bruno-243975258" },
-      { "name": "Gabriel Kowaleski", "role": "iOS Developer", "linkedin": "https://linkedin.com/in/gabriel-kowaleski" }
+      { "name": "Rafaela Julianotte da Silva", "role": { "en": "Product Designer, Product Owner", "pt": "Product Designer, Product Owner" }, "linkedin": "https://linkedin.com/in/rafajulianotte" },
+      { "name": "Antonio Costa Jr.", "role": { "en": "iOS Developer, Scrum Master", "pt": "Desenvolvedor iOS, Scrum Master" }, "linkedin": "https://linkedin.com/in/antoniocosta001" },
+      { "name": "Vítor Bruno", "role": { "en": "iOS Developer, Product Owner", "pt": "Desenvolvedor iOS, Product Owner" }, "linkedin": "https://linkedin.com/in/vitor-bruno-243975258" },
+      { "name": "Gabriel Kowaleski", "role": { "en": "iOS Developer", "pt": "Desenvolvedor iOS" }, "linkedin": "https://linkedin.com/in/gabriel-kowaleski" }
     ],
     "links": [
       { "type": "AppStore", "url": "https://apps.apple.com/br/app/dopamine-news/id6755773697" }
@@ -137,10 +137,10 @@
       "pt": ["Desenvolvedor iOS", "Scrum Master"]
     },
     "team": [
-      { "name": "Carolina Silva dos Santos", "role": "iOS Developer", "linkedin": "https://www.linkedin.com/in/carolina-silva-dos-santos-a320111a7" },
-      { "name": "Martina Nogueira da Gama Adegas", "role": "Product Designer, Product Owner", "linkedin": "https://www.linkedin.com/in/martina-nogueira-da-gama-adegas" },
-      { "name": "Bárbara Dapper", "role": "iOS Developer", "linkedin": "https://www.linkedin.com/in/b%C3%A1rbara-dapper" },
-      { "name": "Bruna Marschner", "role": "iOS Developer", "linkedin": "https://www.linkedin.com/in/brunamarschner" }
+      { "name": "Carolina Silva dos Santos", "role": { "en": "iOS Developer", "pt": "Desenvolvedora iOS" }, "linkedin": "https://www.linkedin.com/in/carolina-silva-dos-santos-a320111a7" },
+      { "name": "Martina Nogueira da Gama Adegas", "role": { "en": "Product Designer, Product Owner", "pt": "Product Designer, Product Owner" }, "linkedin": "https://www.linkedin.com/in/martina-nogueira-da-gama-adegas" },
+      { "name": "Bárbara Dapper", "role": { "en": "iOS Developer", "pt": "Desenvolvedora iOS" }, "linkedin": "https://www.linkedin.com/in/b%C3%A1rbara-dapper" },
+      { "name": "Bruna Marschner", "role": { "en": "iOS Developer", "pt": "Desenvolvedora iOS" }, "linkedin": "https://www.linkedin.com/in/brunamarschner" }
     ],
     "links": [
       { "type": "AppStore", "url": "https://apps.apple.com/br/app/profitto/id6752310169" }
@@ -195,10 +195,10 @@
       "pt": ["Desenvolvedor iOS", "Scrum Master"]
     },
     "team": [
-      { "name": "Gustavo Ferreira Bassani", "role": "iOS Developer", "linkedin": "https://www.linkedin.com/in/gustavofbassani" },
-      { "name": "Giulia Stefainski", "role": "iOS Developer", "linkedin": "https://www.linkedin.com/in/giulia-cs" },
-      { "name": "Vinicius Cadore", "role": "UX/UI Designer", "linkedin": "https://www.linkedin.com/in/cadoreee" },
-      { "name": "Ana Poletto", "role": "iOS Developer", "linkedin": "https://www.linkedin.com/in/ana-poletto-2a7222318" }
+      { "name": "Gustavo Ferreira Bassani", "role": { "en": "iOS Developer", "pt": "Desenvolvedor iOS" }, "linkedin": "https://www.linkedin.com/in/gustavofbassani" },
+      { "name": "Giulia Stefainski", "role": { "en": "iOS Developer", "pt": "Desenvolvedora iOS" }, "linkedin": "https://www.linkedin.com/in/giulia-cs" },
+      { "name": "Vinicius Cadore", "role": { "en": "UX/UI Designer", "pt": "Designer UX/UI" }, "linkedin": "https://www.linkedin.com/in/cadoreee" },
+      { "name": "Ana Poletto", "role": { "en": "iOS Developer", "pt": "Desenvolvedora iOS" }, "linkedin": "https://www.linkedin.com/in/ana-poletto-2a7222318" }
     ],
     "links": [
       { "type": "GitHub", "url": "https://github.com/dsadriel/freela-ontap" }

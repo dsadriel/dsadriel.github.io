@@ -11,7 +11,7 @@ const translations = {
         "work.mobile": "mobile apps",
         "work.uni": "uni projects",
         "work.other": "others",
-        "work.empty": "No work for this category so far.",
+        "work.empty": "no work for this category so far.",
         "skills.label": "skills",
         "edu.label": "education",
         "exp.label": "experience",
@@ -40,7 +40,7 @@ const translations = {
         "work.mobile": "apps mobile",
         "work.uni": "projetos acadêmicos",
         "work.other": "outros",
-        "work.empty": "Nenhum projeto nesta categoria por enquanto.",
+        "work.empty": "nenhum projeto nesta categoria por enquanto.",
         "skills.label": "habilidades",
         "edu.label": "formação",
         "exp.label": "experiência",
@@ -67,27 +67,67 @@ const swipeOverlay = document.createElement('div');
 swipeOverlay.className = 'lang-swipe';
 document.body.appendChild(swipeOverlay);
 
-function toggleLanguage() {
+function triggerFullSwipe(callback) {
     if (isTransitioning) return;
     isTransitioning = true;
 
-    // Start animation
-    swipeOverlay.classList.remove('active');
-    void swipeOverlay.offsetWidth; // Trigger reflow
-    swipeOverlay.classList.add('active');
+    swipeOverlay.classList.remove('active-full', 'active-to-center', 'active-from-center');
+    void swipeOverlay.offsetWidth;
+    swipeOverlay.classList.add('active-full');
 
-    // Change content halfway through (400ms into 800ms animation)
     setTimeout(() => {
+        if (callback) callback();
+    }, 400);
+
+    setTimeout(() => {
+        isTransitioning = false;
+    }, 800);
+}
+
+function triggerSwipeToCenter(callback) {
+    if (isTransitioning) return;
+    isTransitioning = true;
+
+    // Signal next page to animate in
+    sessionStorage.setItem('playEntryAnimation', 'true');
+
+    swipeOverlay.classList.remove('active-full', 'active-to-center', 'active-from-center');
+    void swipeOverlay.offsetWidth;
+    swipeOverlay.classList.add('active-to-center');
+
+    setTimeout(() => {
+        if (callback) callback();
+    }, 400);
+}
+
+function triggerSwipeFromCenter() {
+    if (sessionStorage.getItem('playEntryAnimation') !== 'true') {
+        return;
+    }
+    sessionStorage.removeItem('playEntryAnimation');
+
+    // Set initial state to covered
+    swipeOverlay.style.left = '0';
+    
+    // Wait a tiny bit for page to be ready
+    setTimeout(() => {
+        swipeOverlay.classList.remove('active-full', 'active-to-center', 'active-from-center');
+        void swipeOverlay.offsetWidth;
+        swipeOverlay.style.left = ''; // Clear manual override
+        swipeOverlay.classList.add('active-from-center');
+        
+        setTimeout(() => {
+            isTransitioning = false;
+        }, 400);
+    }, 100);
+}
+
+function toggleLanguage() {
+    triggerFullSwipe(() => {
         currentLang = currentLang === 'en' ? 'pt' : 'en';
         localStorage.setItem('lang', currentLang);
         updateLanguage();
-    }, 400);
-
-    // Reset state after animation finishes
-    setTimeout(() => {
-        swipeOverlay.classList.remove('active');
-        isTransitioning = false;
-    }, 800);
+    });
 }
 
 function updateLanguage() {
@@ -124,4 +164,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const btn = document.getElementById('lang-toggle');
     if (btn) btn.addEventListener('click', toggleLanguage);
     updateLanguage();
+    
+    // Smooth entry animation
+    triggerSwipeFromCenter();
 });

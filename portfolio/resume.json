@@ -3,7 +3,7 @@
     "skills": [
       {
         "category": "Languages",
-        "tags": ["Swift", "Dart", "JavaScript", "PHP", "HTML5 / CSS3", "Portuguese", "English"]
+        "tags": ["Swift", "Dart", "JavaScript", "PHP", "HTML5 / CSS3"]
       },
       {
         "category": "Frameworks",
@@ -41,7 +41,7 @@
     "skills": [
       {
         "category": "Linguagens",
-        "tags": ["Swift", "Dart", "JavaScript", "PHP", "HTML5 / CSS3", "Português", "Inglês"]
+        "tags": ["Swift", "Dart", "JavaScript", "PHP", "HTML5 / CSS3"]
       },
       {
         "category": "Frameworks",

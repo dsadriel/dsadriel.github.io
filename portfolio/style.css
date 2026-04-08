@@ -744,12 +744,30 @@ footer {
   pointer-events: none;
 }
 
-@keyframes swipeTransition {
+@keyframes swipeFull {
   0% { left: -100%; }
   45%, 55% { left: 0; }
   100% { left: 100%; }
 }
 
-.lang-swipe.active {
-  animation: swipeTransition 0.8s cubic-bezier(0.7, 0, 0.3, 1) forwards;
+@keyframes swipeToCenter {
+  0% { left: -100%; }
+  100% { left: 0; }
+}
+
+@keyframes swipeFromCenter {
+  0% { left: 0; }
+  100% { left: 100%; }
+}
+
+.lang-swipe.active-full {
+  animation: swipeFull 0.8s cubic-bezier(0.7, 0, 0.3, 1) forwards;
+}
+
+.lang-swipe.active-to-center {
+  animation: swipeToCenter 0.4s cubic-bezier(0.7, 0, 0.3, 1) forwards;
+}
+
+.lang-swipe.active-from-center {
+  animation: swipeFromCenter 0.4s cubic-bezier(0.7, 0, 0.3, 1) forwards;
 }

@@ -198,6 +198,15 @@ async function init() {
   renderProjects();
   renderResume();
   if (typeof updateLanguage === 'function') updateLanguage();
+
+  // Restore scroll position after a short delay to allow layout to settle
+  const savedScroll = sessionStorage.getItem('scrollPos');
+  if (savedScroll) {
+    setTimeout(() => {
+      window.scrollTo({ top: parseInt(savedScroll), behavior: 'auto' });
+      sessionStorage.removeItem('scrollPos');
+    }, 50);
+  }
 }
 
 function renderResume() {
@@ -266,7 +275,7 @@ function renderProjects(filter = 'all') {
       }
 
       return `
-        <a href="project/?name=${encodeURIComponent(p.name)}" class="project-card">
+        <a href="project/?name=${encodeURIComponent(p.name)}" class="project-card" onclick="event.preventDefault(); sessionStorage.setItem('scrollPos', window.scrollY); triggerSwipeToCenter(() => window.location.href = this.href)">
           <div class="project-thumb ${hasCover ? '' : 'has-no-cover'}" ${hasCover ? '' : 'style="background-color: #2563eb;"'}>
             ${thumbContent}
             <div class="project-thumb-icon" style="display:none;">▢</div>
