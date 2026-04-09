@@ -633,6 +633,8 @@ section:last-of-type { border-bottom: none; }
 }
 
 .social-link:hover { color: var(--text); }
+.social-link-sponsor:hover { color: #e460b0 !important; }
+
 
 .social-icon {
   width: 40px; height: 40px;
@@ -649,11 +651,21 @@ section:last-of-type { border-bottom: none; }
   width: 18px;
   height: 18px;
   object-fit: contain;
+  filter: contrast(0);
 }
 
 .social-link:hover .social-icon {
   border-color: var(--text);
 }
+
+.social-link-sponsor:hover .social-icon {
+  border-color: #e460b0 !important;
+}
+
+.social-link-sponsor:hover .social-icon img {
+  filter: contrast(1) !important;
+}
+
 
 /* ─── FOOTER ─── */
 footer {
