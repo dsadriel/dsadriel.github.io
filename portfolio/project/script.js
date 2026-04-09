@@ -47,6 +47,12 @@ async function populatePage() {
 
     document.title = `${project.name} — Adriel`;
     document.getElementById("project-name").textContent = project.name;
+
+    // Update canonical URL for this specific project page
+    const canonicalLink = document.getElementById('canonical-url');
+    if (canonicalLink) {
+        canonicalLink.href = `https://dsadriel.github.io/portfolio/project/?name=${encodeURIComponent(project.name)}`;
+    }
     document.getElementById("project-headline").textContent = headline;
     document.getElementById("project-description").innerHTML = description;
 
