@@ -119,7 +119,7 @@ async function populatePage() {
 
         document.getElementById("team-grid").innerHTML = teamWithAdriel.map(member => {
             const linkedinUrl = member.linkedin ? safeUrl(member.linkedin) : null;
-            const arrowIcon = `<img src="../assets/images/arrow.svg" class="member-link-icon" style="filter: var(--icon-filter); opacity: 0.5;">`;
+            const arrowIcon = `<img src="../assets/images/Arrow.svg" class="member-link-icon" style="filter: var(--icon-filter); opacity: 0.5;">`;
 
             // Handle localized role object
             const memberRole = typeof member.role === 'object' 
