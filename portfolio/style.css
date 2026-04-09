@@ -162,8 +162,15 @@ h1 {
   background: var(--blue);
   color: var(--bg-inverse);
 }
+
 .btn-primary:hover { 
   background: var(--text); 
+  color: var(--bg);
+ transform: translateY(-2px);
+}
+
+.btn-primary:hover img {
+  filter: none !important;
 }
 
 .btn-ghost {
@@ -456,7 +463,12 @@ section:last-of-type { border-bottom: none; }
 
 .download-cv:hover {
   background: var(--text);
+  color: var(--bg);
   transform: translateY(-2px);
+}
+
+.download-cv:hover img {
+  filter: none !important;
 }
 
 .skill-category {
