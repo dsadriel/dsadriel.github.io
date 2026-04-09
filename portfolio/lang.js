@@ -148,7 +148,7 @@ function updateLanguage() {
 
     const langToggle = document.getElementById('lang-toggle');
     if (langToggle) {
-        langToggle.textContent = currentLang === 'en' ? 'PT-BR' : 'EN';
+        langToggle.textContent = currentLang === 'en' ? 'EN' : 'PT-BR';
     }
 
     // Update dynamic content if needed
