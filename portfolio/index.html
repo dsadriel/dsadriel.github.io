@@ -67,20 +67,15 @@ gtag('config', 'G-LES5WJQPEQ');
 <section id="hero">
   <div class="hero-text">
     <div class="hero-eyebrow fade-up" data-i18n="hero.eyebrow">Software Engineer</div>
-    <h1 class="fade-up">Adriel</h1>
+    <h1 class="fade-up" data-i18n="hero.title">Building <span>simpler</span> and more <span>enjoyable</span> digital products.</h1>
     <p class="hero-desc fade-up" data-i18n="hero.desc">
       Developer based in Porto Alegre, studying Computer Science at UFRGS.
       I build apps and tools aiming to make life simpler and more enjoyable —
       from native iOS apps to full-stack platforms.
     </p>
     <div class="hero-links fade-up">
-      <a href="#work" class="btn btn-primary" data-i18n="hero.work">View my work</a>
-      <a href="https://github.com/dsadriel" target="_blank" class="btn btn-ghost">
-        GitHub
-      </a>
-      <a href="https://linkedin.com/in/dsadriel" target="_blank" class="btn btn-ghost">
-        LinkedIn
-      </a>
+      <a href="https://linkedin.com/in/dsadriel" target="_blank" class="btn btn-primary" data-i18n="hero.connect">Let's Connect</a>
+      <a href="https://github.com/dsadriel" target="_blank" class="btn btn-ghost" data-i18n="hero.github">GitHub</a>
     </div>
   </div>
 
@@ -98,12 +93,16 @@ gtag('config', 'G-LES5WJQPEQ');
 
 <section id="work">
   <div class="work-header">
-    <h2 class="section-label" data-i18n="work.label">my work</h2>
+    <div class="work-title-wrap">
+      <h2 class="section-label" data-i18n="work.label">my work</h2>
+      <p class="section-caption fade-up" data-i18n="work.caption">A collection of projects ranging from native iOS development to full-stack platforms and academic research.</p>
+    </div>
     <div class="filter-tabs">
-      <button class="tab active" onclick="filterProjects('all', this)" data-i18n="work.all">all projects</button>
-      <button class="tab" onclick="filterProjects('mobile', this)" data-i18n="work.mobile">mobile apps</button>
-      <button class="tab" onclick="filterProjects('uni', this)" data-i18n="work.uni">uni projects</button>
-      <button class="tab" onclick="filterProjects('other', this)" data-i18n="work.other">others</button>
+      <button class="tab active" onclick="filterProjects('featured', this)" data-i18n="work.featured">featured</button>
+      <button class="tab" onclick="filterProjects('mobile-apps', this)" data-i18n="work.mobile">mobile apps</button>
+      <button class="tab" onclick="filterProjects('uni-projects', this)" data-i18n="work.uni">uni projects</button>
+      <button class="tab" onclick="filterProjects('other', this)" data-i18n="work.other">other</button>
+      <button class="tab" onclick="filterProjects('all', this)" data-i18n="work.all">all</button>
     </div>
   </div>
 
@@ -189,36 +188,24 @@ async function init() {
   
   resumeData = rawResume;
 
-  allProjects = rawProjects.map(p => {
+  allProjects = rawProjects.map((p, index) => {
     // Localization
     const headline = p.headline[currentLang] || p.headline['en'];
     const description = p.description[currentLang] || p.description['en'];
     const roles = p.roles[currentLang] || p.roles['en'];
 
-    // Categorization logic
-    let tag = 'other';
-    const tech = p.techStack ? p.techStack.join(' ').toLowerCase() : '';
-    const desc = (headline + ' ' + description).toLowerCase();
-    
-    if (tech.includes('swift') || tech.includes('flutter') || tech.includes('uikit') || roles.some(r => r.toLowerCase().includes('ios') || r.toLowerCase().includes('mobile'))) {
-      tag = 'mobile';
-    }
-    
-    if (desc.includes('swift student challenge') || desc.includes('uni') || desc.includes('university') || desc.includes('acadêmico')) {
-      tag = 'uni';
-    }
-
     return {
       ...p,
       headline,
       description,
-      tag: tag,
+      tag: p.type, // Use type from JSON
       tagLabel: roles[0] || 'Project',
-      skills: p.techStack ? p.techStack.slice(0, 3) : [] // Limit to 3 skills for card
+      skills: p.techStack ? p.techStack.slice(0, 3) : [], // Limit to 3 skills for card
+      featured: index < 7 // Top 7 are featured
     };
   });
 
-  renderProjects();
+  renderProjects('featured');
   renderResume();
   if (typeof updateLanguage === 'function') updateLanguage();
 
@@ -280,13 +267,21 @@ function renderResume() {
 
 function renderProjects(filter = 'all') {
   const grid = document.getElementById('projects-grid');
-  const filtered = filter === 'all' ? allProjects : allProjects.filter(p => p.tag === filter);
+  let filtered = [];
+  
+  if (filter === 'all') {
+    filtered = allProjects;
+  } else if (filter === 'featured') {
+    filtered = allProjects.filter(p => p.featured);
+  } else {
+    filtered = allProjects.filter(p => p.tag === filter);
+  }
   
   if (filtered.length === 0) {
     const emptyMsg = translations[currentLang]['work.empty'] || "No work for this category so far.";
     grid.innerHTML = `<div class="empty-state">${emptyMsg}</div>`;
   } else {
-    grid.innerHTML = filtered.map((p) => {
+    let html = filtered.map((p) => {
       const hasCover = !!p.coverImage;
       
       let thumbContent = "";
@@ -316,10 +311,29 @@ function renderProjects(filter = 'all') {
         </a>
       `;
     }).join('');
+
+    // Append 'See more' card if in featured mode
+    if (filter === 'featured') {
+      const moreText = translations[currentLang]['work.viewAll'] || "See all projects";
+      const filtersText = translations[currentLang]['work.useFilters'] || "or use the filters";
+      html += `
+        <div class="project-card-more" onclick="document.querySelector('.tab[onclick*=\\'all\\']').click();">
+          <div class="project-card-more-icon">
+            <img src="assets/images/Arrow.svg" alt="" style="width: 28px; height: 28px; transform: rotate(45deg); filter: invert(58%) sepia(91%) saturate(308%) hue-rotate(185deg) brightness(98%) contrast(96%);">
+          </div>
+          <div class="project-card-more-text">
+            ${moreText}
+            <div class="project-card-more-sub">${filtersText}</div>
+          </div>
+        </div>
+      `;
+    }
+    
+    grid.innerHTML = html;
   }
   
   // Re-apply animations for new elements
-  const cards = grid.querySelectorAll('.project-card, .empty-state');
+  const cards = grid.querySelectorAll('.project-card, .project-card-more, .empty-state');
   cards.forEach(el => {
     el.style.opacity = '0';
     el.style.transform = 'translateY(16px)';
