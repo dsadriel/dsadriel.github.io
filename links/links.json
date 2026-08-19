@@ -1,0 +1,26 @@
+[
+  {
+    "url": "https://dsadriel.github.io/portfolio/",
+    "title": "Portfolio",
+    "description": "Selected projects and experience",
+    "banner": "/latest-projects.svg"
+  },
+  {
+    "url": "https://github.com/dsadriel",
+    "title": "GitHub",
+    "description": "Code, open source, and experiments",
+    "icon": "/portfolio-old/assets/images/GitHub.svg"
+  },
+  {
+    "url": "https://linkedin.com/in/dsadriel",
+    "title": "LinkedIn",
+    "description": "Career updates and professional profile",
+    "icon": "/portfolio-old/assets/images/LinkedIn.svg"
+  },
+  {
+    "url": "mailto:contato@dsadriel.com.br",
+    "title": "Email",
+    "description": "contato@dsadriel.com.br",
+    "icon": "/portfolio-old/assets/images/Email.svg"
+  }
+]
