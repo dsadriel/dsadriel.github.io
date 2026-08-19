@@ -99,6 +99,52 @@ body {
   display: block;
 }
 
+@media (max-width: 600px) {
+  .page {
+    width: calc(100% - 24px);
+    margin: 24px auto;
+  }
+
+  .profile {
+    gap: 12px;
+    margin-bottom: 18px;
+  }
+
+  .profile-photo {
+    width: 96px;
+    height: 96px;
+  }
+
+  .profile h1 {
+    font-size: 1.35rem;
+  }
+
+  .links-list {
+    gap: 10px;
+  }
+
+  .link-card {
+    border-radius: 14px;
+  }
+
+  .link-row {
+    gap: 10px;
+    padding: 14px;
+  }
+
+  .link-title {
+    font-size: 0.97rem;
+  }
+
+  .link-description {
+    font-size: 0.85rem;
+  }
+
+  .link-banner {
+    max-height: 170px;
+  }
+}
+
 .error,
 .empty {
   text-align: center;
