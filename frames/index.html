@@ -111,11 +111,17 @@
             <span class="form-hint">Scale web page content to fit wider layouts or enlarge text.</span>
 
             <div class="zoom-controls-wrapper">
-              <input id="frameZoomRange" type="range" min="50" max="150" step="5" value="100" class="zoom-slider" aria-label="Frame zoom slider" />
+              <input id="frameZoomRange" type="range" min="50" max="150" step="5" value="100" class="zoom-slider" list="zoomTicks" aria-label="Frame zoom slider" />
+              <datalist id="zoomTicks">
+                <option value="50"></option>
+                <option value="75"></option>
+                <option value="100"></option>
+                <option value="125"></option>
+                <option value="150"></option>
+              </datalist>
               <div class="zoom-presets" id="zoomPresetChips">
                 <button type="button" class="zoom-chip" data-zoom="0.5">50%</button>
                 <button type="button" class="zoom-chip" data-zoom="0.75">75%</button>
-                <button type="button" class="zoom-chip" data-zoom="0.9">90%</button>
                 <button type="button" class="zoom-chip active" data-zoom="1.0">100%</button>
                 <button type="button" class="zoom-chip" data-zoom="1.25">125%</button>
                 <button type="button" class="zoom-chip" data-zoom="1.5">150%</button>
