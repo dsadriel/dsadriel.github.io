@@ -52,6 +52,8 @@ const STARTER_PACKS = {
 let state = loadState();
 let selectedColSpan = 3;
 let selectedRowSpan = 2;
+let selectedZoom = 1.0;
+let fullscreenZoom = 1.0;
 let lastDeletedItem = null;
 let toastTimeout = null;
 let activeTabMenuFolderId = null;
@@ -137,6 +139,36 @@ function setupEventListeners() {
       titleInput.value = formatDomainAsTitle(e.target.value.trim());
     }
   });
+
+  // Zoom slider and presets
+  const frameZoomRange = document.getElementById("frameZoomRange");
+  if (frameZoomRange) {
+    frameZoomRange.addEventListener("input", (e) => {
+      updateZoomControl(parseInt(e.target.value, 10) / 100);
+    });
+  }
+
+  document.querySelectorAll("#zoomPresetChips .zoom-chip").forEach((chip) => {
+    chip.addEventListener("click", () => {
+      const z = parseFloat(chip.getAttribute("data-zoom"));
+      updateZoomControl(z);
+    });
+  });
+
+  // Fullscreen zoom buttons
+  const fsZoomInBtn = document.getElementById("fullscreenZoomInBtn");
+  const fsZoomOutBtn = document.getElementById("fullscreenZoomOutBtn");
+  const fsZoomResetBtn = document.getElementById("fullscreenZoomResetBtn");
+
+  if (fsZoomInBtn) {
+    fsZoomInBtn.addEventListener("click", () => setFullscreenZoom(fullscreenZoom + 0.1));
+  }
+  if (fsZoomOutBtn) {
+    fsZoomOutBtn.addEventListener("click", () => setFullscreenZoom(fullscreenZoom - 0.1));
+  }
+  if (fsZoomResetBtn) {
+    fsZoomResetBtn.addEventListener("click", () => setFullscreenZoom(1.0));
+  }
 
   // Settings actions
   document.getElementById("copyShareLinkBtn").addEventListener("click", copyShareLink);
@@ -264,6 +296,8 @@ function createFrameCard(frame, index, maxCols) {
   const title = frame.title || formatDomainAsTitle(frame.url);
   const faviconUrl = getFaviconUrl(frame.url);
 
+  const zoomBadge = frame.zoom && frame.zoom !== 1 ? ` · ${Math.round(frame.zoom * 100)}%` : "";
+
   // Card Header
   const header = document.createElement("div");
   header.className = "card-header";
@@ -271,7 +305,7 @@ function createFrameCard(frame, index, maxCols) {
     <div class="card-title-group">
       <img class="card-favicon" src="${faviconUrl}" alt="" onerror="this.style.display='none'" />
       <span class="card-title" title="${escapeHtml(frame.url)}">${escapeHtml(title)}</span>
-      <span class="card-size-tag">${frame.colSpan || 3}×${frame.rowSpan || 2}</span>
+      <span class="card-size-tag">${frame.colSpan || 3}×${frame.rowSpan || 2}${zoomBadge}</span>
     </div>
     <div class="card-actions">
       <button type="button" class="btn-reload" title="Reload frame" aria-label="Reload frame">
@@ -306,6 +340,8 @@ function createFrameCard(frame, index, maxCols) {
   iframe.referrerPolicy = "strict-origin-when-cross-origin";
   iframe.allow = "camera; microphone; display-capture; geolocation; clipboard-read; clipboard-write; fullscreen";
   iframe.sandbox = "allow-same-origin allow-scripts allow-forms allow-popups allow-modals allow-downloads";
+
+  applyFrameZoom(iframe, frame.zoom || 1.0);
 
   iframe.addEventListener("load", () => {
     loader.style.opacity = "0";
@@ -496,6 +532,58 @@ function initGridMatrix() {
   });
 }
 
+function applyFrameZoom(iframe, zoomLevel) {
+  const zoom = clampFloat(zoomLevel, 0.25, 2.5, 1.0);
+  if (Math.abs(zoom - 1.0) < 0.01) {
+    iframe.style.width = "100%";
+    iframe.style.height = "100%";
+    iframe.style.transform = "none";
+  } else {
+    const scaleFactor = (100 / zoom).toFixed(3);
+    iframe.style.width = `${scaleFactor}%`;
+    iframe.style.height = `${scaleFactor}%`;
+    iframe.style.transformOrigin = "0 0";
+    iframe.style.transform = `scale(${zoom})`;
+  }
+}
+
+function updateZoomControl(zoomLevel) {
+  selectedZoom = clampFloat(zoomLevel, 0.4, 1.6, 1.0);
+  const zoomPercent = Math.round(selectedZoom * 100);
+
+  const badge = document.getElementById("frameZoomBadge");
+  const range = document.getElementById("frameZoomRange");
+
+  if (badge) {
+    let desc = "";
+    if (zoomPercent === 100) desc = " (Default)";
+    else if (zoomPercent < 100) desc = " (Zoom Out)";
+    else desc = " (Zoom In)";
+    badge.textContent = `${zoomPercent}%${desc}`;
+  }
+
+  if (range) {
+    range.value = zoomPercent;
+  }
+
+  document.querySelectorAll("#zoomPresetChips .zoom-chip").forEach((chip) => {
+    const chipZoom = parseFloat(chip.getAttribute("data-zoom"));
+    chip.classList.toggle("active", Math.abs(chipZoom - selectedZoom) < 0.02);
+  });
+}
+
+function setFullscreenZoom(newZoom) {
+  fullscreenZoom = clampFloat(newZoom, 0.3, 2.0, 1.0);
+  const ifr = document.getElementById("fullscreenIframe");
+  const label = document.getElementById("fullscreenZoomLabel");
+  if (ifr) {
+    applyFrameZoom(ifr, fullscreenZoom);
+  }
+  if (label) {
+    label.textContent = `${Math.round(fullscreenZoom * 100)}%`;
+  }
+}
+
 // --- State Actions & Handlers ---
 function handleSaveFrame(e) {
   e.preventDefault();
@@ -523,6 +611,7 @@ function handleSaveFrame(e) {
         item.title = titleInput || formatDomainAsTitle(validUrl);
         item.colSpan = selectedColSpan;
         item.rowSpan = selectedRowSpan;
+        item.zoom = selectedZoom;
         folder.frames.push(item);
         break;
       }
@@ -534,7 +623,8 @@ function handleSaveFrame(e) {
       url: validUrl,
       title: titleInput || formatDomainAsTitle(validUrl),
       colSpan: selectedColSpan,
-      rowSpan: selectedRowSpan
+      rowSpan: selectedRowSpan,
+      zoom: selectedZoom
     });
     showToast("Frame added to " + folder.name);
   }
@@ -709,6 +799,7 @@ function openFrameModal(frameId = null) {
       titleInput.value = frame.title || "";
       selectedColSpan = frame.colSpan || 3;
       selectedRowSpan = frame.rowSpan || 2;
+      selectedZoom = frame.zoom || 1.0;
     }
   } else {
     modalTitle.textContent = "Add Frame";
@@ -718,9 +809,11 @@ function openFrameModal(frameId = null) {
     titleInput.value = "";
     selectedColSpan = 3;
     selectedRowSpan = 2;
+    selectedZoom = 1.0;
   }
 
   updatePreviewMatrix();
+  updateZoomControl(selectedZoom);
   openModal(frameModal);
 }
 
@@ -756,6 +849,9 @@ function openFullscreen(frame) {
   title.textContent = frame.title || formatDomainAsTitle(frame.url);
   favicon.src = getFaviconUrl(frame.url);
   extLink.href = frame.url;
+
+  fullscreenZoom = frame.zoom || 1.0;
+  setFullscreenZoom(fullscreenZoom);
 
   fullscreenModal.classList.add("open");
   refreshIcons();
@@ -1031,7 +1127,8 @@ function normalizeFrame(input) {
     url,
     title: input.title ? String(input.title).slice(0, 60) : formatDomainAsTitle(url),
     colSpan: clampInt(input.colSpan, 1, 6, 3),
-    rowSpan: clampInt(input.rowSpan, 1, 8, 2)
+    rowSpan: clampInt(input.rowSpan, 1, 8, 2),
+    zoom: clampFloat(input.zoom, 0.25, 2.5, 1.0)
   };
 }
 
@@ -1074,6 +1171,11 @@ function getFaviconUrl(urlStr) {
 
 function clampInt(val, min, max, fallback) {
   const num = parseInt(val, 10);
+  return isNaN(num) ? fallback : Math.min(max, Math.max(min, num));
+}
+
+function clampFloat(val, min, max, fallback) {
+  const num = parseFloat(val);
   return isNaN(num) ? fallback : Math.min(max, Math.max(min, num));
 }
 

@@ -740,6 +740,64 @@ button.starter-pack-card:hover {
   opacity: 0.85;
 }
 
+/* Zoom Controls */
+.zoom-picker-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 2px;
+}
+
+.zoom-controls-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 6px;
+  padding: 10px 12px;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+}
+
+.zoom-slider {
+  width: 100%;
+  accent-color: var(--accent);
+  cursor: pointer;
+  height: 6px;
+  border-radius: var(--radius-full);
+}
+
+.zoom-presets {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.zoom-chip {
+  padding: 4px 8px;
+  font-size: 11px;
+  font-weight: 500;
+  border-radius: var(--radius-sm);
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
+  color: var(--fg-muted);
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.zoom-chip:hover {
+  color: var(--fg);
+  background: var(--bg-surface-hover);
+}
+
+.zoom-chip.active {
+  border-color: var(--accent);
+  background: var(--accent-subtle);
+  color: var(--accent-fg);
+  font-weight: 600;
+}
+
 /* Fullscreen Modal View */
 .fullscreen-modal {
   position: fixed;
@@ -772,16 +830,40 @@ button.starter-pack-card:hover {
   gap: 12px;
 }
 
+.fullscreen-zoom-group {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 2px 6px;
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  margin-right: 4px;
+}
+
+.fullscreen-zoom-label {
+  font-size: 12px;
+  font-weight: 600;
+  min-width: 38px;
+  text-align: center;
+  color: var(--fg-muted);
+}
+
 .fullscreen-body {
   flex: 1;
   width: 100%;
   height: calc(100% - 48px);
+  position: relative;
+  overflow: hidden;
 }
 
 .fullscreen-body iframe {
   width: 100%;
   height: 100%;
   border: 0;
+  display: block;
+  background: #ffffff;
+  transform-origin: 0 0;
 }
 
 /* Toast Notification */

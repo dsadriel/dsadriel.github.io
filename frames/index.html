@@ -103,6 +103,26 @@
             </div>
           </div>
 
+          <div class="form-group">
+            <div class="zoom-picker-header">
+              <label class="form-label" style="margin-bottom: 0;">Frame Zoom / Scale</label>
+              <span id="frameZoomBadge" class="grid-dimensions-badge">100%</span>
+            </div>
+            <span class="form-hint">Scale web page content to fit wider layouts or enlarge text.</span>
+
+            <div class="zoom-controls-wrapper">
+              <input id="frameZoomRange" type="range" min="40" max="160" step="5" value="100" class="zoom-slider" aria-label="Frame zoom slider" />
+              <div class="zoom-presets" id="zoomPresetChips">
+                <button type="button" class="zoom-chip" data-zoom="0.5">50%</button>
+                <button type="button" class="zoom-chip" data-zoom="0.75">75%</button>
+                <button type="button" class="zoom-chip" data-zoom="0.9">90%</button>
+                <button type="button" class="zoom-chip active" data-zoom="1.0">100%</button>
+                <button type="button" class="zoom-chip" data-zoom="1.25">125%</button>
+                <button type="button" class="zoom-chip" data-zoom="1.5">150%</button>
+              </div>
+            </div>
+          </div>
+
           <div class="embed-note">
             <i data-lucide="alert-triangle" style="width: 14px; height: 14px; vertical-align: -2px; margin-right: 4px; display: inline-block;"></i>
             <strong>Note:</strong> Some websites (like Google, GitHub, or Twitter) restrict embedding via browser security policies (<code>X-Frame-Options</code>). You can still easily open them in a new tab directly from the card header.
@@ -225,6 +245,16 @@
         <span id="fullscreenTitle" style="font-weight: 600; font-size: 14px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;"></span>
       </div>
       <div style="display: flex; align-items: center; gap: 6px;">
+        <div class="fullscreen-zoom-group">
+          <button id="fullscreenZoomOutBtn" class="btn-ghost btn-icon" type="button" title="Zoom out" aria-label="Zoom out" style="width: 24px; height: 24px; padding: 2px;">
+            <i data-lucide="minus"></i>
+          </button>
+          <span id="fullscreenZoomLabel" class="fullscreen-zoom-label">100%</span>
+          <button id="fullscreenZoomInBtn" class="btn-ghost btn-icon" type="button" title="Zoom in" aria-label="Zoom in" style="width: 24px; height: 24px; padding: 2px;">
+            <i data-lucide="plus"></i>
+          </button>
+          <button id="fullscreenZoomResetBtn" class="btn-ghost" type="button" title="Reset zoom" style="font-size: 11px; padding: 2px 6px;">Reset</button>
+        </div>
         <button id="fullscreenReloadBtn" class="btn-ghost btn-icon" type="button" title="Reload frame" aria-label="Reload frame">
           <i data-lucide="rotate-cw"></i>
         </button>
