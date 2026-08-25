@@ -24,12 +24,12 @@
 
       <div class="header-actions">
         <button id="addFrameBtn" class="btn-primary" type="button" aria-label="Add new frame">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+          <i data-lucide="plus"></i>
           <span>Add Frame</span>
         </button>
 
         <button id="settingsBtn" class="btn-ghost btn-icon" type="button" title="Settings, Backup & Share" aria-label="Settings, Backup and Share">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
+          <i data-lucide="settings"></i>
         </button>
       </div>
     </div>
@@ -39,7 +39,7 @@
       <div class="folder-nav-container">
         <div id="folderTabsList" class="folder-tabs" role="tablist"></div>
         <div class="grid-info-hint">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><line x1="3" y1="9" x2="21" y2="9"></line><line x1="9" y1="21" x2="9" y2="9"></line></svg>
+          <i data-lucide="grid"></i>
           <span>6-col grid</span>
         </div>
       </div>
@@ -67,7 +67,7 @@
       <div class="modal-header">
         <h2 id="frameModalTitle" class="modal-title">Add Frame</h2>
         <button class="btn-ghost btn-icon close-modal-btn" type="button" aria-label="Close dialog">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+          <i data-lucide="x"></i>
         </button>
       </div>
 
@@ -119,7 +119,8 @@
           </div>
 
           <div class="embed-note">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: -2px; margin-right: 4px;"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg><strong>Note:</strong> Some websites (like Google, GitHub, or Twitter) restrict embedding via browser security policies (<code>X-Frame-Options</code>). You can still easily open them in a new tab directly from the card header.
+            <i data-lucide="alert-triangle" style="width: 14px; height: 14px; vertical-align: -2px; margin-right: 4px; display: inline-block;"></i>
+            <strong>Note:</strong> Some websites (like Google, GitHub, or Twitter) restrict embedding via browser security policies (<code>X-Frame-Options</code>). You can still easily open them in a new tab directly from the card header.
           </div>
         </div>
 
@@ -137,7 +138,7 @@
       <div class="modal-header">
         <h2 id="folderModalTitle" class="modal-title">New Folder</h2>
         <button class="btn-ghost btn-icon close-modal-btn" type="button" aria-label="Close dialog">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+          <i data-lucide="x"></i>
         </button>
       </div>
 
@@ -164,14 +165,14 @@
       <div class="modal-header">
         <h2 id="settingsModalTitle" class="modal-title">Settings & Backup</h2>
         <button class="btn-ghost btn-icon close-modal-btn" type="button" aria-label="Close dialog">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+          <i data-lucide="x"></i>
         </button>
       </div>
 
       <div class="modal-body">
         <div class="form-group">
           <label class="form-label" style="display: flex; align-items: center; gap: 6px;">
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="14" height="20" x="5" y="2" rx="2" ry="2"/><path d="M12 18h.01"/></svg>
+            <i data-lucide="smartphone"></i>
             <span>Share via QR Code & Link</span>
           </label>
           <span class="form-hint">Scan with your mobile camera or copy the link to load your dashboard on any device.</span>
@@ -184,7 +185,7 @@
           <div class="share-url-row">
             <input id="shareUrlInput" class="input-text" type="text" readonly />
             <button id="copyShareLinkBtn" type="button" class="btn-primary" style="white-space: nowrap;">
-              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg>
+              <i data-lucide="copy"></i>
               <span>Copy Link</span>
             </button>
           </div>
@@ -194,17 +195,17 @@
 
         <div class="form-group">
           <label class="form-label" style="display: flex; align-items: center; gap: 6px;">
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
+            <i data-lucide="download"></i>
             <span>Backup & Restore (JSON)</span>
           </label>
           <span class="form-hint">Export your dashboard configuration to a file or restore from a previous JSON backup.</span>
           <div style="display: flex; gap: 8px; margin-top: 6px; flex-wrap: wrap;">
             <button id="exportJsonBtn" type="button" class="btn-ghost">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+              <i data-lucide="download"></i>
               <span>Export JSON</span>
             </button>
             <button id="importJsonBtn" type="button" class="btn-ghost">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
+              <i data-lucide="upload"></i>
               <span>Import JSON</span>
             </button>
             <input type="file" id="importFileInput" accept=".json,application/json" style="display: none;" />
@@ -215,7 +216,7 @@
 
         <div class="form-group">
           <label class="form-label" style="color: var(--danger); display: flex; align-items: center; gap: 6px;">
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
+            <i data-lucide="alert-triangle"></i>
             <span>Reset Dashboard</span>
           </label>
           <span class="form-hint">Clear all folders and custom frames and restore initial default presets.</span>
@@ -240,13 +241,13 @@
       </div>
       <div style="display: flex; align-items: center; gap: 6px;">
         <button id="fullscreenReloadBtn" class="btn-ghost btn-icon" type="button" title="Reload frame" aria-label="Reload frame">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 4 23 10 17 10"></polyline><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"></path></svg>
+          <i data-lucide="rotate-cw"></i>
         </button>
         <a id="fullscreenExtLink" href="" target="_blank" rel="noopener noreferrer" class="btn-ghost btn-icon" title="Open in new tab" aria-label="Open in new tab" style="text-decoration: none; display: flex; align-items: center; justify-content: center;">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
+          <i data-lucide="external-link"></i>
         </a>
         <button id="fullscreenCloseBtn" class="btn-ghost btn-icon" type="button" title="Exit focus view (Esc)" aria-label="Exit focus view">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+          <i data-lucide="x"></i>
         </button>
       </div>
     </div>
@@ -261,23 +262,25 @@
   <!-- Dropdown Menu for Tab Options -->
   <div id="tabOptionsMenu" class="dropdown-menu">
     <button id="tabRenameOpt" class="dropdown-item" type="button">
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"></path></svg>
+      <i data-lucide="edit-3"></i>
       <span>Rename folder</span>
     </button>
     <button id="tabMoveLeftOpt" class="dropdown-item" type="button">
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
+      <i data-lucide="arrow-left"></i>
       <span>Move left</span>
     </button>
     <button id="tabMoveRightOpt" class="dropdown-item" type="button">
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+      <i data-lucide="arrow-right"></i>
       <span>Move right</span>
     </button>
     <button id="tabDeleteOpt" class="dropdown-item danger" type="button">
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+      <i data-lucide="trash-2"></i>
       <span>Delete folder</span>
     </button>
   </div>
 
+  <!-- Scripts -->
+  <script src="lucide.min.js"></script>
   <script src="qrcode.min.js"></script>
   <script src="app.js"></script>
 </body>

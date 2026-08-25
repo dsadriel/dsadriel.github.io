@@ -4,11 +4,11 @@ const MAX_COLS_DESKTOP = 6;
 const MAX_COLS_MOBILE = 3;
 const DESKTOP_MEDIA = "(min-width: 900px)";
 
-// Curated Starter Packs
+// Curated Starter Packs with Lucide Icons
 const STARTER_PACKS = {
   dev: {
     name: "Dev & Docs Starter",
-    icon: `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"></polyline><polyline points="8 6 2 12 8 18"></polyline></svg>`,
+    icon: `<i data-lucide="code"></i>`,
     desc: "Hacker News, DevDocs, Bundlephobia & GitHub Trends",
     frames: [
       { url: "https://news.ycombinator.com/", title: "Hacker News", colSpan: 3, rowSpan: 3 },
@@ -19,7 +19,7 @@ const STARTER_PACKS = {
   },
   monitoring: {
     name: "Status & Monitoring",
-    icon: `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"></path><path d="m19 9-5 5-4-4-3 3"></path></svg>`,
+    icon: `<i data-lucide="activity"></i>`,
     desc: "Cloudflare Status, GitHub Status, Fast.com & World Clock",
     frames: [
       { url: "https://www.cloudflarestatus.com/", title: "Cloudflare Status", colSpan: 3, rowSpan: 2 },
@@ -30,7 +30,7 @@ const STARTER_PACKS = {
   },
   productivity: {
     name: "Focus & Productivity",
-    icon: `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>`,
+    icon: `<i data-lucide="clock"></i>`,
     desc: "Pomodoro Timer, Markdown Editor & Sound Stream",
     frames: [
       { url: "https://pomofocus.io/", title: "Pomofocus Timer", colSpan: 3, rowSpan: 3 },
@@ -39,7 +39,7 @@ const STARTER_PACKS = {
   },
   design: {
     name: "Design & Inspiration",
-    icon: `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="13.5" cy="6.5" r=".5" fill="currentColor"></circle><circle cx="17.5" cy="10.5" r=".5" fill="currentColor"></circle><circle cx="8.5" cy="7.5" r=".5" fill="currentColor"></circle><circle cx="6.5" cy="12.5" r=".5" fill="currentColor"></circle><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c.926 0 1.648-.746 1.648-1.688 0-.437-.18-.835-.437-1.125-.29-.289-.438-.652-.438-1.125a1.64 1.64 0 0 1 1.668-1.668h1.996c3.051 0 5.555-2.503 5.555-5.554C21.965 6.012 17.461 2 12 2z"></path></svg>`,
+    icon: `<i data-lucide="palette"></i>`,
     desc: "Color Hunt palettes, Dribbble & Fonts inspiration",
     frames: [
       { url: "https://colorhunt.co/", title: "Color Hunt Palettes", colSpan: 3, rowSpan: 3 },
@@ -79,6 +79,7 @@ document.addEventListener("DOMContentLoaded", () => {
   renderAll();
   setupEventListeners();
   updatePreviewMatrix();
+  refreshIcons();
 });
 
 // --- Event Listeners ---
@@ -198,6 +199,7 @@ function renderAll() {
   renderFolderTabs();
   renderFrames();
   updateFolderSelect();
+  refreshIcons();
 }
 
 function renderFolderTabs() {
@@ -210,8 +212,8 @@ function renderFolderTabs() {
     tab.setAttribute("role", "tab");
     tab.setAttribute("aria-selected", folder.id === state.selectedFolderId ? "true" : "false");
 
-    const icon = `<svg class="folder-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path></svg>`;
-    const optionsBtn = `<span class="folder-tab-options" title="Folder settings" aria-label="Folder settings"><svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="2"></circle><circle cx="19" cy="12" r="2"></circle><circle cx="5" cy="12" r="2"></circle></svg></span>`;
+    const icon = `<i data-lucide="folder" class="folder-icon"></i>`;
+    const optionsBtn = `<span class="folder-tab-options" title="Folder settings" aria-label="Folder settings"><i data-lucide="more-horizontal"></i></span>`;
 
     tab.innerHTML = `${icon}<span>${escapeHtml(folder.name)}</span>${optionsBtn}`;
 
@@ -241,10 +243,12 @@ function renderFolderTabs() {
   const addTabBtn = document.createElement("button");
   addTabBtn.type = "button";
   addTabBtn.className = "add-tab-btn";
-  addTabBtn.innerHTML = `+ New Tab`;
+  addTabBtn.innerHTML = `<i data-lucide="plus"></i><span>New Tab</span>`;
   addTabBtn.setAttribute("aria-label", "Create new tab");
   addTabBtn.addEventListener("click", () => openFolderModal());
   folderTabsList.appendChild(addTabBtn);
+
+  refreshIcons();
 }
 
 function renderFrames() {
@@ -265,6 +269,8 @@ function renderFrames() {
     const card = createFrameCard(frame, index, maxCols);
     framesGrid.appendChild(card);
   });
+
+  refreshIcons();
 }
 
 function createFrameCard(frame, index, maxCols) {
@@ -287,19 +293,19 @@ function createFrameCard(frame, index, maxCols) {
     </div>
     <div class="card-actions">
       <button type="button" class="btn-reload" title="Reload frame" aria-label="Reload frame">
-        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 4 23 10 17 10"></polyline><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"></path></svg>
+        <i data-lucide="rotate-cw"></i>
       </button>
       <a href="${escapeHtml(frame.url)}" target="_blank" rel="noopener noreferrer" class="btn-ghost" title="Open in new tab" aria-label="Open in new tab" style="padding: 4px; width: 26px; height: 26px; display: inline-flex; align-items: center; justify-content: center; text-decoration: none; color: inherit; border-radius: var(--radius-sm);">
-        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
+        <i data-lucide="external-link"></i>
       </a>
       <button type="button" class="btn-fullscreen" title="Focus Fullscreen" aria-label="Focus Fullscreen">
-        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 3 21 3 21 9"></polyline><polyline points="9 21 3 21 3 15"></polyline><line x1="21" y1="3" x2="14" y2="10"></line><line x1="3" y1="21" x2="10" y2="14"></line></svg>
+        <i data-lucide="maximize-2"></i>
       </button>
       <button type="button" class="btn-edit" title="Edit frame" aria-label="Edit frame">
-        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="1"></circle><circle cx="19" cy="12" r="1"></circle><circle cx="5" cy="12" r="1"></circle></svg>
+        <i data-lucide="more-horizontal"></i>
       </button>
       <button type="button" class="btn-delete" title="Delete frame" aria-label="Delete frame" style="color: var(--danger);">
-        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+        <i data-lucide="trash-2"></i>
       </button>
     </div>
   `;
@@ -332,10 +338,11 @@ function createFrameCard(frame, index, maxCols) {
           <p style="font-weight: 500; margin-bottom: 4px;">External Page Loaded</p>
           <a href="${escapeHtml(frame.url)}" target="_blank" rel="noopener noreferrer" class="btn-primary" style="font-size: 11px; padding: 4px 10px; text-decoration: none; display: inline-flex; align-items: center; gap: 4px;">
             <span>Open in new tab</span>
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
+            <i data-lucide="external-link" style="width: 12px; height: 12px;"></i>
           </a>
         </div>
       `;
+      refreshIcons();
     }
   }, 5000);
 
@@ -370,12 +377,12 @@ function renderEmptyState() {
 
   container.innerHTML = `
     <div class="empty-icon">
-      <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" style="color: var(--fg-muted);"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="M3 12h18"/><path d="M12 3v18"/></svg>
+      <i data-lucide="layout-grid"></i>
     </div>
     <h2 class="empty-title">This folder is empty</h2>
     <p class="empty-desc">Add your favorite websites, tools, and dashboards in customizable grid sizes, or launch one of our curated starter packs below.</p>
     <button id="emptyAddBtn" class="btn-primary" type="button" style="margin-top: 4px;">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+      <i data-lucide="plus"></i>
       <span>Add Your First Frame</span>
     </button>
 
@@ -403,6 +410,7 @@ function renderEmptyState() {
   });
 
   framesGrid.appendChild(container);
+  refreshIcons();
 }
 
 function updateFolderSelect() {
@@ -616,6 +624,7 @@ function openModal(modal) {
   modal.classList.add("open");
   const autofocusEl = modal.querySelector("[autofocus]");
   if (autofocusEl) setTimeout(() => autofocusEl.focus(), 50);
+  refreshIcons();
 }
 
 function closeAllModals() {
@@ -699,6 +708,7 @@ function openFullscreen(frame) {
   extLink.href = frame.url;
 
   fullscreenModal.classList.add("open");
+  refreshIcons();
 }
 
 function closeFullscreen() {
@@ -713,6 +723,7 @@ function openTabMenu(folderId, targetEl) {
   tabOptionsMenu.style.top = `${rect.bottom + window.scrollY + 4}px`;
   tabOptionsMenu.style.left = `${rect.left + window.scrollX}px`;
   tabOptionsMenu.classList.add("open");
+  refreshIcons();
 }
 
 function closeTabMenu() {
@@ -1027,4 +1038,10 @@ function escapeHtml(str) {
     .replace(/>/g, "&gt;")
     .replace(/"/g, "&quot;")
     .replace(/'/g, "&#039;");
+}
+
+function refreshIcons() {
+  if (typeof lucide !== "undefined" && typeof lucide.createIcons === "function") {
+    lucide.createIcons();
+  }
 }

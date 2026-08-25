@@ -959,3 +959,47 @@ button.starter-pack-card:hover {
   color: var(--fg-muted);
   background: var(--bg);
 }
+
+/* Lucide Icon Library Sizing */
+.lucide,
+[data-lucide] {
+  width: 16px;
+  height: 16px;
+  stroke-width: 2px;
+  vertical-align: middle;
+  flex-shrink: 0;
+  display: inline-block;
+}
+
+.btn-icon .lucide,
+.btn-icon [data-lucide] {
+  width: 18px;
+  height: 18px;
+}
+
+.card-actions .lucide,
+.card-actions [data-lucide] {
+  width: 14px;
+  height: 14px;
+}
+
+.folder-tab .lucide,
+.folder-tab [data-lucide="folder"] {
+  width: 14px;
+  height: 14px;
+  opacity: 0.7;
+}
+
+.folder-tab.active .lucide,
+.folder-tab.active [data-lucide="folder"] {
+  opacity: 1;
+  color: var(--accent-fg);
+}
+
+.empty-icon .lucide,
+.empty-icon [data-lucide] {
+  width: 40px;
+  height: 40px;
+  stroke-width: 1.6px;
+  color: var(--fg-muted);
+}
