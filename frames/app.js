@@ -266,30 +266,100 @@ function renderFolderTabs() {
 }
 
 function renderFrames() {
-  framesGrid.textContent = "";
   const folder = getSelectedFolder();
 
   if (!folder || !folder.frames || folder.frames.length === 0) {
     framesGrid.classList.add("is-empty");
+    framesGrid.textContent = "";
+    framesGrid.dataset.renderedFolderId = folder ? folder.id : "";
     renderEmptyState();
     return;
   }
 
+  // If switched folder, clear grid
+  if (framesGrid.dataset.renderedFolderId !== folder.id) {
+    framesGrid.textContent = "";
+    framesGrid.dataset.renderedFolderId = folder.id;
+  }
+
   framesGrid.classList.remove("is-empty");
+  const emptyState = framesGrid.querySelector(".empty-state");
+  if (emptyState) emptyState.remove();
+
   const isDesktop = window.matchMedia(DESKTOP_MEDIA).matches;
   const maxCols = isDesktop ? MAX_COLS_DESKTOP : MAX_COLS_MOBILE;
 
+  // Collect existing DOM cards to reuse their running iframes
+  const existingCards = new Map();
+  framesGrid.querySelectorAll(".frame-card").forEach((card) => {
+    const id = card.getAttribute("data-frame-id");
+    if (id) existingCards.set(id, card);
+  });
+
+  // Reconcile cards in folder order
   folder.frames.forEach((frame, index) => {
-    const card = createFrameCard(frame, index, maxCols);
-    framesGrid.appendChild(card);
+    if (existingCards.has(frame.id)) {
+      const card = existingCards.get(frame.id);
+      updateExistingFrameCard(card, frame, maxCols);
+      framesGrid.appendChild(card);
+      existingCards.delete(frame.id);
+    } else {
+      const card = createFrameCard(frame, index, maxCols);
+      framesGrid.appendChild(card);
+    }
+  });
+
+  // Remove any deleted cards
+  existingCards.forEach((card) => {
+    card.remove();
   });
 
   refreshIcons();
 }
 
+function updateExistingFrameCard(card, frame, maxCols) {
+  card.style.gridColumn = `span ${Math.min(frame.colSpan || 3, maxCols)}`;
+  card.style.gridRow = `span ${frame.rowSpan || 2}`;
+
+  const title = frame.title || formatDomainAsTitle(frame.url);
+  const titleEl = card.querySelector(".card-title");
+  if (titleEl) {
+    titleEl.textContent = title;
+    titleEl.title = frame.url;
+  }
+
+  const zoomBadge = frame.zoom && frame.zoom !== 1 ? ` · ${Math.round(frame.zoom * 100)}%` : "";
+  const sizeTag = card.querySelector(".card-size-tag");
+  if (sizeTag) {
+    sizeTag.textContent = `${frame.colSpan || 3}×${frame.rowSpan || 2}${zoomBadge}`;
+  }
+
+  const favicon = card.querySelector(".card-favicon");
+  if (favicon) {
+    const expectedFavicon = getFaviconUrl(frame.url);
+    if (favicon.src !== expectedFavicon) {
+      favicon.src = expectedFavicon;
+    }
+  }
+
+  const extLink = card.querySelector(".card-actions a");
+  if (extLink) {
+    extLink.href = frame.url;
+  }
+
+  const iframe = card.querySelector("iframe");
+  if (iframe) {
+    applyFrameZoom(iframe, frame.zoom || 1.0);
+    if (iframe.src !== frame.url) {
+      iframe.src = frame.url;
+    }
+  }
+}
+
 function createFrameCard(frame, index, maxCols) {
   const card = document.createElement("article");
   card.className = "frame-card";
+  card.setAttribute("data-frame-id", frame.id);
   card.style.gridColumn = `span ${Math.min(frame.colSpan || 3, maxCols)}`;
   card.style.gridRow = `span ${frame.rowSpan || 2}`;
 
