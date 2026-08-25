@@ -53,14 +53,16 @@
       justify-content: space-between;
     }
 
-    .tabs {
+    .tabs,
+    .folder-tabs,
+    .item-actions {
       display: flex;
       gap: 8px;
+      flex-wrap: wrap;
     }
 
     button,
-    input,
-    select {
+    input {
       color: inherit;
       background: var(--surface);
       border: 1px solid var(--line);
@@ -86,6 +88,27 @@
 
     .hidden {
       display: none;
+    }
+
+    .stack {
+      display: grid;
+      gap: 14px;
+    }
+
+    .section-block {
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      background: var(--surface);
+      padding: 12px;
+      display: grid;
+      gap: 10px;
+    }
+
+    .section-title {
+      margin: 0;
+      font-size: 14px;
+      color: var(--muted);
+      font-weight: 600;
     }
 
     .grid {
@@ -143,7 +166,6 @@
       display: flex;
       flex-direction: column;
       gap: 10px;
-      margin-bottom: 16px;
     }
 
     .config-item {
@@ -152,22 +174,24 @@
       padding: 10px;
       display: grid;
       gap: 8px;
-      background: var(--surface);
+      background: var(--bg);
     }
 
     .config-item-top,
-    .add-row {
+    .add-row,
+    .folder-row {
       display: grid;
       grid-template-columns: minmax(0, 1fr) 90px 90px auto;
       gap: 8px;
       align-items: center;
     }
 
+    .folder-row {
+      grid-template-columns: minmax(0, 1fr) auto;
+    }
+
     .item-actions {
-      display: flex;
-      gap: 6px;
       justify-content: flex-end;
-      flex-wrap: wrap;
     }
 
     .item-actions button {
@@ -177,7 +201,8 @@
 
     @media (max-width: 760px) {
       .config-item-top,
-      .add-row {
+      .add-row,
+      .folder-row {
         grid-template-columns: 1fr;
       }
 
@@ -198,18 +223,32 @@
       <div class="hint">3 cols mobile · 6 cols desktop</div>
     </header>
 
-    <section id="mainView">
+    <section id="mainView" class="stack">
+      <div id="mainFolderTabs" class="folder-tabs"></div>
       <div id="framesGrid" class="grid"></div>
     </section>
 
-    <section id="configView" class="hidden">
-      <div id="configList" class="config-list"></div>
-      <form id="addForm" class="add-row">
-        <input id="newUrl" type="url" placeholder="https://example.com" required />
-        <input id="newColSpan" type="number" min="1" max="6" value="3" required />
-        <input id="newRowSpan" type="number" min="1" max="8" value="2" required />
-        <button type="submit">Add frame</button>
-      </form>
+    <section id="configView" class="hidden stack">
+      <div class="section-block">
+        <h2 class="section-title">Folders / Tabs</h2>
+        <div id="folderConfigList" class="config-list"></div>
+        <form id="addFolderForm" class="folder-row">
+          <input id="newFolderName" type="text" placeholder="New folder name" required maxlength="40" />
+          <button type="submit">Add folder</button>
+        </form>
+      </div>
+
+      <div class="section-block">
+        <h2 class="section-title">Frames in selected folder</h2>
+        <div id="configFolderTabs" class="folder-tabs"></div>
+        <div id="configList" class="config-list"></div>
+        <form id="addForm" class="add-row">
+          <input id="newUrl" type="url" placeholder="https://example.com" required />
+          <input id="newColSpan" type="number" min="1" max="6" value="3" required />
+          <input id="newRowSpan" type="number" min="1" max="8" value="2" required />
+          <button type="submit">Add frame</button>
+        </form>
+      </div>
     </section>
   </main>
 
@@ -219,7 +258,7 @@
     const DEFAULT_COLS_DESKTOP = 6;
     const DESKTOP_MEDIA = "(min-width: 900px)";
 
-    let frames = loadFrames();
+    let state = loadState();
     let activeView = "main";
 
     const mainView = document.getElementById("mainView");
@@ -228,13 +267,33 @@
     const configTab = document.getElementById("configTab");
     const framesGrid = document.getElementById("framesGrid");
     const configList = document.getElementById("configList");
+    const mainFolderTabs = document.getElementById("mainFolderTabs");
+    const configFolderTabs = document.getElementById("configFolderTabs");
+    const folderConfigList = document.getElementById("folderConfigList");
     const addForm = document.getElementById("addForm");
+    const addFolderForm = document.getElementById("addFolderForm");
 
     mainTab.addEventListener("click", () => setView("main"));
     configTab.addEventListener("click", () => setView("config"));
 
+    addFolderForm.addEventListener("submit", (event) => {
+      event.preventDefault();
+      const input = document.getElementById("newFolderName");
+      const name = (input.value || "").trim();
+      if (!name) return;
+
+      state.folders.push({ id: makeId(), name: name.slice(0, 40), frames: [] });
+      state.selectedFolderId = state.folders[state.folders.length - 1].id;
+      persist();
+      addFolderForm.reset();
+      renderAll();
+    });
+
     addForm.addEventListener("submit", (event) => {
       event.preventDefault();
+      const folder = getSelectedFolder();
+      if (!folder) return;
+
       const url = validateUrl(document.getElementById("newUrl").value.trim());
       if (!url) {
         alert("Please use a valid http/https URL.");
@@ -244,7 +303,7 @@
       const colSpan = clampInt(document.getElementById("newColSpan").value, 1, DEFAULT_COLS_DESKTOP, 3);
       const rowSpan = clampInt(document.getElementById("newRowSpan").value, 1, 8, 2);
 
-      frames.push({ id: makeId(), url, colSpan, rowSpan });
+      folder.frames.push({ id: makeId(), url, colSpan, rowSpan });
       persist();
       addForm.reset();
       document.getElementById("newColSpan").value = "3";
@@ -252,9 +311,16 @@
       renderAll();
     });
 
-    window.matchMedia(DESKTOP_MEDIA).addEventListener("change", () => {
-      if (activeView === "main") renderFrames();
-    });
+    const mediaQuery = window.matchMedia(DESKTOP_MEDIA);
+    if (typeof mediaQuery.addEventListener === "function") {
+      mediaQuery.addEventListener("change", () => {
+        if (activeView === "main") renderFrames();
+      });
+    } else if (typeof mediaQuery.addListener === "function") {
+      mediaQuery.addListener(() => {
+        if (activeView === "main") renderFrames();
+      });
+    }
 
     function setView(view) {
       activeView = view;
@@ -267,25 +333,54 @@
       else renderConfig();
     }
 
+    function getSelectedFolder() {
+      const folder = state.folders.find((item) => item.id === state.selectedFolderId);
+      if (folder) return folder;
+      state.selectedFolderId = state.folders[0]?.id || null;
+      return state.folders[0] || null;
+    }
+
+    function setSelectedFolder(folderId) {
+      const exists = state.folders.some((folder) => folder.id === folderId);
+      if (!exists) return;
+      state.selectedFolderId = folderId;
+      persist();
+      renderAll();
+    }
+
     function renderAll() {
+      renderFolderTabs(mainFolderTabs);
+      renderFolderTabs(configFolderTabs);
       renderFrames();
       renderConfig();
     }
 
+    function renderFolderTabs(container) {
+      container.textContent = "";
+      state.folders.forEach((folder) => {
+        const tab = document.createElement("button");
+        tab.type = "button";
+        tab.textContent = folder.name;
+        tab.classList.toggle("active", folder.id === state.selectedFolderId);
+        tab.addEventListener("click", () => setSelectedFolder(folder.id));
+        container.appendChild(tab);
+      });
+    }
+
     function renderFrames() {
       framesGrid.textContent = "";
-
-      if (!frames.length) {
+      const folder = getSelectedFolder();
+      if (!folder || !folder.frames.length) {
         const empty = document.createElement("div");
         empty.className = "empty";
-        empty.textContent = "No frames yet. Go to Config to add one.";
+        empty.textContent = "No frames in this folder yet. Go to Config to add one.";
         framesGrid.appendChild(empty);
         return;
       }
 
       const maxCols = window.matchMedia(DESKTOP_MEDIA).matches ? DEFAULT_COLS_DESKTOP : DEFAULT_COLS_MOBILE;
 
-      frames.forEach((frame) => {
+      folder.frames.forEach((frame) => {
         const card = document.createElement("article");
         card.className = "card";
         card.style.gridColumn = `span ${Math.min(frame.colSpan, maxCols)}`;
@@ -308,9 +403,65 @@
     }
 
     function renderConfig() {
-      configList.textContent = "";
+      renderFolderConfig();
+      renderFrameConfig();
+    }
 
-      if (!frames.length) {
+    function renderFolderConfig() {
+      folderConfigList.textContent = "";
+
+      state.folders.forEach((folder, index) => {
+        const item = document.createElement("div");
+        item.className = "config-item";
+
+        const row = document.createElement("div");
+        row.className = "folder-row";
+
+        const nameInput = document.createElement("input");
+        nameInput.type = "text";
+        nameInput.value = folder.name;
+        nameInput.maxLength = 40;
+
+        nameInput.addEventListener("change", () => {
+          const nextName = (nameInput.value || "").trim();
+          if (!nextName) {
+            nameInput.value = folder.name;
+            return;
+          }
+          folder.name = nextName.slice(0, 40);
+          persist();
+          renderAll();
+        });
+
+        const actions = document.createElement("div");
+        actions.className = "item-actions";
+
+        const up = makeButton("↑", () => moveFolder(index, -1));
+        up.disabled = index === 0;
+
+        const down = makeButton("↓", () => moveFolder(index, 1));
+        down.disabled = index === state.folders.length - 1;
+
+        const remove = makeButton("Delete", () => {
+          removeFolder(index);
+        });
+        remove.disabled = state.folders.length === 1;
+
+        actions.appendChild(up);
+        actions.appendChild(down);
+        actions.appendChild(remove);
+
+        row.appendChild(nameInput);
+        row.appendChild(actions);
+        item.appendChild(row);
+        folderConfigList.appendChild(item);
+      });
+    }
+
+    function renderFrameConfig() {
+      configList.textContent = "";
+      const folder = getSelectedFolder();
+      if (!folder || !folder.frames.length) {
         const empty = document.createElement("div");
         empty.className = "empty";
         empty.textContent = "Add your first frame below.";
@@ -318,7 +469,7 @@
         return;
       }
 
-      frames.forEach((frame, index) => {
+      folder.frames.forEach((frame, index) => {
         const item = document.createElement("div");
         item.className = "config-item";
 
@@ -349,10 +500,10 @@
         up.disabled = index === 0;
 
         const down = makeButton("↓", () => moveFrame(index, 1));
-        down.disabled = index === frames.length - 1;
+        down.disabled = index === folder.frames.length - 1;
 
         const remove = makeButton("Delete", () => {
-          frames.splice(index, 1);
+          folder.frames.splice(index, 1);
           persist();
           renderAll();
         });
@@ -396,11 +547,33 @@
       });
     }
 
-    function moveFrame(index, delta) {
+    function moveFolder(index, delta) {
       const target = index + delta;
-      if (target < 0 || target >= frames.length) return;
-      const [item] = frames.splice(index, 1);
-      frames.splice(target, 0, item);
+      if (target < 0 || target >= state.folders.length) return;
+      const [item] = state.folders.splice(index, 1);
+      state.folders.splice(target, 0, item);
+      persist();
+      renderAll();
+    }
+
+    function removeFolder(index) {
+      if (state.folders.length === 1) return;
+      const removed = state.folders.splice(index, 1)[0];
+      if (removed && removed.id === state.selectedFolderId) {
+        const fallback = state.folders[index] || state.folders[index - 1] || state.folders[0];
+        state.selectedFolderId = fallback ? fallback.id : null;
+      }
+      persist();
+      renderAll();
+    }
+
+    function moveFrame(index, delta) {
+      const folder = getSelectedFolder();
+      if (!folder) return;
+      const target = index + delta;
+      if (target < 0 || target >= folder.frames.length) return;
+      const [item] = folder.frames.splice(index, 1);
+      folder.frames.splice(target, 0, item);
       persist();
       renderAll();
     }
@@ -413,17 +586,62 @@
       return btn;
     }
 
-    function loadFrames() {
+    function loadState() {
+      const fallback = {
+        version: 2,
+        selectedFolderId: null,
+        folders: [{ id: makeId(), name: "Default", frames: [] }],
+      };
+
       try {
         const raw = localStorage.getItem(STORAGE_KEY);
-        if (!raw) return [];
+        if (!raw) return fallback;
         const parsed = JSON.parse(raw);
-        if (!Array.isArray(parsed)) return [];
 
-        return parsed.map((item, index) => normalizeFrame(item, index)).filter(Boolean);
+        if (Array.isArray(parsed)) {
+          const migratedFrames = parsed.map((item, index) => normalizeFrame(item, index)).filter(Boolean);
+          const folderId = makeId();
+          return {
+            version: 2,
+            selectedFolderId: folderId,
+            folders: [{ id: folderId, name: "Default", frames: migratedFrames }],
+          };
+        }
+
+        if (!parsed || typeof parsed !== "object" || !Array.isArray(parsed.folders)) return fallback;
+
+        const folders = parsed.folders
+          .map((folder, folderIndex) => normalizeFolder(folder, folderIndex))
+          .filter(Boolean);
+
+        if (!folders.length) return fallback;
+
+        const selectedFolderId = folders.some((folder) => folder.id === parsed.selectedFolderId)
+          ? parsed.selectedFolderId
+          : folders[0].id;
+
+        return {
+          version: 2,
+          selectedFolderId,
+          folders,
+        };
       } catch {
-        return [];
+        return fallback;
       }
+    }
+
+    function normalizeFolder(input, folderIndex) {
+      if (!input || typeof input !== "object") return null;
+      const name = String(input.name || "").trim() || `Folder ${folderIndex + 1}`;
+      const frames = Array.isArray(input.frames)
+        ? input.frames.map((item, frameIndex) => normalizeFrame(item, frameIndex)).filter(Boolean)
+        : [];
+
+      return {
+        id: typeof input.id === "string" && input.id ? input.id : makeId(),
+        name: name.slice(0, 40),
+        frames,
+      };
     }
 
     function normalizeFrame(input, index) {
@@ -461,7 +679,7 @@
     }
 
     function persist() {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(frames));
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
     }
 
     renderAll();
