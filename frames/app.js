@@ -618,7 +618,7 @@ function applyFrameZoom(iframe, zoomLevel) {
 }
 
 function updateZoomControl(zoomLevel) {
-  selectedZoom = clampFloat(zoomLevel, 0.4, 1.6, 1.0);
+  selectedZoom = clampFloat(zoomLevel, 0.5, 1.5, 1.0);
   const zoomPercent = Math.round(selectedZoom * 100);
 
   const badge = document.getElementById("frameZoomBadge");
