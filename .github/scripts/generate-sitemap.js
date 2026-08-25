@@ -8,6 +8,7 @@ const staticPages = [
     '/portfolio/',
     '/suporte/',
     '/links/',
+    '/frames/',
 ];
 
 function getProjectPages() {
