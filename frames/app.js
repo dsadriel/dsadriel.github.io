@@ -85,7 +85,10 @@ document.addEventListener("DOMContentLoaded", () => {
 function setupEventListeners() {
   // Modals open
   addFrameBtn.addEventListener("click", () => openFrameModal());
-  settingsBtn.addEventListener("click", () => openModal(settingsModal));
+  settingsBtn.addEventListener("click", () => {
+    openModal(settingsModal);
+    updateQrCode();
+  });
 
   // Modals close
   document.querySelectorAll(".close-modal-btn").forEach((btn) => {
@@ -743,16 +746,56 @@ function showToast(message, undoCallback = null) {
 }
 
 // --- Import / Export / Sharing ---
-function copyShareLink() {
+function getShareableUrl() {
   try {
     const serialized = btoa(unescape(encodeURIComponent(JSON.stringify(state))));
-    const url = `${window.location.origin}${window.location.pathname}#import=${serialized}`;
-    navigator.clipboard.writeText(url).then(() => {
-      showToast("Shareable link copied to clipboard!");
-    });
+    return `${window.location.origin}${window.location.pathname}#import=${serialized}`;
   } catch (err) {
-    showToast("Error creating shareable link.");
+    return window.location.href;
   }
+}
+
+function updateQrCode() {
+  const qrContainer = document.getElementById("shareQrCode");
+  const urlInput = document.getElementById("shareUrlInput");
+  if (!qrContainer) return;
+
+  const shareUrl = getShareableUrl();
+  if (urlInput) urlInput.value = shareUrl;
+
+  qrContainer.textContent = "";
+
+  if (typeof QRCode !== "undefined") {
+    try {
+      new QRCode(qrContainer, {
+        text: shareUrl,
+        width: 160,
+        height: 160,
+        colorDark: "#000000",
+        colorLight: "#ffffff",
+        correctLevel: QRCode.CorrectLevel.L
+      });
+      return;
+    } catch (e) {
+      console.warn("Local QRCode error, using image fallback", e);
+    }
+  }
+
+  const qrImg = document.createElement("img");
+  qrImg.src = `https://api.qrserver.com/v1/create-qr-code/?size=160x160&margin=4&data=${encodeURIComponent(shareUrl)}`;
+  qrImg.alt = "Dashboard QR Code";
+  qrImg.width = 160;
+  qrImg.height = 160;
+  qrContainer.appendChild(qrImg);
+}
+
+function copyShareLink() {
+  const url = getShareableUrl();
+  navigator.clipboard.writeText(url).then(() => {
+    showToast("Shareable link copied to clipboard!");
+  }).catch(() => {
+    showToast("Error creating shareable link.");
+  });
 }
 
 function checkUrlHashImport() {

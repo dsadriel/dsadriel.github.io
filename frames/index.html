@@ -170,12 +170,21 @@
 
       <div class="modal-body">
         <div class="form-group">
-          <label class="form-label">🔗 Share Dashboard</label>
-          <span class="form-hint">Create a shareable link encoding your entire dashboard configuration to open on other devices or share with colleagues.</span>
-          <button id="copyShareLinkBtn" type="button" class="btn-ghost" style="margin-top: 6px; justify-content: flex-start;">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg>
-            <span>Copy Shareable URL</span>
-          </button>
+          <label class="form-label">📱 Share via QR Code & Link</label>
+          <span class="form-hint">Scan with your mobile camera or copy the link to load your dashboard on any device.</span>
+          
+          <div class="qr-preview-card">
+            <div id="shareQrCode" class="qr-code-box"></div>
+            <div class="qr-caption">Scan to open on mobile</div>
+          </div>
+
+          <div class="share-url-row">
+            <input id="shareUrlInput" class="input-text" type="text" readonly />
+            <button id="copyShareLinkBtn" type="button" class="btn-primary" style="white-space: nowrap;">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg>
+              <span>Copy Link</span>
+            </button>
+          </div>
         </div>
 
         <hr style="border: 0; border-top: 1px solid var(--border);" />
@@ -248,6 +257,7 @@
     <button id="tabDeleteOpt" class="dropdown-item danger" type="button">🗑️ Delete folder</button>
   </div>
 
+  <script src="qrcode.min.js"></script>
   <script src="app.js"></script>
 </body>
 
