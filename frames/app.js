@@ -8,7 +8,7 @@ const DESKTOP_MEDIA = "(min-width: 900px)";
 const STARTER_PACKS = {
   dev: {
     name: "Dev & Docs Starter",
-    icon: "🛠️",
+    icon: `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"></polyline><polyline points="8 6 2 12 8 18"></polyline></svg>`,
     desc: "Hacker News, DevDocs, Bundlephobia & GitHub Trends",
     frames: [
       { url: "https://news.ycombinator.com/", title: "Hacker News", colSpan: 3, rowSpan: 3 },
@@ -19,7 +19,7 @@ const STARTER_PACKS = {
   },
   monitoring: {
     name: "Status & Monitoring",
-    icon: "📊",
+    icon: `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"></path><path d="m19 9-5 5-4-4-3 3"></path></svg>`,
     desc: "Cloudflare Status, GitHub Status, Fast.com & World Clock",
     frames: [
       { url: "https://www.cloudflarestatus.com/", title: "Cloudflare Status", colSpan: 3, rowSpan: 2 },
@@ -30,7 +30,7 @@ const STARTER_PACKS = {
   },
   productivity: {
     name: "Focus & Productivity",
-    icon: "⏱️",
+    icon: `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>`,
     desc: "Pomodoro Timer, Markdown Editor & Sound Stream",
     frames: [
       { url: "https://pomofocus.io/", title: "Pomofocus Timer", colSpan: 3, rowSpan: 3 },
@@ -39,7 +39,7 @@ const STARTER_PACKS = {
   },
   design: {
     name: "Design & Inspiration",
-    icon: "🎨",
+    icon: `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="13.5" cy="6.5" r=".5" fill="currentColor"></circle><circle cx="17.5" cy="10.5" r=".5" fill="currentColor"></circle><circle cx="8.5" cy="7.5" r=".5" fill="currentColor"></circle><circle cx="6.5" cy="12.5" r=".5" fill="currentColor"></circle><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c.926 0 1.648-.746 1.648-1.688 0-.437-.18-.835-.437-1.125-.29-.289-.438-.652-.438-1.125a1.64 1.64 0 0 1 1.668-1.668h1.996c3.051 0 5.555-2.503 5.555-5.554C21.965 6.012 17.461 2 12 2z"></path></svg>`,
     desc: "Color Hunt palettes, Dribbble & Fonts inspiration",
     frames: [
       { url: "https://colorhunt.co/", title: "Color Hunt Palettes", colSpan: 3, rowSpan: 3 },
@@ -211,7 +211,7 @@ function renderFolderTabs() {
     tab.setAttribute("aria-selected", folder.id === state.selectedFolderId ? "true" : "false");
 
     const icon = `<svg class="folder-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path></svg>`;
-    const optionsBtn = `<span class="folder-tab-options" title="Folder settings" aria-label="Folder settings">⋯</span>`;
+    const optionsBtn = `<span class="folder-tab-options" title="Folder settings" aria-label="Folder settings"><svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="2"></circle><circle cx="19" cy="12" r="2"></circle><circle cx="5" cy="12" r="2"></circle></svg></span>`;
 
     tab.innerHTML = `${icon}<span>${escapeHtml(folder.name)}</span>${optionsBtn}`;
 
@@ -330,7 +330,10 @@ function createFrameCard(frame, index, maxCols) {
       loader.innerHTML = `
         <div style="text-align: center; padding: 8px;">
           <p style="font-weight: 500; margin-bottom: 4px;">External Page Loaded</p>
-          <a href="${escapeHtml(frame.url)}" target="_blank" rel="noopener noreferrer" class="btn-primary" style="font-size: 11px; padding: 4px 10px; text-decoration: none; display: inline-flex;">Open in new tab ↗</a>
+          <a href="${escapeHtml(frame.url)}" target="_blank" rel="noopener noreferrer" class="btn-primary" style="font-size: 11px; padding: 4px 10px; text-decoration: none; display: inline-flex; align-items: center; gap: 4px;">
+            <span>Open in new tab</span>
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
+          </a>
         </div>
       `;
     }
@@ -366,7 +369,9 @@ function renderEmptyState() {
   container.className = "empty-state";
 
   container.innerHTML = `
-    <div class="empty-icon">🪟</div>
+    <div class="empty-icon">
+      <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" style="color: var(--fg-muted);"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="M3 12h18"/><path d="M12 3v18"/></svg>
+    </div>
     <h2 class="empty-title">This folder is empty</h2>
     <p class="empty-desc">Add your favorite websites, tools, and dashboards in customizable grid sizes, or launch one of our curated starter packs below.</p>
     <button id="emptyAddBtn" class="btn-primary" type="button" style="margin-top: 4px;">
