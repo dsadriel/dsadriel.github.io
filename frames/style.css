@@ -668,79 +668,76 @@ button.starter-pack-card:hover {
   border-color: var(--accent);
 }
 
-/* Sizing Presets Picker */
-.size-picker-container {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 12px;
-}
-
-.preset-chips {
+/* Interactive Layout Grid Picker */
+.grid-picker-header {
   display: flex;
-  flex-wrap: wrap;
-  gap: 6px;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 2px;
 }
 
-.preset-chip {
-  padding: 6px 10px;
+.grid-dimensions-badge {
   font-size: 12px;
+  font-weight: 600;
+  color: var(--accent-fg);
+  background: var(--accent-subtle);
+  border: 1px solid var(--accent);
+  padding: 3px 8px;
   border-radius: var(--radius-sm);
-  background: var(--bg);
-  border: 1px solid var(--border);
-  cursor: pointer;
+  transition: all 0.15s ease;
 }
 
-.preset-chip:hover {
+.grid-dimensions-badge.previewing {
+  border-style: dashed;
   background: var(--bg-surface-hover);
 }
 
-.preset-chip.active {
-  border-color: var(--accent);
-  background: var(--accent-subtle);
-  color: var(--accent-fg);
-  font-weight: 600;
-}
-
-/* Grid Visual Preview */
-.grid-preview-box {
+.grid-interactive-box {
   margin-top: 6px;
-  padding: 10px;
+  padding: 8px;
   border-radius: var(--radius-md);
   background: var(--bg);
   border: 1px solid var(--border);
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
 }
 
-.grid-preview-title {
-  font-size: 11px;
-  font-weight: 600;
-  color: var(--fg-subtle);
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-}
-
-.grid-preview-matrix {
+.grid-interactive-matrix {
   display: grid;
   grid-template-columns: repeat(6, 1fr);
-  grid-template-rows: repeat(4, 16px);
-  gap: 3px;
+  grid-template-rows: repeat(4, 28px);
+  gap: 4px;
   background: var(--bg-surface);
-  padding: 4px;
+  padding: 6px;
   border-radius: var(--radius-sm);
+  touch-action: none;
 }
 
 .preview-cell {
   background: var(--bg);
-  border-radius: 2px;
+  border-radius: var(--radius-sm);
   border: 1px solid var(--border);
-  transition: background 0.15s;
+  cursor: pointer;
+  padding: 0;
+  margin: 0;
+  transition: background 0.12s ease, border-color 0.12s ease, transform 0.1s ease;
+}
+
+.preview-cell:hover,
+.preview-cell.hover-preview {
+  background: var(--accent-subtle);
+  border-color: var(--accent);
 }
 
 .preview-cell.filled {
   background: var(--accent);
-  border-color: var(--accent-hover);
+  border-color: var(--accent);
+  box-shadow: 0 0 0 1px var(--accent);
+}
+
+.preview-cell.hover-preview.filled {
+  background: var(--accent);
+  border-color: var(--accent);
+  opacity: 0.85;
 }
 
 /* Fullscreen Modal View */

@@ -78,6 +78,7 @@ document.addEventListener("DOMContentLoaded", () => {
   checkUrlHashImport();
   renderAll();
   setupEventListeners();
+  initGridMatrix();
   updatePreviewMatrix();
   refreshIcons();
 });
@@ -128,25 +129,6 @@ function setupEventListeners() {
   // Forms
   frameForm.addEventListener("submit", handleSaveFrame);
   folderForm.addEventListener("submit", handleSaveFolder);
-
-  // Width & Height Chip Presets
-  document.querySelectorAll("#widthPresets .preset-chip").forEach((chip) => {
-    chip.addEventListener("click", () => {
-      document.querySelectorAll("#widthPresets .preset-chip").forEach((c) => c.classList.remove("active"));
-      chip.classList.add("active");
-      selectedColSpan = parseInt(chip.getAttribute("data-cols"), 10);
-      updatePreviewMatrix();
-    });
-  });
-
-  document.querySelectorAll("#heightPresets .preset-chip").forEach((chip) => {
-    chip.addEventListener("click", () => {
-      document.querySelectorAll("#heightPresets .preset-chip").forEach((c) => c.classList.remove("active"));
-      chip.classList.add("active");
-      selectedRowSpan = parseInt(chip.getAttribute("data-rows"), 10);
-      updatePreviewMatrix();
-    });
-  });
 
   // Auto-title from URL input
   document.getElementById("frameUrlInput").addEventListener("blur", (e) => {
@@ -424,18 +406,94 @@ function updateFolderSelect() {
   });
 }
 
-function updatePreviewMatrix() {
+function getDimensionLabel(cols, rows) {
+  const colLabels = {
+    1: "1/6 Width",
+    2: "1/3 Width",
+    3: "Half Width",
+    4: "2/3 Width",
+    5: "5/6 Width",
+    6: "Full Width"
+  };
+  const rowLabels = {
+    1: "Compact",
+    2: "Standard",
+    3: "Tall",
+    4: "Max Height"
+  };
+  return `${cols} × ${rows} (${colLabels[cols] || cols + " cols"}, ${rowLabels[rows] || rows + " rows"})`;
+}
+
+function updatePreviewMatrix(hoverCols = null, hoverRows = null) {
+  const activeCols = hoverCols !== null ? hoverCols : selectedColSpan;
+  const activeRows = hoverRows !== null ? hoverRows : selectedRowSpan;
+  const isHovering = hoverCols !== null && hoverRows !== null;
+
+  const badge = document.getElementById("gridDimensionsBadge");
+  if (badge) {
+    badge.textContent = getDimensionLabel(activeCols, activeRows);
+    badge.classList.toggle("previewing", isHovering);
+  }
+
+  const cells = gridPreviewMatrix.querySelectorAll(".preview-cell");
+  cells.forEach((cell) => {
+    const c = parseInt(cell.getAttribute("data-col"), 10);
+    const r = parseInt(cell.getAttribute("data-row"), 10);
+    const inActiveArea = c <= activeCols && r <= activeRows;
+
+    cell.classList.toggle("filled", inActiveArea);
+    cell.classList.toggle("hover-preview", isHovering && inActiveArea);
+  });
+}
+
+function initGridMatrix() {
   gridPreviewMatrix.textContent = "";
-  for (let r = 0; r < 4; r++) {
-    for (let c = 0; c < 6; c++) {
-      const cell = document.createElement("div");
+  for (let r = 1; r <= 4; r++) {
+    for (let c = 1; c <= 6; c++) {
+      const cell = document.createElement("button");
+      cell.type = "button";
       cell.className = "preview-cell";
-      if (c < selectedColSpan && r < selectedRowSpan) {
-        cell.classList.add("filled");
-      }
+      cell.setAttribute("data-col", c);
+      cell.setAttribute("data-row", r);
+      cell.setAttribute("aria-label", `${c} columns by ${r} rows`);
+
+      cell.addEventListener("mouseenter", () => {
+        updatePreviewMatrix(c, r);
+      });
+
+      cell.addEventListener("click", (e) => {
+        e.preventDefault();
+        selectedColSpan = c;
+        selectedRowSpan = r;
+        updatePreviewMatrix();
+      });
+
       gridPreviewMatrix.appendChild(cell);
     }
   }
+
+  gridPreviewMatrix.addEventListener("mouseleave", () => {
+    updatePreviewMatrix();
+  });
+
+  // Touch mobile support
+  gridPreviewMatrix.addEventListener("touchmove", (e) => {
+    const touch = e.touches[0];
+    const target = document.elementFromPoint(touch.clientX, touch.clientY);
+    if (target && target.classList.contains("preview-cell")) {
+      const c = parseInt(target.getAttribute("data-col"), 10);
+      const r = parseInt(target.getAttribute("data-row"), 10);
+      if (c && r) {
+        selectedColSpan = c;
+        selectedRowSpan = r;
+        updatePreviewMatrix(c, r);
+      }
+    }
+  });
+
+  gridPreviewMatrix.addEventListener("touchend", () => {
+    updatePreviewMatrix();
+  });
 }
 
 // --- State Actions & Handlers ---
@@ -661,14 +719,6 @@ function openFrameModal(frameId = null) {
     selectedColSpan = 3;
     selectedRowSpan = 2;
   }
-
-  // Sync chips
-  document.querySelectorAll("#widthPresets .preset-chip").forEach((c) => {
-    c.classList.toggle("active", parseInt(c.getAttribute("data-cols"), 10) === selectedColSpan);
-  });
-  document.querySelectorAll("#heightPresets .preset-chip").forEach((c) => {
-    c.classList.toggle("active", parseInt(c.getAttribute("data-rows"), 10) === selectedRowSpan);
-  });
 
   updatePreviewMatrix();
   openModal(frameModal);
