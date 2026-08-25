@@ -752,9 +752,9 @@ button.starter-pack-card:hover {
 .zoom-controls-wrapper {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 12px;
   margin-top: 6px;
-  padding: 10px 12px;
+  padding: 12px 14px;
   background: var(--bg);
   border: 1px solid var(--border);
   border-radius: var(--radius-md);
@@ -765,17 +765,19 @@ button.starter-pack-card:hover {
   accent-color: var(--accent);
   cursor: pointer;
   height: 6px;
+  margin: 2px 0;
   border-radius: var(--radius-full);
 }
 
 .zoom-presets {
-  display: flex;
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
   gap: 6px;
-  flex-wrap: wrap;
+  width: 100%;
 }
 
 .zoom-chip {
-  padding: 4px 8px;
+  padding: 6px 2px;
   font-size: 11px;
   font-weight: 500;
   border-radius: var(--radius-sm);
@@ -783,7 +785,17 @@ button.starter-pack-card:hover {
   border: 1px solid var(--border);
   color: var(--fg-muted);
   cursor: pointer;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   transition: all 0.15s ease;
+}
+
+@media (max-width: 440px) {
+  .zoom-presets {
+    grid-template-columns: repeat(3, 1fr);
+  }
 }
 
 .zoom-chip:hover {
