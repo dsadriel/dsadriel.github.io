@@ -5,685 +5,250 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Frames</title>
-  <style>
-    :root {
-      color-scheme: light dark;
-      --bg: #ffffff;
-      --fg: #111111;
-      --muted: #666666;
-      --line: #dddddd;
-      --surface: #f7f7f7;
-      --accent: #0b57d0;
-    }
-
-    @media (prefers-color-scheme: dark) {
-      :root {
-        --bg: #101114;
-        --fg: #f1f1f1;
-        --muted: #9d9d9d;
-        --line: #2f3239;
-        --surface: #1a1c21;
-        --accent: #74a7ff;
-      }
-    }
-
-    * {
-      box-sizing: border-box;
-      font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-    }
-
-    body {
-      margin: 0;
-      background: var(--bg);
-      color: var(--fg);
-    }
-
-    .page {
-      max-width: 1280px;
-      margin: 0 auto;
-      padding: 16px;
-    }
-
-    .header {
-      display: flex;
-      gap: 8px;
-      margin-bottom: 16px;
-      flex-wrap: wrap;
-      align-items: center;
-      justify-content: space-between;
-    }
-
-    .tabs,
-    .folder-tabs,
-    .item-actions {
-      display: flex;
-      gap: 8px;
-      flex-wrap: wrap;
-    }
-
-    button,
-    input {
-      color: inherit;
-      background: var(--surface);
-      border: 1px solid var(--line);
-      border-radius: 10px;
-      padding: 8px 10px;
-      font-size: 14px;
-    }
-
-    button {
-      cursor: pointer;
-    }
-
-    button.active {
-      border-color: var(--accent);
-      color: var(--accent);
-      font-weight: 600;
-    }
-
-    .hint {
-      color: var(--muted);
-      font-size: 13px;
-    }
-
-    .hidden {
-      display: none;
-    }
-
-    .stack {
-      display: grid;
-      gap: 14px;
-    }
-
-    .section-block {
-      border: 1px solid var(--line);
-      border-radius: 12px;
-      background: var(--surface);
-      padding: 12px;
-      display: grid;
-      gap: 10px;
-    }
-
-    .section-title {
-      margin: 0;
-      font-size: 14px;
-      color: var(--muted);
-      font-weight: 600;
-    }
-
-    .grid {
-      display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      grid-auto-rows: 120px;
-      gap: 10px;
-      align-items: stretch;
-      grid-auto-flow: row;
-    }
-
-    @media (min-width: 900px) {
-      .grid {
-        grid-template-columns: repeat(6, minmax(0, 1fr));
-      }
-    }
-
-    .card {
-      border: 1px solid var(--line);
-      border-radius: 12px;
-      overflow: hidden;
-      background: var(--surface);
-      min-height: 0;
-      display: flex;
-      flex-direction: column;
-    }
-
-    .card-title {
-      font-size: 12px;
-      padding: 6px 8px;
-      color: var(--muted);
-      border-bottom: 1px solid var(--line);
-      white-space: nowrap;
-      text-overflow: ellipsis;
-      overflow: hidden;
-    }
-
-    .card iframe {
-      width: 100%;
-      height: 100%;
-      border: 0;
-      flex: 1;
-      background: #fff;
-    }
-
-    .empty {
-      color: var(--muted);
-      border: 1px dashed var(--line);
-      border-radius: 12px;
-      padding: 20px;
-      text-align: center;
-    }
-
-    .config-list {
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-    }
-
-    .config-item {
-      border: 1px solid var(--line);
-      border-radius: 12px;
-      padding: 10px;
-      display: grid;
-      gap: 8px;
-      background: var(--bg);
-    }
-
-    .config-item-top,
-    .add-row,
-    .folder-row {
-      display: grid;
-      grid-template-columns: minmax(0, 1fr) 90px 90px auto;
-      gap: 8px;
-      align-items: center;
-    }
-
-    .folder-row {
-      grid-template-columns: minmax(0, 1fr) auto;
-    }
-
-    .item-actions {
-      justify-content: flex-end;
-    }
-
-    .item-actions button {
-      padding: 7px 10px;
-      min-width: 42px;
-    }
-
-    @media (max-width: 760px) {
-      .config-item-top,
-      .add-row,
-      .folder-row {
-        grid-template-columns: 1fr;
-      }
-
-      .item-actions {
-        justify-content: flex-start;
-      }
-    }
-  </style>
+  <meta name="description" content="A customizable, lightweight multi-window web dashboard to organize tools, docs, and websites in flexible grid layouts." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
 </head>
 
 <body>
-  <main class="page">
-    <header class="header">
-      <div class="tabs">
-        <button id="mainTab" class="active" type="button">Main</button>
-        <button id="configTab" type="button">Config</button>
-      </div>
-      <div class="hint">3 cols mobile · 6 cols desktop</div>
-    </header>
-
-    <section id="mainView" class="stack">
-      <div id="mainFolderTabs" class="folder-tabs"></div>
-      <div id="framesGrid" class="grid"></div>
-    </section>
-
-    <section id="configView" class="hidden stack">
-      <div class="section-block">
-        <h2 class="section-title">Folders / Tabs</h2>
-        <div id="folderConfigList" class="config-list"></div>
-        <form id="addFolderForm" class="folder-row">
-          <input id="newFolderName" type="text" placeholder="New folder name" required maxlength="40" />
-          <button type="submit">Add folder</button>
-        </form>
+  <!-- Header -->
+  <header class="app-header">
+    <div class="header-main">
+      <div class="brand-section">
+        <div class="brand-title">
+          <span>Frames</span>
+        </div>
       </div>
 
-      <div class="section-block">
-        <h2 class="section-title">Frames in selected folder</h2>
-        <div id="configFolderTabs" class="folder-tabs"></div>
-        <div id="configList" class="config-list"></div>
-        <form id="addForm" class="add-row">
-          <input id="newUrl" type="url" placeholder="https://example.com" required />
-          <input id="newColSpan" type="number" min="1" max="6" value="3" required />
-          <input id="newRowSpan" type="number" min="1" max="8" value="2" required />
-          <button type="submit">Add frame</button>
-        </form>
+      <div class="header-actions">
+        <button id="addFrameBtn" class="btn-primary" type="button" aria-label="Add new frame">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+          <span>Add Frame</span>
+        </button>
+
+        <button id="settingsBtn" class="btn-ghost btn-icon" type="button" title="Settings, Backup & Share" aria-label="Settings, Backup and Share">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
+        </button>
       </div>
-    </section>
+    </div>
+
+    <!-- Folder Tabs Bar -->
+    <nav class="folder-nav-bar" aria-label="Dashboard folders">
+      <div class="folder-nav-container">
+        <div id="folderTabsList" class="folder-tabs" role="tablist"></div>
+        <div class="grid-info-hint">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><line x1="3" y1="9" x2="21" y2="9"></line><line x1="9" y1="21" x2="9" y2="9"></line></svg>
+          <span>6-col grid</span>
+        </div>
+      </div>
+    </nav>
+  </header>
+
+  <!-- Main View Area -->
+  <main class="main-container">
+    <!-- Import Shared Config Banner (if opened with hash) -->
+    <div id="importBanner" class="import-banner" role="alert">
+      <div><strong>Shared Dashboard detected!</strong> Would you like to import this shared setup into your dashboard?</div>
+      <div style="display: flex; gap: 8px;">
+        <button id="confirmImportBtn" class="btn-primary" style="padding: 4px 10px; font-size: 12px;">Import</button>
+        <button id="dismissImportBtn" class="btn-ghost" style="padding: 4px 10px; font-size: 12px;">Dismiss</button>
+      </div>
+    </div>
+
+    <!-- Grid of Frames -->
+    <div id="framesGrid" class="frames-grid"></div>
   </main>
 
-  <script>
-    const STORAGE_KEY = "frames_v1";
-    const DEFAULT_COLS_MOBILE = 3;
-    const DEFAULT_COLS_DESKTOP = 6;
-    const DESKTOP_MEDIA = "(min-width: 900px)";
-
-    let state = loadState();
-    let activeView = "main";
-
-    const mainView = document.getElementById("mainView");
-    const configView = document.getElementById("configView");
-    const mainTab = document.getElementById("mainTab");
-    const configTab = document.getElementById("configTab");
-    const framesGrid = document.getElementById("framesGrid");
-    const configList = document.getElementById("configList");
-    const mainFolderTabs = document.getElementById("mainFolderTabs");
-    const configFolderTabs = document.getElementById("configFolderTabs");
-    const folderConfigList = document.getElementById("folderConfigList");
-    const addForm = document.getElementById("addForm");
-    const addFolderForm = document.getElementById("addFolderForm");
-
-    mainTab.addEventListener("click", () => setView("main"));
-    configTab.addEventListener("click", () => setView("config"));
-
-    addFolderForm.addEventListener("submit", (event) => {
-      event.preventDefault();
-      const input = document.getElementById("newFolderName");
-      const name = (input.value || "").trim();
-      if (!name) return;
-
-      state.folders.push({ id: makeId(), name: name.slice(0, 40), frames: [] });
-      state.selectedFolderId = state.folders[state.folders.length - 1].id;
-      persist();
-      addFolderForm.reset();
-      renderAll();
-    });
-
-    addForm.addEventListener("submit", (event) => {
-      event.preventDefault();
-      const folder = getSelectedFolder();
-      if (!folder) return;
-
-      const url = validateUrl(document.getElementById("newUrl").value.trim());
-      if (!url) {
-        alert("Please use a valid http/https URL.");
-        return;
-      }
-
-      const colSpan = clampInt(document.getElementById("newColSpan").value, 1, DEFAULT_COLS_DESKTOP, 3);
-      const rowSpan = clampInt(document.getElementById("newRowSpan").value, 1, 8, 2);
-
-      folder.frames.push({ id: makeId(), url, colSpan, rowSpan });
-      persist();
-      addForm.reset();
-      document.getElementById("newColSpan").value = "3";
-      document.getElementById("newRowSpan").value = "2";
-      renderAll();
-    });
-
-    const mediaQuery = window.matchMedia(DESKTOP_MEDIA);
-    if (typeof mediaQuery.addEventListener === "function") {
-      mediaQuery.addEventListener("change", () => {
-        if (activeView === "main") renderFrames();
-      });
-    } else if (typeof mediaQuery.addListener === "function") {
-      mediaQuery.addListener(() => {
-        if (activeView === "main") renderFrames();
-      });
-    }
-
-    function setView(view) {
-      activeView = view;
-      const isMain = view === "main";
-      mainView.classList.toggle("hidden", !isMain);
-      configView.classList.toggle("hidden", isMain);
-      mainTab.classList.toggle("active", isMain);
-      configTab.classList.toggle("active", !isMain);
-      if (isMain) renderFrames();
-      else renderConfig();
-    }
-
-    function getSelectedFolder() {
-      const folder = state.folders.find((item) => item.id === state.selectedFolderId);
-      if (folder) return folder;
-      state.selectedFolderId = state.folders[0]?.id || null;
-      return state.folders[0] || null;
-    }
-
-    function setSelectedFolder(folderId) {
-      const exists = state.folders.some((folder) => folder.id === folderId);
-      if (!exists) return;
-      state.selectedFolderId = folderId;
-      persist();
-      renderAll();
-    }
-
-    function renderAll() {
-      renderFolderTabs(mainFolderTabs);
-      renderFolderTabs(configFolderTabs);
-      renderFrames();
-      renderConfig();
-    }
-
-    function renderFolderTabs(container) {
-      container.textContent = "";
-      state.folders.forEach((folder) => {
-        const tab = document.createElement("button");
-        tab.type = "button";
-        tab.textContent = folder.name;
-        tab.classList.toggle("active", folder.id === state.selectedFolderId);
-        tab.addEventListener("click", () => setSelectedFolder(folder.id));
-        container.appendChild(tab);
-      });
-    }
-
-    function renderFrames() {
-      framesGrid.textContent = "";
-      const folder = getSelectedFolder();
-      if (!folder || !folder.frames.length) {
-        const empty = document.createElement("div");
-        empty.className = "empty";
-        empty.textContent = "No frames in this folder yet. Go to Config to add one.";
-        framesGrid.appendChild(empty);
-        return;
-      }
-
-      const maxCols = window.matchMedia(DESKTOP_MEDIA).matches ? DEFAULT_COLS_DESKTOP : DEFAULT_COLS_MOBILE;
-
-      folder.frames.forEach((frame) => {
-        const card = document.createElement("article");
-        card.className = "card";
-        card.style.gridColumn = `span ${Math.min(frame.colSpan, maxCols)}`;
-        card.style.gridRow = `span ${frame.rowSpan}`;
-
-        const title = document.createElement("div");
-        title.className = "card-title";
-        title.textContent = frame.url;
-
-        const iframe = document.createElement("iframe");
-        iframe.src = frame.url;
-        iframe.loading = "lazy";
-        iframe.referrerPolicy = "strict-origin-when-cross-origin";
-        iframe.sandbox = "allow-same-origin allow-scripts allow-forms allow-popups";
-
-        card.appendChild(title);
-        card.appendChild(iframe);
-        framesGrid.appendChild(card);
-      });
-    }
-
-    function renderConfig() {
-      renderFolderConfig();
-      renderFrameConfig();
-    }
-
-    function renderFolderConfig() {
-      folderConfigList.textContent = "";
-
-      state.folders.forEach((folder, index) => {
-        const item = document.createElement("div");
-        item.className = "config-item";
-
-        const row = document.createElement("div");
-        row.className = "folder-row";
-
-        const nameInput = document.createElement("input");
-        nameInput.type = "text";
-        nameInput.value = folder.name;
-        nameInput.maxLength = 40;
-
-        nameInput.addEventListener("change", () => {
-          const nextName = (nameInput.value || "").trim();
-          if (!nextName) {
-            nameInput.value = folder.name;
-            return;
-          }
-          folder.name = nextName.slice(0, 40);
-          persist();
-          renderAll();
-        });
-
-        const actions = document.createElement("div");
-        actions.className = "item-actions";
-
-        const up = makeButton("↑", () => moveFolder(index, -1));
-        up.disabled = index === 0;
-
-        const down = makeButton("↓", () => moveFolder(index, 1));
-        down.disabled = index === state.folders.length - 1;
-
-        const remove = makeButton("Delete", () => {
-          removeFolder(index);
-        });
-        remove.disabled = state.folders.length === 1;
-
-        actions.appendChild(up);
-        actions.appendChild(down);
-        actions.appendChild(remove);
-
-        row.appendChild(nameInput);
-        row.appendChild(actions);
-        item.appendChild(row);
-        folderConfigList.appendChild(item);
-      });
-    }
-
-    function renderFrameConfig() {
-      configList.textContent = "";
-      const folder = getSelectedFolder();
-      if (!folder || !folder.frames.length) {
-        const empty = document.createElement("div");
-        empty.className = "empty";
-        empty.textContent = "Add your first frame below.";
-        configList.appendChild(empty);
-        return;
-      }
-
-      folder.frames.forEach((frame, index) => {
-        const item = document.createElement("div");
-        item.className = "config-item";
-
-        const top = document.createElement("div");
-        top.className = "config-item-top";
-
-        const urlInput = document.createElement("input");
-        urlInput.type = "url";
-        urlInput.value = frame.url;
-        urlInput.placeholder = "https://example.com";
-
-        const colInput = document.createElement("input");
-        colInput.type = "number";
-        colInput.min = "1";
-        colInput.max = "6";
-        colInput.value = String(frame.colSpan);
-
-        const rowInput = document.createElement("input");
-        rowInput.type = "number";
-        rowInput.min = "1";
-        rowInput.max = "8";
-        rowInput.value = String(frame.rowSpan);
-
-        const actions = document.createElement("div");
-        actions.className = "item-actions";
-
-        const up = makeButton("↑", () => moveFrame(index, -1));
-        up.disabled = index === 0;
-
-        const down = makeButton("↓", () => moveFrame(index, 1));
-        down.disabled = index === folder.frames.length - 1;
-
-        const remove = makeButton("Delete", () => {
-          folder.frames.splice(index, 1);
-          persist();
-          renderAll();
-        });
-
-        actions.appendChild(up);
-        actions.appendChild(down);
-        actions.appendChild(remove);
-
-        urlInput.addEventListener("change", () => {
-          const nextUrl = validateUrl(urlInput.value.trim());
-          if (!nextUrl) {
-            urlInput.value = frame.url;
-            return;
-          }
-          frame.url = nextUrl;
-          persist();
-          renderFrames();
-        });
-
-        colInput.addEventListener("change", () => {
-          frame.colSpan = clampInt(colInput.value, 1, 6, frame.colSpan);
-          colInput.value = String(frame.colSpan);
-          persist();
-          renderFrames();
-        });
-
-        rowInput.addEventListener("change", () => {
-          frame.rowSpan = clampInt(rowInput.value, 1, 8, frame.rowSpan);
-          rowInput.value = String(frame.rowSpan);
-          persist();
-          renderFrames();
-        });
-
-        top.appendChild(urlInput);
-        top.appendChild(colInput);
-        top.appendChild(rowInput);
-        top.appendChild(actions);
-
-        item.appendChild(top);
-        configList.appendChild(item);
-      });
-    }
-
-    function moveFolder(index, delta) {
-      const target = index + delta;
-      if (target < 0 || target >= state.folders.length) return;
-      const [item] = state.folders.splice(index, 1);
-      state.folders.splice(target, 0, item);
-      persist();
-      renderAll();
-    }
-
-    function removeFolder(index) {
-      if (state.folders.length === 1) return;
-      const removed = state.folders.splice(index, 1)[0];
-      if (removed && removed.id === state.selectedFolderId) {
-        const fallback = state.folders[index] || state.folders[index - 1] || state.folders[0];
-        state.selectedFolderId = fallback ? fallback.id : null;
-      }
-      persist();
-      renderAll();
-    }
-
-    function moveFrame(index, delta) {
-      const folder = getSelectedFolder();
-      if (!folder) return;
-      const target = index + delta;
-      if (target < 0 || target >= folder.frames.length) return;
-      const [item] = folder.frames.splice(index, 1);
-      folder.frames.splice(target, 0, item);
-      persist();
-      renderAll();
-    }
-
-    function makeButton(label, onClick) {
-      const btn = document.createElement("button");
-      btn.type = "button";
-      btn.textContent = label;
-      btn.addEventListener("click", onClick);
-      return btn;
-    }
-
-    function loadState() {
-      const fallback = {
-        version: 2,
-        selectedFolderId: null,
-        folders: [{ id: makeId(), name: "Default", frames: [] }],
-      };
-
-      try {
-        const raw = localStorage.getItem(STORAGE_KEY);
-        if (!raw) return fallback;
-        const parsed = JSON.parse(raw);
-
-        if (Array.isArray(parsed)) {
-          const migratedFrames = parsed.map((item, index) => normalizeFrame(item, index)).filter(Boolean);
-          const folderId = makeId();
-          return {
-            version: 2,
-            selectedFolderId: folderId,
-            folders: [{ id: folderId, name: "Default", frames: migratedFrames }],
-          };
-        }
-
-        if (!parsed || typeof parsed !== "object" || !Array.isArray(parsed.folders)) return fallback;
-
-        const folders = parsed.folders
-          .map((folder, folderIndex) => normalizeFolder(folder, folderIndex))
-          .filter(Boolean);
-
-        if (!folders.length) return fallback;
-
-        const selectedFolderId = folders.some((folder) => folder.id === parsed.selectedFolderId)
-          ? parsed.selectedFolderId
-          : folders[0].id;
-
-        return {
-          version: 2,
-          selectedFolderId,
-          folders,
-        };
-      } catch {
-        return fallback;
-      }
-    }
-
-    function normalizeFolder(input, folderIndex) {
-      if (!input || typeof input !== "object") return null;
-      const name = String(input.name || "").trim() || `Folder ${folderIndex + 1}`;
-      const frames = Array.isArray(input.frames)
-        ? input.frames.map((item, frameIndex) => normalizeFrame(item, frameIndex)).filter(Boolean)
-        : [];
-
-      return {
-        id: typeof input.id === "string" && input.id ? input.id : makeId(),
-        name: name.slice(0, 40),
-        frames,
-      };
-    }
-
-    function normalizeFrame(input, index) {
-      if (!input || typeof input !== "object") return null;
-      const url = validateUrl(String(input.url || "").trim());
-      if (!url) return null;
-
-      return {
-        id: typeof input.id === "string" && input.id ? input.id : `${Date.now()}-${index}`,
-        url,
-        colSpan: clampInt(input.colSpan, 1, 6, 3),
-        rowSpan: clampInt(input.rowSpan, 1, 8, 2),
-      };
-    }
-
-    function validateUrl(value) {
-      if (!value) return null;
-      try {
-        const parsed = new URL(value);
-        if (parsed.protocol !== "http:" && parsed.protocol !== "https:") return null;
-        return parsed.toString();
-      } catch {
-        return null;
-      }
-    }
-
-    function clampInt(value, min, max, fallback) {
-      const number = Number.parseInt(value, 10);
-      if (Number.isNaN(number)) return fallback;
-      return Math.min(max, Math.max(min, number));
-    }
-
-    function makeId() {
-      return `${Date.now()}-${Math.random().toString(36).slice(2, 9)}`;
-    }
-
-    function persist() {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
-    }
-
-    renderAll();
-  </script>
+  <!-- Add / Edit Frame Modal -->
+  <div id="frameModal" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="frameModalTitle">
+    <div class="modal-container">
+      <div class="modal-header">
+        <h2 id="frameModalTitle" class="modal-title">Add Frame</h2>
+        <button class="btn-ghost btn-icon close-modal-btn" type="button" aria-label="Close dialog">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+        </button>
+      </div>
+
+      <form id="frameForm">
+        <div class="modal-body">
+          <input type="hidden" id="frameEditId" value="" />
+
+          <div class="form-group">
+            <label class="form-label" for="frameUrlInput">Website URL *</label>
+            <input id="frameUrlInput" class="input-text" type="url" placeholder="https://example.com" required autofocus />
+            <span class="form-hint">Tip: Works with any embed-friendly web page, documentation, or dashboard.</span>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="frameTitleInput">Custom Title (Optional)</label>
+            <input id="frameTitleInput" class="input-text" type="text" placeholder="e.g. Hacker News, Grafana, Docs" maxlength="60" />
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="frameFolderSelect">Folder / Tab</label>
+            <select id="frameFolderSelect" class="input-select"></select>
+          </div>
+
+          <div class="size-picker-container">
+            <div class="form-group">
+              <label class="form-label">Width (Columns)</label>
+              <div class="preset-chips" id="widthPresets">
+                <button type="button" class="preset-chip" data-cols="2">1/3 (2)</button>
+                <button type="button" class="preset-chip active" data-cols="3">Half (3)</button>
+                <button type="button" class="preset-chip" data-cols="4">2/3 (4)</button>
+                <button type="button" class="preset-chip" data-cols="6">Full (6)</button>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">Height (Rows)</label>
+              <div class="preset-chips" id="heightPresets">
+                <button type="button" class="preset-chip" data-rows="1">Compact (1)</button>
+                <button type="button" class="preset-chip active" data-rows="2">Medium (2)</button>
+                <button type="button" class="preset-chip" data-rows="3">Tall (3)</button>
+                <button type="button" class="preset-chip" data-rows="4">Max (4)</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="grid-preview-box">
+            <div class="grid-preview-title">Layout Footprint Preview</div>
+            <div class="grid-preview-matrix" id="gridPreviewMatrix"></div>
+          </div>
+
+          <div class="embed-note">
+            ⚠️ Note: Some websites (like Google, GitHub, or Twitter) restrict embedding via browser security policies (<code>X-Frame-Options</code>). You can still easily open them in a new tab directly from the card header.
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn-ghost close-modal-btn">Cancel</button>
+          <button type="submit" class="btn-primary" id="saveFrameSubmitBtn">Save Frame</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Manage Folder Modal -->
+  <div id="folderModal" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="folderModalTitle">
+    <div class="modal-container" style="max-width: 420px;">
+      <div class="modal-header">
+        <h2 id="folderModalTitle" class="modal-title">New Folder</h2>
+        <button class="btn-ghost btn-icon close-modal-btn" type="button" aria-label="Close dialog">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+        </button>
+      </div>
+
+      <form id="folderForm">
+        <div class="modal-body">
+          <input type="hidden" id="folderEditId" value="" />
+          <div class="form-group">
+            <label class="form-label" for="folderNameInput">Folder Name</label>
+            <input id="folderNameInput" class="input-text" type="text" placeholder="e.g. Work, Monitoring, Docs" required maxlength="40" autofocus />
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn-ghost close-modal-btn">Cancel</button>
+          <button type="submit" class="btn-primary" id="saveFolderSubmitBtn">Create Folder</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Settings & Backup Modal -->
+  <div id="settingsModal" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="settingsModalTitle">
+    <div class="modal-container">
+      <div class="modal-header">
+        <h2 id="settingsModalTitle" class="modal-title">Settings & Backup</h2>
+        <button class="btn-ghost btn-icon close-modal-btn" type="button" aria-label="Close dialog">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+        </button>
+      </div>
+
+      <div class="modal-body">
+        <div class="form-group">
+          <label class="form-label">🔗 Share Dashboard</label>
+          <span class="form-hint">Create a shareable link encoding your entire dashboard configuration to open on other devices or share with colleagues.</span>
+          <button id="copyShareLinkBtn" type="button" class="btn-ghost" style="margin-top: 6px; justify-content: flex-start;">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg>
+            <span>Copy Shareable URL</span>
+          </button>
+        </div>
+
+        <hr style="border: 0; border-top: 1px solid var(--border);" />
+
+        <div class="form-group">
+          <label class="form-label">💾 Backup & Restore (JSON)</label>
+          <span class="form-hint">Export your dashboard configuration to a file or restore from a previous JSON backup.</span>
+          <div style="display: flex; gap: 8px; margin-top: 6px; flex-wrap: wrap;">
+            <button id="exportJsonBtn" type="button" class="btn-ghost">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+              <span>Export JSON</span>
+            </button>
+            <button id="importJsonBtn" type="button" class="btn-ghost">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
+              <span>Import JSON</span>
+            </button>
+            <input type="file" id="importFileInput" accept=".json,application/json" style="display: none;" />
+          </div>
+        </div>
+
+        <hr style="border: 0; border-top: 1px solid var(--border);" />
+
+        <div class="form-group">
+          <label class="form-label" style="color: var(--danger);">⚠️ Reset Dashboard</label>
+          <span class="form-hint">Clear all folders and custom frames and restore initial default presets.</span>
+          <button id="resetAllBtn" type="button" class="btn-danger" style="margin-top: 6px; align-self: flex-start;">
+            Reset all data
+          </button>
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" class="btn-primary close-modal-btn">Done</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Fullscreen Focus View Modal -->
+  <div id="fullscreenModal" class="fullscreen-modal" role="dialog" aria-modal="true" aria-label="Fullscreen frame view">
+    <div class="fullscreen-header">
+      <div style="display: flex; align-items: center; gap: 8px; min-width: 0;">
+        <img id="fullscreenFavicon" src="" class="card-favicon" alt="" />
+        <span id="fullscreenTitle" style="font-weight: 600; font-size: 14px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;"></span>
+      </div>
+      <div style="display: flex; align-items: center; gap: 6px;">
+        <button id="fullscreenReloadBtn" class="btn-ghost btn-icon" type="button" title="Reload frame" aria-label="Reload frame">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 4 23 10 17 10"></polyline><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"></path></svg>
+        </button>
+        <a id="fullscreenExtLink" href="" target="_blank" rel="noopener noreferrer" class="btn-ghost btn-icon" title="Open in new tab" aria-label="Open in new tab" style="text-decoration: none; display: flex; align-items: center; justify-content: center;">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
+        </a>
+        <button id="fullscreenCloseBtn" class="btn-ghost btn-icon" type="button" title="Exit focus view (Esc)" aria-label="Exit focus view">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+        </button>
+      </div>
+    </div>
+    <div class="fullscreen-body">
+      <iframe id="fullscreenIframe" src="" sandbox="allow-same-origin allow-scripts allow-forms allow-popups allow-modals allow-downloads"></iframe>
+    </div>
+  </div>
+
+  <!-- Toast Region -->
+  <div id="toastContainer" class="toast-container" aria-live="polite"></div>
+
+  <!-- Dropdown Menu for Tab Options -->
+  <div id="tabOptionsMenu" class="dropdown-menu">
+    <button id="tabRenameOpt" class="dropdown-item" type="button">✏️ Rename folder</button>
+    <button id="tabMoveLeftOpt" class="dropdown-item" type="button">← Move left</button>
+    <button id="tabMoveRightOpt" class="dropdown-item" type="button">→ Move right</button>
+    <button id="tabDeleteOpt" class="dropdown-item danger" type="button">🗑️ Delete folder</button>
+  </div>
+
+  <script src="app.js"></script>
 </body>
 
 </html>
