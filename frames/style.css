@@ -253,20 +253,22 @@ button.btn-icon {
 }
 
 .folder-tab-options {
-  opacity: 0;
-  padding: 2px;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 2px 4px;
   border-radius: var(--radius-sm);
-  margin-left: 2px;
-  transition: opacity 0.15s;
+  margin-left: 4px;
+  opacity: 0.6;
+  transition: opacity 0.15s ease, background 0.15s ease;
 }
 
-.folder-tab:hover .folder-tab-options,
 .folder-tab.active .folder-tab-options {
-  opacity: 0.7;
+  display: inline-flex;
 }
 
-.folder-tab-options:hover {
-  opacity: 1 !important;
+.folder-tab.active .folder-tab-options:hover {
+  opacity: 1;
   background: var(--bg-surface-hover);
 }
 
