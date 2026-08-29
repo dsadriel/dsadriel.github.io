@@ -1,4 +1,0 @@
-User-agent: *
-Allow: /
-
-Sitemap: https://dsadriel.github.io/sitemap.xml
