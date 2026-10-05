@@ -1,0 +1,137 @@
+{
+  "name": "Adriel de Souza",
+  "title": "Software Engineer & iOS Developer",
+  "location": "Porto Alegre, Brazil",
+  "currentRole": {
+    "role": "iOS Developer",
+    "company": "Apple Developer Academy"
+  },
+  "education": {
+    "degree": "B.Sc. Computer Science",
+    "institution": "UFRGS — Universidade Federal do Rio Grande do Sul"
+  },
+  "techStack": {
+    "Languages": [
+      "Swift",
+      "Dart",
+      "Python",
+      "C++",
+      "Java",
+      "JavaScript",
+      "SQL",
+      "HTML5 / CSS3"
+    ],
+    "Frameworks & Platforms": [
+      "SwiftUI",
+      "UIKit",
+      "visionOS",
+      "TCA",
+      "Flutter",
+      "Vapor",
+      "Tailwind CSS"
+    ],
+    "Databases & Architecture": [
+      "SwiftData",
+      "Core Data",
+      "CloudKit",
+      "PostgreSQL",
+      "Firebase",
+      "Docker",
+      "WebSockets"
+    ],
+    "Tools & Methodology": [
+      "Xcode",
+      "Xcode Cloud",
+      "Git",
+      "Figma",
+      "MVVM / MVC",
+      "Agile (Scrum)"
+    ]
+  },
+  "featuredProjects": [
+    {
+      "name": "PontoFácil",
+      "headline": "Turn Any Photo Into a Beautiful Cross-Stitch Pattern in Seconds",
+      "techStack": [
+        "SwiftUI",
+        "Vision",
+        "Shortcuts",
+        "Agentic Coding",
+        "Skills",
+        "SwiftData",
+        "Foundation Models",
+        "API Calls",
+        "Cloudflare"
+      ],
+      "url": "https://dsadriel.github.io/portfolio/#/project/pontof%C3%A1cil"
+    },
+    {
+      "name": "Tchê Alimenta",
+      "headline": "Essential App for the UFRGS Community to Check RU Meal Tickets and Daily Menus",
+      "techStack": [
+        "Flutter",
+        "Dart",
+        "Web Scraping",
+        "Flutter Secure Storage",
+        "Firebase Analytics",
+        "AdMob"
+      ],
+      "url": "https://dsadriel.github.io/portfolio/#/project/tche-alimenta"
+    },
+    {
+      "name": "Grafittone",
+      "headline": "Paint Sound in 3D Space with Apple Vision Pro",
+      "techStack": [
+        "SwiftUI",
+        "RealityKit",
+        "AVFoundation",
+        "visionOS",
+        "Swift"
+      ],
+      "url": "https://dsadriel.github.io/portfolio/#/project/grafittone"
+    },
+    {
+      "name": "Build Together",
+      "headline": "Real-Time Agile Collaboration for iOS and macOS",
+      "techStack": [
+        "Swift",
+        "SwiftUI",
+        "Vapor",
+        "PostgreSQL",
+        "Docker",
+        "TCA",
+        "WebSockets"
+      ],
+      "url": "https://dsadriel.github.io/portfolio/#/project/build-together"
+    },
+    {
+      "name": "WildSet",
+      "headline": "Learning Set Theory Through Nature Conservation",
+      "techStack": [
+        "SwiftUI",
+        "Swift Concurrency",
+        "AVFoundation",
+        "QuickLook",
+        "Figma"
+      ],
+      "url": "https://dsadriel.github.io/portfolio/#/project/wildset"
+    },
+    {
+      "name": "Nook416",
+      "headline": "Multiplatform Group Expense Management Made Simple",
+      "techStack": [
+        "Flutter",
+        "Firebase",
+        "Dart"
+      ],
+      "url": "https://dsadriel.github.io/portfolio/#/project/nook416"
+    }
+  ],
+  "contact": {
+    "email": "contato@dsadriel.com.br",
+    "portfolio": "https://dsadriel.github.io/portfolio",
+    "linkedin": "https://linkedin.com/in/dsadriel",
+    "github": "https://github.com/dsadriel"
+  },
+  "updatedAt": "2026-10-05T11:06:36.374Z"
+}
