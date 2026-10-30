@@ -18,6 +18,12 @@
   },
   "featuredProjects": [
     {
+      "name": "Colora",
+      "description": "Self-Regulation and Focus Companion for Kids",
+      "techStack": ["Swift", "SwiftUI", "HealthKit"],
+      "url": "https://dsadriel.github.io/portfolio/#/project/colora"
+    },
+    {
       "name": "PontoFácil",
       "description": "Turn Any Photo Into a Beautiful Cross-Stitch Pattern in Seconds",
       "techStack": ["SwiftUI", "Vision", "Shortcuts"],
@@ -60,5 +66,5 @@
     "linkedin": "https://linkedin.com/in/dsadriel",
     "github": "https://github.com/dsadriel"
   },
-  "updatedAt": "2026-10-05T11:25:41.170Z"
+  "updatedAt": "2026-10-30T12:36:48.264Z"
 }
