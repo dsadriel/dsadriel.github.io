@@ -1,0 +1,771 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Simulado Mobile P2 • INF01085 SDTF</title>
+  <meta name="theme-color" content="#0f172a">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <style>
+    :root {
+      --bg: #0f172a;
+      --card-bg: #1e293b;
+      --card-border: #334155;
+      --text: #f8fafc;
+      --text-muted: #94a3b8;
+      --primary: #38bdf8;
+      --primary-dark: #0284c7;
+      --primary-glow: rgba(56, 189, 248, 0.2);
+      --correct: #22c55e;
+      --correct-bg: rgba(34, 197, 94, 0.15);
+      --correct-border: #16a34a;
+      --wrong: #ef4444;
+      --wrong-bg: rgba(239, 68, 68, 0.15);
+      --wrong-border: #dc2626;
+      --amber: #f59e0b;
+      --radius: 16px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background-color: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      line-height: 1.5;
+    }
+
+    .app-container {
+      width: 100%;
+      max-width: 480px;
+      margin: 0 auto;
+      padding: 16px 14px 40px;
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+    }
+
+    /* Top App Bar */
+    .app-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 16px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid var(--card-border);
+    }
+
+    .app-logo {
+      font-size: 0.85rem;
+      font-weight: 800;
+      color: var(--primary);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .home-btn {
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid var(--card-border);
+      color: var(--text-muted);
+      border-radius: 8px;
+      padding: 6px 12px;
+      font-size: 0.8rem;
+      font-weight: 700;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      transition: all 0.2s;
+    }
+
+    .home-btn:hover {
+      background: rgba(255, 255, 255, 0.15);
+      color: var(--text);
+    }
+
+    /* Screens */
+    .screen {
+      display: none;
+      flex-direction: column;
+      flex: 1;
+      animation: fadeIn 0.25s ease;
+    }
+
+    .screen.active { display: flex; }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(6px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* HOME SCREEN */
+    .home-title {
+      font-size: 1.45rem;
+      font-weight: 800;
+      margin-bottom: 6px;
+      color: #fff;
+    }
+
+    .home-desc {
+      color: var(--text-muted);
+      font-size: 0.9rem;
+      margin-bottom: 20px;
+    }
+
+    .groups-list {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .group-card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: var(--radius);
+      padding: 18px;
+      cursor: pointer;
+      transition: all 0.2s;
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .group-card:active {
+      transform: scale(0.98);
+      border-color: var(--primary);
+    }
+
+    .group-card::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 5px;
+      height: 100%;
+      background: var(--primary);
+    }
+
+    .group-card.g1::before { background: #38bdf8; }
+    .group-card.g2::before { background: #f59e0b; }
+    .group-card.g3::before { background: #10b981; }
+
+    .group-tag {
+      font-size: 0.72rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: var(--primary);
+    }
+
+    .group-card.g2 .group-tag { color: #f59e0b; }
+    .group-card.g3 .group-tag { color: #10b981; }
+
+    .group-name {
+      font-size: 1.15rem;
+      font-weight: 800;
+      color: #fff;
+    }
+
+    .group-sub {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+    }
+
+    .group-meta {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: 6px;
+      padding-top: 10px;
+      border-top: 1px solid rgba(255, 255, 255, 0.06);
+      font-size: 0.8rem;
+    }
+
+    .group-score-badge {
+      font-weight: 700;
+      color: #94a3b8;
+    }
+
+    .group-start-label {
+      color: var(--primary);
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    /* QUIZ SCREEN */
+    .quiz-progress-bar-bg {
+      background: rgba(255, 255, 255, 0.08);
+      height: 6px;
+      border-radius: 4px;
+      overflow: hidden;
+      margin-bottom: 14px;
+    }
+
+    .quiz-progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--primary), #3b82f6);
+      width: 7%;
+      transition: width 0.3s ease;
+    }
+
+    .quiz-info-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+      font-size: 0.85rem;
+      font-weight: 700;
+    }
+
+    .q-counter {
+      color: var(--primary);
+      background: var(--primary-glow);
+      padding: 3px 8px;
+      border-radius: 6px;
+    }
+
+    .score-counter {
+      color: var(--text-muted);
+    }
+
+    .question-card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: var(--radius);
+      padding: 18px 16px;
+      margin-bottom: 16px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    }
+
+    .q-topic-tag {
+      display: inline-block;
+      font-size: 0.72rem;
+      font-weight: 700;
+      color: #94a3b8;
+      background: rgba(255, 255, 255, 0.06);
+      padding: 2px 8px;
+      border-radius: 4px;
+      margin-bottom: 10px;
+      text-transform: uppercase;
+    }
+
+    .q-statement {
+      font-size: 0.98rem;
+      font-weight: 600;
+      color: #fff;
+      line-height: 1.5;
+    }
+
+    /* Options */
+    .options-container {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-bottom: 16px;
+    }
+
+    .option-item {
+      background: rgba(255, 255, 255, 0.04);
+      border: 1.5px solid var(--card-border);
+      border-radius: 12px;
+      padding: 13px 14px;
+      cursor: pointer;
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      font-size: 0.92rem;
+      color: #e2e8f0;
+      transition: all 0.15s ease;
+      line-height: 1.45;
+      text-align: left;
+    }
+
+    .option-item:active { transform: scale(0.99); }
+
+    .option-letter-badge {
+      background: rgba(255, 255, 255, 0.08);
+      color: #fff;
+      font-weight: 800;
+      font-size: 0.8rem;
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+
+    .option-item.correct {
+      background: var(--correct-bg) !important;
+      border-color: var(--correct-border) !important;
+      color: #fff !important;
+    }
+
+    .option-item.correct .option-letter-badge {
+      background: var(--correct);
+      color: #fff;
+    }
+
+    .option-item.wrong {
+      background: var(--wrong-bg) !important;
+      border-color: var(--wrong-border) !important;
+      color: #fff !important;
+    }
+
+    .option-item.wrong .option-letter-badge {
+      background: var(--wrong);
+      color: #fff;
+    }
+
+    .option-item.disabled {
+      pointer-events: none;
+      opacity: 0.55;
+    }
+
+    .option-item.correct.disabled { opacity: 1 !important; }
+
+    /* Feedback Drawer */
+    .feedback-box {
+      display: none;
+      background: #090e17;
+      border: 1.5px solid var(--card-border);
+      border-radius: 14px;
+      padding: 16px;
+      margin-top: 4px;
+      animation: slideUp 0.25s ease;
+    }
+
+    @keyframes slideUp {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .feedback-status {
+      font-size: 1rem;
+      font-weight: 800;
+      margin-bottom: 6px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .feedback-status.correct { color: var(--correct); }
+    .feedback-status.wrong { color: var(--wrong); }
+
+    .feedback-text {
+      font-size: 0.88rem;
+      color: #cbd5e1;
+      line-height: 1.5;
+      margin-bottom: 14px;
+    }
+
+    .next-q-btn {
+      width: 100%;
+      background: var(--primary);
+      color: #0f172a;
+      border: none;
+      border-radius: 10px;
+      padding: 13px;
+      font-size: 0.95rem;
+      font-weight: 800;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      box-shadow: 0 4px 12px var(--primary-glow);
+    }
+
+    .next-q-btn:active {
+      background: var(--primary-dark);
+      color: #fff;
+    }
+
+    /* RESULTS SCREEN */
+    .result-card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: var(--radius);
+      padding: 24px 18px;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .result-badge { font-size: 2.8rem; margin-bottom: 10px; }
+    .result-title { font-size: 1.35rem; font-weight: 800; margin-bottom: 4px; }
+    .result-subtitle { font-size: 0.88rem; color: var(--text-muted); margin-bottom: 20px; }
+
+    .score-circle {
+      width: 130px;
+      height: 130px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.04);
+      border: 4px solid var(--primary);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 20px;
+    }
+
+    .score-big {
+      font-size: 2.2rem;
+      font-weight: 800;
+      color: #fff;
+      line-height: 1;
+    }
+
+    .score-total {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      font-weight: 600;
+      margin-top: 2px;
+    }
+
+    .feedback-banner {
+      width: 100%;
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 10px;
+      padding: 14px;
+      font-size: 0.9rem;
+      color: #e2e8f0;
+      margin-bottom: 24px;
+      line-height: 1.45;
+    }
+
+    .result-actions {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .action-btn {
+      width: 100%;
+      padding: 13px;
+      border-radius: 10px;
+      font-size: 0.95rem;
+      font-weight: 700;
+      cursor: pointer;
+      border: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+    }
+
+    .action-btn-primary {
+      background: var(--primary);
+      color: #0f172a;
+    }
+
+    .action-btn-secondary {
+      background: rgba(255, 255, 255, 0.08);
+      color: #fff;
+      border: 1px solid var(--card-border);
+    }
+  </style>
+</head>
+<body>
+
+<div class="app-container">
+  <!-- Header -->
+  <header class="app-header">
+    <div class="app-logo">
+      <span>⚡</span> SDTF QUIZ • P2
+    </div>
+    <button class="home-btn" id="headerHomeBtn" onclick="returnToHome()" style="display: none;">
+      <span>🏠</span> Início
+    </button>
+  </header>
+
+  <!-- SCREEN 1: HOME -->
+  <div class="screen active" id="homeScreen">
+    <div class="home-title">Simulado Completo P2</div>
+    <div class="home-desc">3 Simulados completos de 15 questões (com 3 de cada aula: 16, 17, 18, 19 e 20):</div>
+
+    <div class="groups-list">
+      <!-- Simulado 1 -->
+      <div class="group-card g1" onclick="startSimulado(0)">
+        <span class="group-tag">Simulado 1 • Completo</span>
+        <div class="group-name">Simulado 1 • Geral P2</div>
+        <div class="group-sub">15 Questões (3 por aula: Multicast, Mutex, Deadlocks, Transações e Replicação).</div>
+        <div class="group-meta">
+          <span class="group-score-badge" id="s0-score">Não realizado</span>
+          <span class="group-start-label">Iniciar (15 Q) →</span>
+        </div>
+      </div>
+
+      <!-- Simulado 2 -->
+      <div class="group-card g2" onclick="startSimulado(1)">
+        <span class="group-tag">Simulado 2 • Completo</span>
+        <div class="group-name">Simulado 2 • Geral P2</div>
+        <div class="group-sub">15 Questões (3 por aula: FIFO, Coffman, Wait-Die, Intercalação M/N, Linearizabilidade).</div>
+        <div class="group-meta">
+          <span class="group-score-badge" id="s1-score">Não realizado</span>
+          <span class="group-start-label">Iniciar (15 Q) →</span>
+        </div>
+      </div>
+
+      <!-- Simulado 3 -->
+      <div class="group-card g3" onclick="startSimulado(2)">
+        <span class="group-tag">Simulado 3 • Completo</span>
+        <div class="group-name">Simulado 3 • Geral P2</div>
+        <div class="group-sub">15 Questões (3 por aula: Multicast Causal, Anel, Chandy-Misra, Conflito I/J, ROWA).</div>
+        <div class="group-meta">
+          <span class="group-score-badge" id="s2-score">Não realizado</span>
+          <span class="group-start-label">Iniciar (15 Q) →</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SCREEN 2: ACTIVE QUIZ -->
+  <div class="screen" id="quizScreen">
+    <div class="quiz-progress-bar-bg">
+      <div class="quiz-progress-fill" id="progressBar"></div>
+    </div>
+
+    <div class="quiz-info-row">
+      <span class="q-counter" id="questionCounter">Questão 1 de 15</span>
+      <span class="score-counter" id="liveScore">Acertos: 0</span>
+    </div>
+
+    <div class="question-card">
+      <span class="q-topic-tag" id="qTopicTag">Aula 16 • Multicast</span>
+      <div class="q-statement" id="qStatement">Carregando enunciado...</div>
+    </div>
+
+    <div class="options-container" id="optionsContainer">
+      <!-- Options injected by JS -->
+    </div>
+
+    <!-- Feedback Drawer -->
+    <div class="feedback-box" id="feedbackBox">
+      <div class="feedback-status" id="feedbackStatus">
+        <span id="feedbackIcon">✅</span> <span id="feedbackTitle">Correto!</span>
+      </div>
+      <div class="feedback-text" id="feedbackText">Explicação...</div>
+      <button class="next-q-btn" id="nextQuestionBtn" onclick="nextQuestion()">
+        Próxima Questão ➔
+      </button>
+    </div>
+  </div>
+
+  <!-- SCREEN 3: RESULTS -->
+  <div class="screen" id="resultsScreen">
+    <div class="result-card">
+      <div class="result-badge" id="resultEmoji">🏆</div>
+      <div class="result-title" id="resultTitle">Simulado Concluído!</div>
+      <div class="result-subtitle" id="resultSubtitle">Simulado 1 • Geral Completo</div>
+
+      <div class="score-circle">
+        <span class="score-big" id="resultScore">12</span>
+        <span class="score-total">de 15 acertos</span>
+      </div>
+
+      <div class="feedback-banner" id="resultMessage">
+        Excelente desempenho!
+      </div>
+
+      <div class="result-actions">
+        <button class="action-btn action-btn-primary" onclick="retryCurrentSimulado()">
+          🔄 Refazer este Simulado
+        </button>
+        <button class="action-btn action-btn-secondary" onclick="returnToHome()">
+          🏠 Voltar aos Simulados
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  const simuladosData = [{"id": "s1", "title": "Simulado 1 • Geral Completo", "subtitle": "15 Questões (3 de cada Aula: 16, 17, 18, 19 e 20)", "questions": [{"aula": 16, "orig_num": 1, "topic": "Grupos Abertos vs Fechados", "statement": "No contexto de comunicação em grupo, qual é a principal diferença entre um grupo aberto e um grupo fechado?", "options": {"A": "Em grupos fechados, as mensagens são criptografadas, enquanto em grupos abertos elas são enviadas em texto claro.", "B": "Apenas membros pertencentes ao grupo podem enviar mensagens em um grupo fechado, enquanto qualquer processo pode enviar mensagens para um grupo aberto.", "C": "Grupos abertos permitem a entrada dinâmica de novos membros, enquanto grupos fechados possuem membros permanentes e imutáveis.", "D": "Grupos fechados são implementados apenas na camada de aplicação, enquanto grupos abertos utilizam IP multicast na camada de rede.", "E": "Em um grupo aberto, as mensagens obrigatoriamente seguem a ordenação total, enquanto no fechado seguem a ordenação causal.", "F": "Grupos fechados não toleram falhas de omissão, enquanto grupos abertos toleram qualquer tipo de falha bizantina."}, "correct": "B", "explanation": "Em sistemas de comunicação em grupo, a distinção entre grupos fechados e abertos reside em quem pode enviar mensagens ao grupo: em um **grupo fechado**, apenas os próprios membros participantes podem enviar mensagens para o grupo (útil para cooperação interna entre réplicas ou servidores); já em um **grupo aberto**, qualquer processo externo ao sistema pode enviar mensagens para o grupo (por exemplo, clientes enviando requisições para um grupo de servidores replicados)."}, {"aula": 16, "orig_num": 2, "topic": "Multicast Confiável: Propriedade da Concordância", "statement": "A confiabilidade em sistemas de multicast é definida em termos de três propriedades fundamentais: Integridade, Validade e Concordância. O que estabelece especificamente a propriedade da Concordância (Agreement)?", "options": {"A": "Garante que a mensagem enviada será eventualmente entregue ao próprio emissor (self-delivery).", "B": "Garante que a mensagem recebida é exatamente a mesma que foi enviada, sem sofrer duplicações.", "C": "Determina que, se uma mensagem é entregue a um processo correto do grupo, então ela será entregue a todos os outros processos corretos do grupo.", "D": "Define que o emissor deve obrigatoriamente esperar a confirmação de recebimento de todos os n membros antes de enviar a próxima mensagem.", "E": "Estabelece que todas as mensagens enviadas por diferentes emissores devem ser entregues exatamente na mesma ordem em todos os destinos.", "F": "Garante que o tempo de transmissão entre o emissor e os receptores seja síncrono e previsível."}, "correct": "C", "explanation": "A confiabilidade em multicast apoia-se em três propriedades: **Integridade** (a mensagem entregue é idêntica à enviada e nenhuma mensagem é entregue mais de uma vez), **Validade** (se um processo correto faz multicast de $m$, ele eventualmente entregará $m$ a si mesmo) e **Concordância / Agreement** (se uma mensagem $m$ é entregue a um processo correto do grupo, então $m$ será obrigatoriamente entregue a todos os demais processos corretos do grupo — propriedade do tipo \"tudo ou nada\" na entrega)."}, {"aula": 16, "orig_num": 7, "topic": "Características do IP Multicast", "statement": "Considerando as características do mecanismo de Multicast na Internet (IP Multicast), qual das seguintes afirmações é verdadeira?", "options": {"A": "Ele utiliza exclusivamente o protocolo TCP para garantir entrega e ordenação total de ponta a ponta.", "B": "Ele opera na camada de aplicação utilizando endereços IP de classe A.", "C": "Ele oferece nativamente ordenação FIFO e causal baseada em relógios vetoriais de hardware.", "D": "Está disponível apenas para sockets UDP (DGRAM), opera na camada de rede e não fornece garantias de ordem nem de entrega (0-confiável).", "E": "Exige que os grupos sejam estritamente fechados e estáticos, impedindo que membros entrem ou saiam sem aviso prévio.", "F": "Garante integridade absoluta por meio de piggybacked ACKs gerenciados pelos roteadores de borda."}, "correct": "D", "explanation": "O **IP Multicast** opera na **camada de rede** (utilizando endereços IPv4 de Classe D, `224.0.0.0` a `239.255.255.255`, e gerenciamento de grupos via protocolo IGMP) e está disponível na camada de transporte **exclusivamente via sockets UDP (`SOCK_DGRAM`)**. Por ser baseado em datagramas IP/UDP de melhor esforço, não oferece garantias de entrega nem de ordenação, classificando-se como **0-confiável**."}, {"aula": 17, "orig_num": 2, "topic": "Exclusão Mútua: Propriedade de Safety", "statement": "Os algoritmos de exclusão mútua distribuída devem atender a três propriedades fundamentais: Safety, Liveness e Ordering. O que estabelece especificamente a propriedade de Safety (Segurança)?", "options": {"A": "Garante que o algoritmo consuma a menor largura de banda possível durante as operações de saída.", "B": "Garante que as requisições de entrada sejam atendidas estritamente na ordem do tempo físico.", "C": "Garante que todos os pedidos para entrada e saída da seção crítica tenham sucesso, evitando deadlocks.", "D": "Garante que o algoritmo seja tolerante à perda de mensagens e queda do controlador.", "E": "Garante que, no máximo, um processo por vez esteja executando dentro da Seção Crítica.", "F": "Garante que o synchronization delay seja exatamente igual ao tempo de transmissão de uma única mensagem."}, "correct": "E", "explanation": "Os algoritmos de exclusão mútua distribuída são regidos por três propriedades: **Safety (Segurança)** — garante que, no máximo, um único processo por vez esteja executando dentro da Seção Crítica; **Liveness (Vivacidade)** — garante que requisições de entrada e saída eventualmente tenham sucesso (ausência de *deadlock* e *starvation*); e **Ordering (Ordenação)** — garante que, se uma requisição precedeu causalmente outra (*happened-before*), a entrada na Seção Crítica respeite essa ordem."}, {"aula": 17, "orig_num": 4, "topic": "Synchronization Delay: Definição", "statement": "Considerando o algoritmo centralizado de exclusão mútua, como é definido o \"Synchronization Delay\" (atraso de sincronização), isto é, o tempo entre um processo sair da Seção Crítica e o próximo processo ingressar nela?", "options": {"A": "É medido pelo tempo de processamento do algoritmo bully para eleger um novo coordenador.", "B": "É zero, pois o release é assíncrono e o servidor concede a permissão instantaneamente por hardware.", "C": "Corresponde ao tempo de propagação de N mensagens de request ao redor de um anel lógico.", "D": "É o tempo de um round-trip: a mensagem de release ir do processo que sai até o servidor, seguida da mensagem de grant ir do servidor até o próximo processo.", "E": "É determinado unicamente pelo client delay sofrido pelo processo emissor do request.", "F": "É equivalente ao tempo necessário para esvaziar completamente a fila distribuída de mensagens \"go\"."}, "correct": "D", "explanation": "O **Synchronization Delay** (atraso de sincronização) mede o tempo decorrido entre um processo sair da Seção Crítica e o próximo processo em espera conseguir entrar nela. No algoritmo centralizado, esse atraso corresponde ao tempo de **duas mensagens sequenciais (1 round-trip lógico)**: uma mensagem de `release` do processo que sai até o coordenador, seguida de uma mensagem de `grant` do coordenador até o próximo processo da fila."}, {"aula": 17, "orig_num": 8, "topic": "Ricart-Agrawala: Decisão no Estado WANTED", "statement": "No algoritmo de Ricart-Agrawala, quando um processo Pj que está no estado WANTED (deseja entrar na seção crítica) recebe uma mensagem de requisição de um processo Pr, sob qual condição Pj responderá imediatamente com um \"go\" para Pr?", "options": {"A": "Pj responderá imediatamente apenas se o timestamp da requisição de Pr for menor do que o timestamp da sua própria requisição.", "B": "Pj responderá imediatamente apenas se o seu próprio estado mudar para HELD antes da mensagem chegar.", "C": "Pj nunca responde imediatamente enquanto estiver no estado WANTED, guardando todas na fila.", "D": "Pj responderá imediatamente se possuir um identificador de processo (id) maior, ignorando os timestamps.", "E": "Pj responderá imediatamente apenas se a rede providenciar um IP multicast de classe D com 0- confiabilidade.", "F": "Pj responderá imediatamente se o timestamp da requisição de Pr for maior do que o timestamp da sua própria requisição."}, "correct": "A", "explanation": "No algoritmo de Ricart-Agrawala, quando um processo $P_j$ está no estado `WANTED` e recebe uma requisição $\\langle T_r, P_r \\rangle$ de outro processo $P_r$, ele compara os timestamps lógicos: $P_j$ **responde imediatamente** com a autorização (`\"go\"` / *reply*) apenas se o timestamp da requisição de $P_r$ for **menor** que o da sua própria requisição ($T_r < T_j$, desempate pelo menor ID de processo). Caso contrário ($T_j < T_r$), $P_j$ retém a resposta em uma fila local e só responde após sair da Seção Crítica.\n> Acertei com dúvida: por que A? Menor timestamp = pedido mais antigo = maior prioridade. Se Pr é mais antigo, Pj cede a vez e responde \"go\" na hora."}, {"aula": 18, "orig_num": 3, "topic": "Modelagem: Grafo RRAG vs Grafo WFG", "statement": "Qual é a principal diferença conceitual e de modelagem entre um grafo RRAG (Resource Request and Allocation Graph) e um grafo WFG (Wait-For-Graph)?", "options": {"A": "O RRAG utiliza timestamps de Rosenkrantz, enquanto o WFG é baseado puramente em relógios vetoriais.", "B": "O RRAG possui dois tipos de nós (processos e recursos), enquanto o WFG é uma simplificação para recursos de unidade única, contendo apenas nós do tipo processos.", "C": "O RRAG modela apenas deadlocks de comunicação, ao passo que o WFG modela deadlocks de alocação de recursos.", "D": "O WFG assume que os processos falham por colapso, enquanto o RRAG assume falhas por omissão.", "E": "O WFG possui arestas de alocação que apontam do processo para o recurso, invertendo o padrão do RRAG.", "F": "O RRAG é construído de forma distribuída pelo método de edge chasing, e o WFG é monitorado apenas de forma centralizada."}, "correct": "B", "explanation": "O **RRAG** (*Resource Request and Allocation Graph*) é um grafo bipartido que possui **dois tipos de nós** (processos e recursos, com arestas de requisição $P \\to R$ e de alocação $R \\to P$). Quando cada recurso possui apenas uma única instância (unidade única), o RRAG pode ser simplificado para um **WFG** (*Wait-For Graph* / Grafo de Espera), que contém **apenas nós do tipo processo** (uma aresta $P_1 \\to P_2$ indica diretamente que $P_1$ espera por um recurso atualmente alocado a $P_2$)."}, {"aula": 18, "orig_num": 4, "topic": "Prevenção: Estratégia Wound-Wait", "statement": "A estratégia de prevenção de deadlocks conhecida como Wound-Wait (Ferir-Esperar) funciona com base em timestamps (idades dos processos). Qual regra rege o comportamento dessa estratégia?", "options": {"A": "Um processo mais novo morre imediatamente se precisar de um recurso alocado por um processo mais velho.", "B": "Um processo mais velho espera pelo mais novo, e o mais novo aborta se o mais velho requisitar seu recurso.", "C": "Um processo mais novo pode esperar pelo mais velho, mas o mais velho não espera pelo mais novo (ele \"fere\"/aborta o processo mais novo).", "D": "Ambos os processos recebem autorização simultânea, quebrando a exclusão mútua do sistema.", "E": "O processo mais antigo morre de forma controlada ao atingir o limite do temporizador local.", "F": "Nenhum processo pode esperar na fila, forçando a reinicialização constante de todos os nós envolvidos."}, "correct": "C", "explanation": "A estratégia de prevenção **Wound-Wait (Ferir-Esperar)** é um esquema preemptivo baseado em timestamps de criação (menor timestamp = processo mais velho): **se o mais velho pede um recurso do mais novo, o mais velho \"fere\" (preempta/aborta) o mais novo**; se o mais novo pede um recurso do mais velho, o mais novo tem permissão para **esperar**. Assim, o mais velho nunca espera pelo mais novo.\n> Acertei com dúvida! Macete: 1ª palavra (Wound) = o que o Velho faz se pedir do novo (fere/aborta o novo). 2ª palavra (Wait) = o que o Novo faz se pedir do velho (espera)."}, {"aula": 18, "orig_num": 11, "topic": "Condições de Coffman: Recurso Não-Preemptível", "statement": "Quais destas afirmações a respeito das condições para ocorrência de deadlock está INCORRETA?", "options": {"A": "Quatro situações devem ser satisfeitas simultaneamente para a ocorrência de deadlocks, sendo que se uma for \"quebrada\" (negada), então deadlock não acontece no sistema.", "B": "Recurso preemptível é uma condição para a ocorrência de deadlocks que determina que, uma vez alocado um recurso, ele pode ser retirado de um processo.", "C": "Espera circular refere-se a uma sequência de processos onde um processo mantém ao menos um recurso que é necessário ao próximo processo.", "D": "Segura/espera refere-se a um processo, de posse de um recurso, esperar para alocar outro recurso.", "E": "Exclusão mútua refere-se a somente um processo pode usar todas as instâncias de um recurso em um determinado instante.", "F": "A existência de múltiplas instâncias de um mesmo recurso não impede a ocorrência de deadlock em um sistema."}, "correct": "B", "explanation": "A afirmação (B) está **INCORRETA** porque a condição necessária para a ocorrência de deadlock é que o recurso seja **NÃO-preemptível** (isto é, uma vez alocado a um processo, o recurso *não* pode ser tomado à força). Se os recursos fossem preemptíveis, a condição seria quebrada e o deadlock poderia ser desfeito retirando o recurso. *(Nota: na alternativa E, a definição formal de exclusão mútua aplica-se a cada instância individual não compartilhável do recurso).*\n> Errei (marquei E). O enunciado pede a INCORRETA. A incorreta é a B: para haver deadlock o recurso deve ser NÃO-preemptível. Dizer que \"recurso preemptível é uma condição para deadlock\" é falso!"}, {"aula": 19, "orig_num": 1, "topic": "Transações vs Sincronização Tradicional (Mutex)", "statement": "O que diferencia fundamentalmente uma transação dos mecanismos tradicionais de sincronização (como mutex, semáforos e monitores) vistos em sistemas operacionais centralizados?", "options": {"A": "As transações utilizam exclusivamente sockets UDP com 0-confiabilidade para comunicação.", "B": "As transações descartam a propriedade de durabilidade em favor de uma maior vazão de dados.", "C": "Os mecanismos tradicionais são imunes a deadlocks, enquanto as transações exigem obrigatoriamente um sequenciador central.", "D": "Os semáforos e monitores operam apenas em sistemas com topologia de anel unidirecional.", "E": "Os mecanismos tradicionais tratam apenas o problema de acessos concorrentes, enquanto as transações estendem o suporte também para o tratamento de falhas lógicas e falhas de hardware.", "F": "As transações resolvem o isolamento por meio de exclusão mútua física, bloqueando os processos no sistema distribuído por completo."}, "correct": "E", "explanation": "Enquanto mecanismos tradicionais de sincronização de sistemas operacionais (mutexes, semáforos, monitores) resolvem **apenas o controle de acesso concorrente** sob a premissa de que os processos e o hardware não falham, as **transações** ampliam esse modelo para garantir consistência também diante de **falhas lógicas (abortamentos) e falhas físicas de hardware/processos (crashes)**, mantendo os objetos recuperáveis.\n> Acertei! Transações protegem tanto contra concorrência quanto contra falhas lógicas e físicas."}, {"aula": 19, "orig_num": 7, "topic": "Condição Necessária e Suficiente para Equivalência Serial", "statement": "O conceito de Equivalência Serial é o critério fundamental para assegurar a corretude de execuções concorrentes. De acordo com o material, para alcançar a equivalência serial é necessário e suficiente que:", "options": {"A": "Todas as transações passem com sucesso tanto pela validação backward quanto pela forward de maneira simultânea.", "B": "Todos os pares de operações conflitantes entre duas transações sejam executados na mesma ordem em todos os objetos que ambas acessam.", "C": "O sistema utilize exclusivamente controle otimista livre de qualquer tipo de bloqueio ou travas.", "D": "A transação mais nova tenha preferência absoluta e consiga abortar transações mais antigas em caso de conflito de escrita.", "E": "O saldo total das variáveis permaneça imutável durante a fase de cópias privativas.", "F": "Nenhuma transação execute operações de escrita do tipo write."}, "correct": "B", "explanation": "Pelo teorema fundamental do controle de concorrência, para que uma execução intercalada de transações alcance a **Equivalência Serial**, é condição **necessária e suficiente** que **todos os pares de operações conflitantes** (Read-Write, Write-Read ou Write-Write sobre o mesmo objeto) entre duas transações sejam **executados na mesma ordem relativa** ($T_1$ antes de $T_2$, ou $T_2$ antes de $T_1$) em todos os objetos que ambas acessam.\n> Dúvida A vs B: B é a correta (pares conflitantes executados na mesma ordem em todos os objetos comuns). A alternativa A fala de validação backward/forward de controle otimista."}, {"aula": 19, "orig_num": 13, "topic": "Equivalência Serial: Inversão de Conflitos em X e Y", "statement": "Considere a transação T: write(x, 10); write(y, 20); e a transação U: a = read(x); b = read(y); write(z, a + b);. Identifique a opção que NÃO corresponde a uma equivalência serial de T e U:", "options": {"A": "write(x, 10); write(y, 20); a = read(x); b = read(y); write(z, a + b);", "B": "write(x, 10); a = read(x); write(y, 20); b = read(y); write(z, a + b);", "C": "a = read(x); write(x, 10); write(y, 20); b = read(y); write(z, a + b);", "D": "a = read(x); write(x, 10); b = read(y); write(y, 20); write(z, a + b);", "E": "a = read(x); b = read(y); write(z, a + b); write(x, 10); write(y, 20);", "F": "Nenhuma das anteriores."}, "correct": "C", "explanation": "Analisando $T$: `write(x, 10); write(y, 20);` e $U$: `a = read(x); b = read(y); write(z, a + b);`:\n- Conflito em `x`: `write(x, 10)` [$T$] vs `a = read(x)` [$U$].\n- Conflito em `y`: `write(y, 20)` [$T$] vs `b = read(y)` [$U$].\n- Na opção **(C)**: `a = read(x); write(x, 10); write(y, 20); b = read(y); write(z, a + b);`:\n  - Em `x`: $U$ lê `x` **antes** de $T$ escrever $\\implies \\mathbf{U \\to T}$.\n  - Em `y`: $T$ escreve `y` **antes** de $U$ ler $\\implies \\mathbf{T \\to U}$.\n- Como os pares conflitantes estão em ordens opostas ($U$ vê o valor antigo de `x` e o valor novo de `y` — *recuperação inconsistente*), **(C)** **NÃO** corresponde a uma equivalência serial."}, {"aula": 20, "orig_num": 2, "topic": "Modelo Genérico de Replicação: 5 Etapas", "statement": "O modelo genérico de replicação divide o processamento de uma requisição em cinco etapas distintas. Qual alternativa apresenta a ordem correta dessas fases?", "options": {"A": "Requisição, Execução, Consenso, Coordenação e Resposta.", "B": "Coordenação, Requisição, Consenso, Execução e Resposta.", "C": "Requisição, Coordenação, Execução, Consenso e Resposta.", "D": "Requisição, Consenso, Coordenação, Execução e Resposta.", "E": "Coordenação, Execução, Consenso, Resposta e Replicação.", "F": "Execução, Consenso, Coordenação, Resposta e Notificação."}, "correct": "C", "explanation": "O processamento de uma requisição no modelo genérico de replicação divide-se em **cinco fases sequenciais**:\n1. **Requisição (*Request*):** o FE envia a requisição a um ou a todos os RMs;\n2. **Coordenação (*Coordination*):** os RMs coordenam-se para preparar a execução e definir a ordem de entrega (FIFO, causal ou total);\n3. **Execução (*Execution*):** os RMs executam a operação (possivelmente de forma tentativa);\n4. **Consenso (*Agreement*):** os RMs entram em acordo sobre a efetivação (*commit*) do efeito da operação;\n5. **Resposta (*Response*):** um ou mais RMs respondem ao FE, que entrega o resultado ao cliente."}, {"aula": 20, "orig_num": 4, "topic": "Consistência Sequencial vs Linearizabilidade", "statement": "Qual é a principal diferença conceitual entre a Consistência Sequencial (Sequential Consistency) e a Linearizabilidade (Linearizability)?", "options": {"A": "A consistência sequencial tolera falhas bizantinas, enquanto a linearizabilidade lida apenas com quedas por colapso.", "B": "A consistência sequencial não utiliza relógios globais ou a noção de tempo real, exigindo apenas que a intercalação seja consistente com a ordem do programa de cada cliente em específico.", "C": "A linearizabilidade é voltada para dados dinâmicos, enquanto a consistência sequencial aplica-se exclusivamente a dados imutáveis.", "D": "A consistência sequencial exige o bloqueio (lock) de todas as réplicas a cada operação de leitura.", "E": "A linearizabilidade permite a existência de atualizações conflitantes temporárias em background.", "F": "Na consistência sequencial, o estado que um cliente vê pode nunca ter existido logicamente no passado."}, "correct": "B", "explanation": "A diferença central entre **Consistência Sequencial (*Sequential Consistency*)** e **Linearizabilidade** está na exigência de tempo real: enquanto a Linearizabilidade exige respeito à ordem em tempo físico real entre quaisquer clientes, **a Consistência Sequencial não exige sincronismo com o tempo real global**, requerendo apenas que a sequência intercalada atenda à especificação de uma única cópia correta e **preserve a ordem do programa individual de cada cliente**.\n> Não sabia: a principal diferença é que a consistência sequencial não usa relógios globais ou tempos reais, exigindo apenas consistência com a ordem do programa individual de cada cliente."}, {"aula": 20, "orig_num": 8, "topic": "Replicação Baseada em Quórum (Gifford): r+w>n e w>n/2", "statement": "Em um sistema de replicação Baseado em Quórum (Quorum-based) com n réplicas, quais são as condições matemáticas necessárias sobre o quórum de leitura (r) e o quórum de escrita (w) para prevenir inconsistências causadas por particionamento da rede?", "options": {"A": "r+w≤n e w≤n/2", "B": "r+w>n e w>n/2", "C": "r=w e r+w=n", "D": "r>n/2 e w≤n/2", "E": "r w>n e w>n⋅", "F": "r+w=n+1 e w=n/2"}, "correct": "B", "explanation": "Em sistemas de replicação **Baseados em Quórum (Gifford)** com $n$ réplicas, para impedir que duas partições de rede operem de forma inconsistente (garantindo interseção obrigatória entre qualquer conjunto de leitura $r$ e de escrita $w$, e entre dois conjuntos de escrita), o quórum de leitura $r$ e o quórum de escrita $w$ devem satisfazer simultaneamente as duas inequações:\n$$r + w > n \\quad \\text{e} \\quad w > \\frac{n}{2}$$"}]}, {"id": "s2", "title": "Simulado 2 • Geral Completo", "subtitle": "15 Questões (3 de cada Aula: 16, 17, 18, 19 e 20)", "questions": [{"aula": 16, "orig_num": 4, "topic": "Multicast Ordenado: Semântica FIFO", "statement": "Considere que um processo executa a operação multicast(g,m) e, logo em seguida, executa multicast(g,m′). Para que se garanta a semântica de Ordenação FIFO, qual deve ser o comportamento nos destinatários?", "options": {"A": "Cada processo receptor q g deve realizar o deliver de m′ somente após ter executado o deliver de m.∈", "B": "As mensagens m e m′ devem ser entregues simultaneamente usando relógios vetoriais.", "C": "A mensagem m′ deve ser descartada se o emissor for um processo externo (grupo aberto).", "D": "O processo receptor deve priorizar m′ caso ela contenha um identificador numérico menor que m.", "E": "Todos os processos do grupo devem concordar coletivamente em uma ordem aleatória que inverta m e m′.", "F": "A mensagem m deve passar obrigatoriamente por um sequenciador central antes de m′ ser gerada."}, "correct": "A", "explanation": "A **Ordenação FIFO** (*First-In, First-Out*, ou ordenada por emissor) estabelece que, se um mesmo processo emite `multicast(g, m)` e posteriormente `multicast(g, m')`, todo processo receptor correto $q \\in g$ que entregar ambas deve obrigatoriamente realizar o `deliver` de $m'$ **somente após** ter realizado o `deliver` de $m$ (usando, por exemplo, números de sequência por emissor e uma fila de retenção/*hold-back queue*).\n> Acertei com dúvida: por que A? FIFO olha estritamente a ordem do emissor individual."}, {"aula": 16, "orig_num": 8, "topic": "Confiabilidade ('Tudo ou Nada') vs Ordenação", "statement": "Quais das alternativas abaixo está INCORRETA em relação à confiabilidade em multicast (comunicação em grupo):", "options": {"A": "A propriedade \"tudo ou nada\" em comunicação multicast determina que ou todos os processos do grupo concordam em receber a mensagem multicast em uma determinada ordem, ou é como se nenhum processo do grupo tivesse recebido.", "B": "A confiabilidade em multicast é definida em termos de integridade (mensagem recebida é a mesma que a enviada, sem duplicações), validade (mensagem enviada será eventualmente entregue) e concordância (se mensagem é entregue a um processo, então é entregue a todos).", "C": "Na comunicação multicast 0-confiável, o emissor não espera nenhuma confirmação de recebimento da mensagem, sendo o que ocorre no caso do IP multicast.", "D": "Na comunicação multicast 1-confiável, o emissor recebe a confirmação de um destino.", "E": "Na comunicação multicast m-de-n confiável, o emissor espera a resposta de m processos de um grupo formado por n processos (1 < m < n). F) Na comunicação multicast confiável, o emissor espera confirmação de todos membros."}, "correct": "A", "explanation": "A afirmação (A) está **INCORRETA** porque confunde **confiabilidade (\"tudo ou nada\")** com **ordenação**: a propriedade \"tudo ou nada\" (Concordância/Agreement do multicast confiável) determina apenas que ou todos os processos corretos do grupo entregam a mensagem ou nenhum a entrega, **sem exigir que essa entrega ocorra em uma determinada ordem** (a ordenação das mensagens é uma propriedade ortogonal tratada pelos protocolos de multicast ordenado: FIFO, Causal ou Total).\n> Acertei com dúvida: A é a incorreta porque misturou \"tudo ou nada\" com \"ordenação\". Confiabilidade não impõe ordem!"}, {"aula": 16, "orig_num": 11, "topic": "Multicast Confiável sobre IP Multicast", "statement": "Quais dos conceitos abaixos está INCORRETO em relação à comunicação em grupo:", "options": {"A": "Grupos multicast podem ser abertos ou fechados.", "B": "IP multicast é um mecanismo de comunicação assíncrono.", "C": "Multicast confiável não pode ser implementado sobre IP multicast, pois não é possível assumir que os grupos podem ser fechados e sem sobreposição de processos participantes em grupos.", "D": "Se um determinado processo é membro de um grupo multicast, ele pode receber mensagens enviadas para aquele grupo.", "E": "Os processos podem participar de número arbitrário de grupos multicast.", "F": "O IP multicast é um exemplo de multicast 0-confiável, no qual os grupos são abertos e processos podem participar de vários grupos simultaneamente."}, "correct": "C", "explanation": "A afirmação (C) está **INCORRETA** porque o **Multicast Confiável pode sim ser implementado sobre IP Multicast**: conforme apresentado em Coulouris (Seção 15.4.2), combina-se a difusão eficiente do IP Multicast com números de sequência, *ACKs* anexados por carona (*piggybacked ACKs*) e confirmações negativas (*NACKs*) quando um receptor detecta lacunas de sequência, assumindo-se inclusive grupos fechados para que os membros conheçam o conjunto de participantes.\n> Fiquei em dúvida. O enunciado pede a INCORRETA: C afirma que \"Multicast confiável NÃO pode ser implementado sobre IP multicast\", o que é FALSO. Pode sim!"}, {"aula": 17, "orig_num": 3, "topic": "Algoritmo Centralizado de Exclusão Mútua", "statement": "No algoritmo centralizado para exclusão mútua, quais são as três mensagens fundamentais utilizadas no princípio de funcionamento do protocolo?", "options": {"A": "election, elected e coordinator", "B": "token, pass e release", "C": "request, grant e release", "D": "enter, exit e hold", "E": "request, go e reply", "F": "enter, reply e ack"}, "correct": "C", "explanation": "No **Algoritmo Centralizado** de exclusão mútua (servidor coordenador de *locks*), o protocolo opera com três mensagens fundamentais: **`request`** (cliente pede permissão ao coordenador para entrar na SC), **`grant`** (coordenador concede a permissão ao cliente) e **`release`** (cliente informa ao coordenador que saiu da SC)."}, {"aula": 17, "orig_num": 9, "topic": "Ricart-Agrawala: Mensagens para entrar 2(N-1)", "statement": "Qual é o número total de mensagens trocadas na rede (sem considerar otimizações de multicast nativo) para que um processo consiga a autorização de entrada e execute o protocolo de exclusão mútua no algoritmo de Ricart-Agrawala em um grupo de N processos?", "options": {"A": "N mensagens no total.", "B": "2 (N−1) mensagens, sendo N−1 requisições e N−1 respostas.∗", "C": "3 mensagens (request, grant, release).", "D": "Entre 1 e N mensagens, dependendo de onde o token físico está localizado.", "E": "Nenhuma, pois ele utiliza variáveis de condição na memória compartilhada distribuída.", "F": "(N−1)2 mensagens devido à necessidade de broadcast total ordenado."}, "correct": "B", "explanation": "Sem suporte a multicast nativo em hardware, para entrar na Seção Crítica no algoritmo de Ricart-Agrawala em um grupo de $N$ processos, o nó interessado precisa enviar **$N - 1$ mensagens de requisição** (uma para cada um dos outros processos) e aguardar **$N - 1$ mensagens de resposta** (`\"go\"`), totalizando **$2 \\cdot (N - 1)$ mensagens** (a saída da SC não envia mensagens extras aos processos que já responderam, apenas libera respostas retidas)."}, {"aula": 17, "orig_num": 13, "topic": "Comparação de Algoritmos: Propriedade de Ordering", "statement": "Em relação aos algoritmos centralizado, baseado em anel e de Ricart-Agrawala [1981] para exclusão mútua em sistemas distribuídos, é INCORRETO afirmar que:", "options": {"A": "O algoritmo centralizado não satisfaz a relação happened-before, portanto não satisfaz a propriedade ordering.", "B": "O algoritmo do anel permite exclusão mútua entre N processos sem a necessidade de processo adicional.", "C": "O Algoritmo Ricart-Agrawala [1981] implementa exclusão mútua entre N processos, sendo baseado em multicast e relógios lógicos.", "D": "O algoritmo do anel satisfaz a propriedade de ordering, uma vez que ele respeita a ordem em que as solicitações para ingresso na seção crítica foram feitas.", "E": "No Algoritmo Ricart-Agrawala [1981], o processo que deseja entrar na seção crítica envia mensagem aos demais e espera que todos autorizem sua entrada.", "F": "O algoritmo centralizado é baseado na troca de apenas três mensagens, sendo duas para o protocolo de entrada (request, grant) e uma para o protocolo de saída (release)."}, "correct": "D", "explanation": "A afirmação (D) está **INCORRETA** porque o **Algoritmo do Anel NÃO satisfaz a propriedade de Ordering** (*happened-before*): as requisições são atendidas conforme a posição física/lógica dos processos ao longo do sentido de rotação do *token* no anel, e não na ordem causal/cronológica em que os pedidos foram gerados. (Apenas o algoritmo de Ricart-Agrawala satisfaz *Safety*, *Liveness* e *Ordering* simultaneamente)."}, {"aula": 18, "orig_num": 2, "topic": "As 4 Condições de Coffman para Deadlocks", "statement": "Para que um deadlock ocorra no sistema, quatro condições bem conhecidas devem ser satisfeitas simultaneamente. O que define a condição de Segura/Espera?", "options": {"A": "Um processo, já de posse de pelo menos um recurso, pode ser forçado a liberá-lo temporariamente por um coordenador.", "B": "Um processo, mesmo detendo um recurso, pode sofrer preempção se um processo mais velho requisitar o mesmo objeto.", "C": "Somente um processo pode utilizar o recurso em um determinado instante de tempo.", "D": "Uma sequência circular de processos é montada onde cada um retém recursos do próximo.", "E": "Um processo, de posse de um recurso, espera para alocar outro recurso.", "F": "Os recursos são obrigatoriamente preemptíveis mediante algoritmos baseados em timestamps."}, "correct": "E", "explanation": "As quatro condições de Coffman necessárias simultaneamente para a ocorrência de deadlock são: **Exclusão Mútua** (recurso não compartilhável simultaneamente), **Segura e Espera / Hold and Wait** (um processo que já detém ao menos um recurso aguarda para alocar outro recurso), **Não-Preempção** (recursos não podem ser tomados à força de quem os detém) e **Espera Circular** (cadeia fechada de processos onde cada um espera por um recurso retido pelo próximo)."}, {"aula": 18, "orig_num": 5, "topic": "Prevenção: Estratégia Wait-Die", "statement": "Na estratégia de prevenção Wait-Die (Esperar-Morrer), o que acontece quando um processo mais novo (maior timestamp) necessita de um recurso que está atualmente alocado por um processo mais velho (menor timestamp)?", "options": {"A": "O processo mais novo é colocado em uma hold-back queue centralizada.", "B": "O processo mais novo morre (é abortado e reiniciado) ao invés de esperar.", "C": "O processo mais novo força a preempção imediata do recurso detido pelo processo mais velho.", "D": "O processo mais velho morre imediatamente para ceder o lugar ao processo mais novo.", "E": "O processo mais novo entra em estado HELD até receber uma mensagem de grant.", "F": "O processo mais novo espera pacientemente em conformidade com a ordenação causal da rede."}, "correct": "B", "explanation": "A estratégia de prevenção **Wait-Die (Esperar-Morrer)** é um esquema não-preemptivo baseado em timestamps: se o mais velho pede um recurso do mais novo, o mais velho **espera** (*Wait*); porém, **se um processo mais novo (maior timestamp) solicita um recurso detido por um processo mais velho (menor timestamp), o processo mais novo \"morre\" (*Die*)**, sendo abortado e reiniciado (mantendo seu timestamp original) em vez de esperar.\n> Acertei com dúvida! Macete: 1ª palavra (Wait) = Velho pede do novo (espera). 2ª palavra (Die) = Novo pede do velho (morre)."}, {"aula": 18, "orig_num": 12, "topic": "Tratamento de Deadlocks: Algoritmo do Avestruz", "statement": "Em relação às estratégias para o tratamento de deadlocks, é FALSO afirmar que:", "options": {"A": "A prevenção de deadlocks em um sistema distribuído pode ser feita com as estratégias wound-wait e wait- die.", "B": "Uma possibilidade para tratar deadlocks é deixar o deadlock ocorrer, e ser capaz de determinar sua existência, depois, limpar os deadlocks do sistemas.", "C": "O algoritmo do \"avestruz\" é uma estratégia que serve para evitar deadlocks.", "D": "A prevenção de deadlocks funciona condicionando o sistema a afastar qualquer possibilidade de deadlocks, \"negando\" uma das quatro condições necessárias para a ocorrência de deadlocks.", "E": "A alocação criteriosa de recursos permite evitar deadlocks em um sistema distribuído.", "F": "Uma possibilidade para tratar deadlocks é permitir que exista a possibilidade de ocorrência dos mesmos mas, na iminência de acontecer, desviar cuidadosamente do deadlocks."}, "correct": "C", "explanation": "A afirmação (C) está **FALSA** porque o **Algoritmo do Avestruz** consiste simplesmente em **ignorar o problema** (enfiar a cabeça na areia quando o deadlock é raríssimo e o custo de prevenção/detecção não compensa), e **não** é uma estratégia de *evitação* (*avoidance*, como o Algoritmo do Banqueiro, que analisa estados seguros antes de alocar recursos).\n> Errei (marquei E). O enunciado pede a FALSA. C é falsa porque o Avestruz não \"evita\" nada, ele apenas ignora o problema! Já E é verdadeira (alocação criteriosa = evitar/avoidance)."}, {"aula": 19, "orig_num": 2, "topic": "Propriedades ACID: Atomicidade e Isolamento", "statement": "A propriedade A.C.I.D. define o comportamento esperado de uma transação. Qual é o significado e o objetivo da propriedade do Isolamento?", "options": {"A": "Estabelece que uma transação não pode observar os efeitos parciais de operações feitas por outras transações concorrentes.", "B": "Garante que os efeitos de uma transação bem-sucedida sejam imediatamente replicados no disco rígido do cliente.", "C": "Define que, se uma falha acontecer, o servidor deve se suicidar usando o algoritmo bully.", "D": "Garante que a lógica interna da transação mantenha todas as invariantes e regras de negócio estáveis.", "E": "Determina que o grupo de servidores seja fechado e sem sobreposição de transações.", "F": "Garante que o tempo de execução total seja linearmente proporcional ao identificador TID."}, "correct": "A", "explanation": "No acrônimo **A.C.I.D.** (Atomicidade, Consistência, Isolamento, Durabilidade), a propriedade de **Isolamento** estabelece que cada transação deve ser executada sem interferência visível de outras transações concorrentes — isto é, **nenhuma transação pode observar os efeitos intermediários ou parciais** de operações realizadas por outras transações ainda não efetivadas (*uncommitted*)."}, {"aula": 19, "orig_num": 11, "topic": "Equivalência Serial: Identificação de Conflitos", "statement": "Considere a transação T: x = read(a); write(b, x * 2); e a transação U: write(a, 5); y = read(b);. Identifique a opção que NÃO corresponde a uma equivalência serial de T e U:", "options": {"A": "x = read(a); write(b, x * 2); write(a, 5); y = read(b);", "B": "x = read(a); write(a, 5); write(b, x * 2); y = read(b);", "C": "write(a, 5); y = read(b); x = read(a); write(b, x * 2);", "D": "write(a, 5); x = read(a); y = read(b); write(b, x * 2);", "E": "x = read(a); y = read(b); write(a, 5); write(b, x * 2);", "F": "Nenhuma das anteriores."}, "correct": "E", "explanation": "Analisando os conflitos entre $T$: `x = read(a); write(b, x * 2);` e $U$: `write(a, 5); y = read(b);`:\n- Em `a`: conflito entre `read(a)` de $T$ e `write(a, 5)` de $U$.\n- Em `b`: conflito entre `write(b, x * 2)` de $T$ e `read(b)` de $U$.\n- Em **(A)** e **(B)**, temos $T \\to U$ tanto em `a` quanto em `b` (equivalente a $T$ seguido de $U$).\n- Em **(C)** e **(D)**, temos $U \\to T$ tanto em `a` quanto em `b` (equivalente a $U$ seguido de $T$).\n- Na opção **(E)**: `x = read(a)` [$T$]; `y = read(b)` [$U$]; `write(a, 5)` [$U$]; `write(b, x * 2)` [$T$], além de inverter a ordem interna de $U$, no objeto `a` ocorre $T \\to U$ (`read(a)` antes de `write(a, 5)`), enquanto no objeto `b` ocorre $U \\to T$ (`read(b)` antes de `write(b, x * 2)`). Portanto, **(E)** **NÃO** possui equivalência serial."}, {"aula": 19, "orig_num": 14, "topic": "Equivalência Serial: Conflitos em M e N com Leitura e Escrita", "statement": "Considere a transação T: x = read(m); write(n, x); e a transação U: write(m, 30); write(n, 40);. Identifique a opção que NÃO corresponde a uma equivalência serial de T e U:", "options": {"A": "x = read(m); write(n, x); write(m, 30); write(n, 40);", "B": "x = read(m); write(m, 30); write(n, 40); write(n, x);", "C": "x = read(m); write(m, 30); write(n, x); write(n, 40);", "D": "write(m, 30); write(n, 40); x = read(m); write(n, x);", "E": "write(m, 30); write(n, 40); x = read(m); write(n, x);", "F": "Nenhuma das anteriores."}, "correct": "B", "explanation": "Analisando $T$: `x = read(m); write(n, x);` e $U$: `write(m, 30); write(n, 40);`:\n- Conflito em `m`: `x = read(m)` [$T$] vs `write(m, 30)` [$U$].\n- Conflito em `n`: `write(n, x)` [$T$] vs `write(n, 40)` [$U$].\n- Na opção **(B)**: `x = read(m); write(m, 30); write(n, 40); write(n, x);`:\n  - Em `m`: $T$ lê `m` **antes** de $U$ escrever `30` $\\implies \\mathbf{T \\to U}$.\n  - Em `n`: $U$ escreve `40` **antes** de $T$ sobrescrever `n` com `x` $\\implies \\mathbf{U \\to T}$.\n- Como os conflitos ocorrem em ordens opostas ($T \\to U$ em `m` e $U \\to T$ em `n`), **(B)** **NÃO** corresponde a uma equivalência serial."}, {"aula": 20, "orig_num": 3, "topic": "Linearizabilidade: Cópia Única e Tempos Reais Físicos", "statement": "O modelo de consistência conhecido como Linearizabilidade (Linearizability) impõe fortes restrições ao sistema. Quais são os dois critérios que uma execução deve satisfazer para ser considerada linearizable?", "options": {"A": "Ser imune a falhas bizantinas e dispensar o uso de replica managers dinâmicos.", "B": "Atender à especificação de uma única cópia correta e ser consistente com a ordem do programa de cada cliente individual.", "C": "Utilizar um ordenamento puramente causal e propagar atualizações em background de forma lazy.", "D": "Atender à especificação de uma única cópia correta e ser consistente com os tempos reais em que as operações ocorreram na execução.", "E": "Basear-se em quórum de leitura maior que o de escrita (r>w) e atualizar versões de forma atômica.", "F": "Executar as requisições por multicast confiável sem qualquer controle de concorrência por tempo real."}, "correct": "D", "explanation": "O critério de correção mais forte para objetos replicados é a **Linearizabilidade (*Linearizability*)**: uma execução concorrente de operações sobre réplicas é *linearizable* se, e somente se:\n1. A sequência intercalada de operações **atende à especificação de uma única cópia correta** dos objetos; e\n2. A ordem das operações na intercalação é **consistente com os tempos reais (*real-time*)** em que as operações ocorreram durante a execução.\n> Errei (marquei B). B é a definição de Consistência Sequencial (ordem de programa de cada cliente). Linearizabilidade EXIGE consistência com os TEMPOS REAIS (D)."}, {"aula": 20, "orig_num": 6, "topic": "Replicação Ativa: Por que NÃO é Linearizável", "statement": "Por que se afirma que a Replicação Ativa suporta Consistência Sequencial, mas NÃO suporta Linearizabilidade?", "options": {"A": "Porque ela depende de um único ponto de falha centralizado que não se ajusta ao tempo real.", "B": "Porque as requisições são enviadas via IP multicast de classe D sem garantias de confiabilidade na entrega.", "C": "Porque a ordem total em que os RMs executam as requisições (definida pelo multicast) não é necessariamente consistente com a ordem em tempo real em que os clientes emitiram tais requisições.", "D": "Porque as réplicas ativas executam operações em background apenas quando solicitadas de forma lazy.", "E": "Porque ela permite que leituras e escritas sejam efetuadas em qualquer réplica sem validação de número de versão.", "F": "Porque o consenso entre as réplicas ativas exige o descarte de mensagens que chegam atrasadas em tempo real."}, "correct": "C", "explanation": "Na **Replicação Ativa**, o Front-end difunde a requisição a todos os RMs usando **Multicast Totalmente Ordenado**, e todos os RMs executam a operação de modo independente na mesma sequência. Isso garante **Consistência Sequencial** (todos os RMs veem a mesma história válida e respeitam a ordem de envio de cada FE), mas **NÃO garante Linearizabilidade**, porque os atrasos variáveis de rede na formação da ordem total pelo multicast podem ordenar uma requisição $R_2$ antes de $R_1$, mesmo que $R_1$ tenha sido emitida antes em tempo físico real por outro cliente.\n> Errei (marquei F). C é a correta: a ordem total do multicast não reflete necessariamente a ordem temporal em que os clientes emitiram os pedidos."}, {"aula": 20, "orig_num": 11, "topic": "Replicação Passiva (Backup-Primário) e Linearizabilidade", "statement": "Em relação à replicação passiva, assinale a alternativa INCORRETA:", "options": {"A": "Na etapa de coordenação, o servidor primário trata requisições de forma atômica, na ordem em que as recebe.", "B": "Na etapa de execução, o servidor primário realiza a requisição e armazena o resultado.", "C": "Na etapa de requisição, o front-end envia a requisição, contendo um identificador único, ao replica manager primário.", "D": "Na etapa de consenso, se a requisição atualizar algum dado, o primário envia o estado atualizado, a resposta e o identificador único para todos os servidores secundários, e espera confirmação dos secundários.", "E": "A replicação passiva não satisfaz linearizability, pois o servidor primário realiza operações em \"tempo real\" e em ordem, e não há preocupação em atualizar em múltiplos lugares.", "F": "Uma requisição pode ser uma operação de read e/ou write sobre uma réplica."}, "correct": "E", "explanation": "A afirmação (E) está **INCORRETA** porque a **Replicação Passiva SATISFAZ sim a Linearizabilidade**: como todas as requisições passam por um único servidor primário que as serializa e executa atomicamente na ordem em tempo real em que chegam, a ordem de execução reflete a ordem temporal real (desde que o primário seja único e os backups sejam atualizados de forma síncrona na fase de consenso).\n> Errei (marquei B). O enunciado pede a INCORRETA. A incorreta é E: a replicação passiva satisfaz SIM linearizabilidade! B é verdadeira (o primário executa e armazena resultado)."}]}, {"id": "s3", "title": "Simulado 3 • Geral Completo", "subtitle": "15 Questões (3 de cada Aula: 16, 17, 18, 19 e 20)", "questions": [{"aula": 16, "orig_num": 3, "topic": "Multicast 0-Confiável sob a Perspectiva do Emissor", "statement": "Como é classificado um mecanismo de multicast no qual o emissor não espera nenhuma confirmação de entrega por parte dos destinatários (como ocorre, por exemplo, no IP multicast padrão)?", "options": {"A": "Multicast Confiável", "B": "Multicast m-de-n confiável", "C": "Multicast 1-confiável", "D": "Multicast 0-confiável", "E": "Multicast Totalmente Ordenado", "F": "Multicast Síncrono"}, "correct": "D", "explanation": "Do ponto de vista das confirmações aguardadas pelo emissor, o **Multicast 0-confiável** é aquele em que o emissor apenas transmite a mensagem ao grupo e não aguarda nenhuma confirmação (*ACK*) de recebimento dos destinatários, sendo o comportamento padrão do **IP Multicast** (baseado em UDP)."}, {"aula": 16, "orig_num": 5, "topic": "Multicast Ordenado: Semântica Causal (Happened-Before)", "statement": "A Ordenação Causal estabelece uma restrição baseada na relação de precedência temporal e lógica (\"happens before\"). Se o envio de uma mensagem m precede causalmente o envio de uma mensagem m′ (multicast(g,m)→multicast(g,m′)), o que o sistema de comunicação deve garantir?", "options": {"A": "Que m′ seja entregue antes de m na metade dos nós para balanceamento de carga.", "B": "Que a entrega de m′ (deliver) seja executada estritamente após a entrega de m em todos os destinos do grupo.", "C": "Que as duas mensagens sejam unificadas em uma única transmissão para economizar largura de banda.", "D": "Que o emissor de m′ receba uma confirmação negativa se m falhar na rede.", "E": "Que a ordem de entrega entre m e m′ seja completamente indiferente para a aplicação destino.", "F": "Que as mensagens sejam ordenadas sequencialmente por um único nó centralizado chamado coordenador de causalidade."}, "correct": "B", "explanation": "A **Ordenação Causal** generaliza a relação *happened-before* ($\\to$) de Lamport para comunicações em grupo: se o evento de envio `multicast(g, m)` precede causalmente o evento `multicast(g, m')` (mesmo que emitidos por processos distintos), o sistema garante que a entrega (`deliver`) de $m'$ só ocorra **estritamente após** a entrega de $m$ em todos os processos destinatários do grupo (tipicamente implementada com Relógios Vetoriais).\n> Errei (marquei C). C fala de unir mensagens na rede (nada a ver com ordenação). O correto é B: o deliver de m' ocorre estritamente após o deliver de m."}, {"aula": 16, "orig_num": 9, "topic": "Semânticas FIFO, Causal e Total (Identificação da Incorreta)", "statement": "No multicast ordenado, todas as mensagens são entregues para todos os destinos em uma ordem que seja apropriada para a aplicação. Assinale a afirmação INCORRETA em relação às semânticas possíveis:", "options": {"A": "A ordenação total garante que todas as mensagens são entregues na mesma ordem em todos os processos mesmo que difira da ordem de emissão.", "B": "Na ordenação FIFO, a ordem das mensagens é preservada da perspectiva do emissor, ou seja, se processo envia uma m antes de m', m será entregue antes de m' em todos os processos do grupo.", "C": "Na ordenação causal, se uma mensagem \"happens before\" outra mensagem, essa relação será preservada na entrega dessas duas mensagens em todos os processos do grupo.", "D": "Na ordenação total (consistente), se m for entregue antes m' em um processo, então a mesma ordem será preservada em todos os processos.", "E": "É possível que uma determinada entrega ordenada de mensagens obedeça a ordenação total (consistente) ao mesmo tempo em que respeita às ordenações causal e FIFO simultaneamente.", "F": "Na ordenação FIFO, é possível que as mensagens enviadas por um processo não sejam entregues ao destino na ordem que foram enviadas."}, "correct": "F", "explanation": "A afirmação (F) está **INCORRETA** pois contradiz diretamente a definição de **Ordenação FIFO**: na semântica FIFO, a ordem de envio das mensagens originadas por um mesmo processo emissor é estritamente preservada na entrega em todos os destinos (não sendo possível entregar $m'$ antes de $m$ se o mesmo processo enviou $m$ antes de $m'$).\n> Não soube responder na hora. O enunciado pede a INCORRETA: F diz que em FIFO as mensagens de um processo podem não ser entregues na ordem enviada (o que é falso, nega a definição de FIFO)."}, {"aula": 17, "orig_num": 5, "topic": "Algoritmo em Anel Lógico (Token Ring)", "statement": "No algoritmo baseado em anel para exclusão mútua, os processos são organizados logicamente em um anel unidirecional. O que acontece quando um processo recebe o token, mas não deseja entrar na Seção Crítica?", "options": {"A": "O processo retém o token até que outro nó envie uma mensagem de request de forma síncrona.", "B": "O processo descarta o token.", "C": "O processo envia uma mensagem de release para o coordenador do anel.", "D": "O processo incrementa seu relógio lógico vetorial e enfileira o token na sua fila de processos em espera.", "E": "O processo repassa o token adiante para o seu vizinho lógico imediato.", "F": "O processo retém o token até que o nodo deseje entrar na seção crítica."}, "correct": "E", "explanation": "No **Algoritmo Baseado em Anel Lógico**, a posse da ficha (*token*) confere o direito exclusivo de entrar na Seção Crítica. Quando um processo recebe o *token* do seu predecessor mas não tem interesse em entrar na Seção Crítica, ele simplesmente **repassa o *token* imediatamente adiante** para o seu vizinho lógico sucessor no anel."}, {"aula": 17, "orig_num": 7, "topic": "Ricart-Agrawala: Estados RELEASED, WANTED e HELD", "statement": "O algoritmo de Ricart-Agrawala (1981) baseia-se em multicast e relógios lógicos para implementar uma fila distribuída. Quais são os três estados possíveis em que cada processo pode se encontrar a qualquer momento?", "options": {"A": "REQUEST, GRANT e RELEASE", "B": "ENTER, EXIT e WANTED", "C": "REQUEST, RELEASED e WANTED", "D": "RELEASED, WANTED e HELD", "E": "ENTER, EXIT e HELD", "F": "RELEASED, GRANT e WANTED"}, "correct": "D", "explanation": "No **Algoritmo de Ricart-Agrawala (1981)** (baseado em multicast e relógios lógicos de Lamport), cada processo mantém sua máquina de estados em um de três estados possíveis: **`RELEASED`** (fora da seção crítica e sem interesse em entrar), **`WANTED`** (deseja entrar na seção crítica e aguarda autorização dos demais) ou **`HELD`** (atualmente executando dentro da seção crítica)."}, {"aula": 17, "orig_num": 12, "topic": "Propriedades Formais: Safety na Seção Crítica vs Liveness", "statement": "Em relação às propriedades e suposições para algoritmos de exclusão mútua distribuída, é INCORRETO afirmar que:", "options": {"A": "Ordering especifica que, se um pedido para entrar na seção crítica aconteceu antes (happened-before) de outro, então a entrada na seção crítica deve respeitar essa ordem.", "B": "Liveness refere-se ao sucesso dos pedidos para entrada e saída da seção crítica, sem deadlock e starvation.", "C": "Uma suposição dos algoritmos para exclusão mútua discutidos em sala de aula é que, sem a adoção de estratégias para tolerância a falhas, as mensagens não são perdidas (sem falhas por omissão).", "D": "Safety é a propriedade que se refere a ter no máximo um processo por vez na condição de corrida.", "E": "Safety, liveness e ordering são propriedades aplicáveis no escopo de algoritmos de exclusão mútua distribuída.", "F": "Uma suposição dos algoritmos para exclusão mútua discutidos em sala de aula é que os processos não falham por colapso (\"pendurar\"), caso contrário devem ser adotados mecanismos de tolerância a falhas."}, "correct": "D", "explanation": "A afirmação (D) está **INCORRETA** porque a propriedade de **Safety** garante que no máximo um processo por vez execute dentro da **Seção Crítica** (justamente para **impedir** condições de corrida), e não \"um processo por vez na condição de corrida\".\n> Errei (marquei C). C é uma suposição verdadeira de aula (mensagens não se perdem). A pegadinha está na D: safety é \"no máximo um por vez na Seção Crítica\", e não \"na condição de corrida\" (condição de corrida é o que queremos evitar!)."}, {"aula": 18, "orig_num": 1, "topic": "Categorias de Deadlocks: Alocação, Comunicação e Fantasmas", "statement": "Determinados autores dividem os deadlocks em ambientes distribuídos em três categorias específicas. Quais são elas?", "options": {"A": "Deadlocks síncronos, assíncronos e mistos.", "B": "Deadlocks de memória, de disco e de processador.", "C": "Deadlocks de comunicação, de alocação de recursos e fantasmas.", "D": "Deadlocks preventivos, evitativos e detectáveis.", "E": "Deadlocks de exclusão, de retenção e de preempção.", "F": "Deadlocks centralizados, em anel e distribuídos."}, "correct": "C", "explanation": "Em sistemas distribuídos, a literatura divide os deadlocks em três categorias específicas: **Deadlocks de Comunicação** (processos bloqueados esperando mensagens uns dos outros em ciclo), **Deadlocks de Alocação de Recursos** (processos retendo recursos como arquivos/travas e aguardando recursos detidos por outros processos) e **Deadlocks Fantasmas** (ciclos falsos detectados devido a atrasos de propagação de mensagens de atualização de estado).\n> Errei (marquei E). As 3 categorias de deadlocks distribuídos são: comunicação, alocação de recursos e fantasmas."}, {"aula": 18, "orig_num": 9, "topic": "Chandy-Misra-Haas: Mensagem probe(i, j, k)", "statement": "A mensagem de probe utilizada no algoritmo distribuído de Chandy-Misra-Haas é caracterizada estruturalmente como uma tupla contendo três elementos: (i,j,k). O que representa cada um desses campos?", "options": {"A": "i: o tamanho da mensagem, j: o identificador do recurso, k: o tempo lógico de Lamport.", "B": "i: o processo que está na seção crítica, j: o processo na fila, k: o servidor centralizado.", "C": "i: o número de sequência, j: a idade do processo, k: o número do canal UDP.", "D": "i: o iniciador do processo de detecção de deadlock, j: o processo emissor do probe atual, k: o processo destinatário do probe atual.", "E": "i: o timestamp inicial, j: o identificador do nó colapsado, k: o número de checkpoints salvos.", "F": "i: o processo velho, j: o processo ferido, k: o processo que morreu."}, "correct": "D", "explanation": "No algoritmo de Chandy-Misra-Haas, a mensagem de sondagem é estruturada como a tupla **`probe(i, j, k)`**, na qual:\n- **`i`**: identificador do processo **iniciador** (bloqueado) que deflagrou a detecção;\n- **`j`**: identificador do processo **emissor** do `probe` no salto atual;\n- **`k`**: identificador do processo **destinatário** (receptor) do `probe` no salto atual.\n*(Quando `k == i`, o ciclo fechou e o deadlock é detectado).*"}, {"aula": 18, "orig_num": 14, "topic": "Comparação Aprofundada: Wound-Wait vs Wait-Die", "statement": "Em relação às estratégias wound-wait e wait-die, assinale a alternativa CORRETA:", "options": {"A": "Na estratégia wound-wait, o processo mais novo (maior timestamp) pode esperar pelo mais velho, mas o mais velho não espera pelo mais novo.", "B": "As estratégias wound-wait e wait-die abortam, se necessário, o processo mais velho.", "C": "Na estratégia wound-wait, processo mais velhos são reiniciados se recurso for requisitado por processo mais novo.", "D": "A estratégia wait-die nega a condição de recurso não-preemptível.", "E": "Na estratégia wait-die, o processo mais velho (menor timestamp) pode esperar pelo mais novo, e o mais novo bloqueia à esperas pelo mais velho.", "F": "A estratégia wound-wait nega a condição de segura/espera."}, "correct": "A", "explanation": "Comparando as regras:\n- **Wound-Wait (Ferir-Esperar):** Mais velho pede do mais novo $\\to$ **Fere** (*Wound*, mais velho não espera pelo mais novo). Mais novo pede do mais velho $\\to$ **Espera** (*Wait*, mais novo pode esperar pelo mais velho).\n- **Wait-Die (Esperar-Morrer):** Mais velho pede do mais novo $\\to$ **Espera** (*Wait*). Mais novo pede do mais velho $\\to$ **Morre** (*Die*).\nPortanto, a alternativa **(A)** descreve com exatidão o comportamento do *Wound-Wait*.\n> Acertei! Em Wound-Wait, o mais novo pode esperar pelo mais velho, mas o mais velho não espera pelo mais novo (ele fere o mais novo)."}, {"aula": 19, "orig_num": 3, "topic": "Propriedades de Atomicidade e Durabilidade", "statement": "Como o sistema de gerenciamento de transações atinge as propriedades de Atomicidade e Durabilidade simultaneamente?", "options": {"A": "Mantendo as versões tentativas ativas em buffers voláteis por tempo indeterminado.", "B": "Forçando as transações a utilizarem apenas relógios lógicos de Lamport.", "C": "Transferindo a responsabilidade da persistência inteiramente para a lógica desenvolvida pelo usuário.", "D": "Por meio de objetos recuperáveis, utilizando armazenamento permanente de forma a refletir o efeito de \"tudo ou nada\".", "E": "Impedindo que o servidor aborte qualquer operação que tenha recebido um TID válido.", "F": "Eliminando a fase de validação e executando as escritas diretamente na versão corrente."}, "correct": "D", "explanation": "As propriedades de **Atomicidade** (\"tudo ou nada\") e **Durabilidade** (persistência definitiva após o *commit*) são alcançadas conjuntamente mantendo os dados em **objetos recuperáveis** armazenados em **meio permanente (disco/SSD)** com protocolos de efetivação atômica e logs/versionamento, de modo que ou todas as alterações são gravadas permanentemente no *commit*, ou o estado anterior intacto é preservado no *abort/crash*."}, {"aula": 19, "orig_num": 12, "topic": "Equivalência Serial: Violação da Ordem Interna de Programa", "statement": "Considere a transação T: x = read(i); y = read(j); write(i, x + 1); e a transação U: write(j, 50); z = read(i);. Identifique a opção que NÃO corresponde a uma equivalência serial de T e U:", "options": {"A": "x = read(i); (T) y = read(j); (T) write(j, 50); (U) write(i, x + 1); (T) z = read(i); (U)", "B": "x = read(i); (T) y = read(j); (T) write(i, x + 1); (T) z = read(i); (U) write(j, 50); (U)", "C": "x = read(i); (T) y = read(j); (T) write(i, x + 1); (T) write(j, 50); (U) z = read(i); (U)", "D": "write(j, 50); (U) x = read(i); (T) z = read(i); (U) y = read(j); (T) write(i, x + 1); (T)", "E": "write(j, 50); (U) z = read(i); (U) x = read(i); (T) y = read(j); (T) write(i, x + 1); (T)", "F": "Nenhuma das anteriores."}, "correct": "B", "explanation": "Analisando $T$: `x = read(i); y = read(j); write(i, x + 1);` e $U$: `write(j, 50); z = read(i);`:\n- Uma intercalação válida deve preservar a **ordem interna de programa** de cada transação e ordenar todos os conflitos no mesmo sentido ($T \\to U$ ou $U \\to T$).\n- Em **(A)** e **(C)**, a ordem interna de $T$ e $U$ é respeitada e todos os conflitos seguem $T \\to U$ (`read(j)` de $T$ antes de `write(j, 50)` de $U$; `write(i, x + 1)` de $T$ antes de `z = read(i)` de $U$).\n- Em **(D)** e **(E)**, a ordem interna de $T$ e $U$ é respeitada e todos os conflitos seguem $U \\to T$ (`write(j, 50)` de $U$ antes de `y = read(j)` de $T$; `z = read(i)` de $U$ antes de `write(i, x + 1)` de $T$). *(Nota: em D, caso se considere erroneamente que `x = read(i)` de $T$ conflita com `z = read(i)` de $U$, D pareceria inverter a ordem, embora duas leituras `read(i)` não conflitem entre si)*.\n- Na opção **(B)**: `x = read(i); (T) y = read(j); (T) write(i, x + 1); (T) z = read(i); (U) write(j, 50); (U)`, as operações da transação $U$ foram **invertidas** em relação à definição original de $U$ (`z = read(i)` foi executado antes de `write(j, 50)`), violando a ordem interna da transação $U$."}, {"aula": 19, "orig_num": 16, "topic": "Equivalência Serial: Conflitos Cruzados em I e J", "statement": "Considere a transação T: x=read(i); y=read(j); write(k,x+y); e a transação U: write(j,10); write(i,20); w = read(i); z = read(j). Identifique a opção que NÃO corresponde a uma equivalência serial de T e U:", "options": {"A": "x = read(i); y = read(j); write(k,x+y); write(j, 10); write(i, 20); w = read(i); z = read(j);", "B": "x = read(i); y = read(j); write(j, 10); write(i, 20); write(k,x+y); w = read(i); z = read(j);", "C": "x = read(i); y = read(j); write(j, 10); write(i, 20); w = read(i); write(k,x+y); z = read(j);", "D": "x = read(i); write(j, 10); write(i, 20); y = read(j); write(k,x+y); w = read(i); z = read(j);", "E": "x = read(i); y = read(j); write(j, 10); write(i, 20); w = read(i); z = read(j); write(k,x+y);", "F": "Nenhuma das anteriores."}, "correct": "D", "explanation": "Analisando $T$: `x = read(i); y = read(j); write(k, x + y);` e $U$: `write(j, 10); write(i, 20); w = read(i); z = read(j);`:\n- Conflito em `i`: `x = read(i)` [$T$] vs `write(i, 20)` [$U$].\n- Conflito em `j`: `y = read(j)` [$T$] vs `write(j, 10)` [$U$].\n- Na opção **(D)**: `x = read(i); write(j, 10); write(i, 20); y = read(j); write(k,x+y); w = read(i); z = read(j);`:\n  - Em `i`: $T$ executa `x = read(i)` **antes** de $U$ executar `write(i, 20)` $\\implies \\mathbf{T \\to U}$.\n  - Em `j`: $U$ executa `write(j, 10)` **antes** de $T$ executar `y = read(j)` $\\implies \\mathbf{U \\to T}$.\n- Como a ordem das operações conflitantes diverge entre os objetos `i` e `j`, **(D)** **NÃO** corresponde a uma equivalência serial."}, {"aula": 20, "orig_num": 1, "topic": "Arquitetura Clientes, Front-ends e Gerenciadores de Réplicas", "statement": "Uma arquitetura genérica de replicação é composta por Clientes, Front-ends (FE) e Gerenciadores de Réplicas (Replica Managers - RMs). Qual é o papel fundamental do componente Front-end nessa estrutura?", "options": {"A": "Executar as modificações nos dados de forma estritamente persistente e recuperável.", "B": "Armazenar as cópias físicas primárias e coordenar o algoritmo de eleição.", "C": "Aplicar travas (locks) em todas as réplicas simultaneamente no modelo read-only.", "D": "Fornecer transparência aos clientes, encaminhando as requisições aos RMs e retornando um único resultado.", "E": "Substituir os gerenciadores de réplicas que falharem por colapso em background.", "F": "Resolver conflitos bizantinos através de cálculos baseados em matrizes de timestamps."}, "correct": "D", "explanation": "Na arquitetura genérica de replicação (Clientes, Front-ends e Gerenciadores de Réplicas / *Replica Managers* - RMs), o papel primordial do **Front-end (FE)** é **fornecer transparência de replicação aos clientes**, recebendo as chamadas da aplicação cliente, encaminhando as requisições por mensagem a um ou mais RMs e consolidando as respostas para retornar um único resultado ao cliente."}, {"aula": 20, "orig_num": 5, "topic": "Replicação Passiva: Papel do Nó Primário", "statement": "No modelo de Replicação Passiva (ou backup-primário), como ocorre o fluxo de execução e a propagação das atualizações após o Front-end enviar uma requisição?", "options": {"A": "O FE envia a requisição para todos os gerenciadores em multicast totalmente ordenado; todos executam de forma independente.", "B": "O FE comunica-se apenas com um RM primário, que executa as operações e envia as atualizações aos RMs secundários (backups).", "C": "O RM primário faz apenas leituras, delegando qualquer operação de escrita aos backups de forma assíncrona.", "D": "Os backups recebem a requisição do cliente, processam-na de forma tentativa e realizam consenso com o primário para efetivar.", "E": "O primário responde ao FE imediatamente após receber o pacote, deixando a execução e replicação para depois.", "F": "Todos os replica managers atuam de forma equivalente, coletando maior número de respostas em background."}, "correct": "B", "explanation": "No modelo de **Replicação Passiva (ou Backup-Primário)**, existe um único RM **primário** e múltiplos RMs **secundários (backups)**: o Front-end comunica-se **exclusivamente com o RM primário**, que ordena e executa a operação localmente e, em seguida, propaga o estado atualizado (e o ID da requisição) a todos os backups, aguardando suas confirmações antes de responder ao FE."}, {"aula": 20, "orig_num": 7, "topic": "Protocolo de Leitura Única e Escrita Total (ROWA)", "statement": "Quais são as desvantagens associadas ao protocolo clássico de atualização do tipo Read-one/Write-all?", "options": {"A": "É ineficiente para cenários em que há majoritariamente operações de leitura (reads).", "B": "Gera atualizações conflitantes frequentes que exigem eleições constantes via algoritmo bully.", "C": "O quórum de leitura torna-se excessivamente grande, retardando a resposta do Front-end.", "D": "Gera um gargalo devido à necessidade de aplicar travas (locks) em todas as réplicas para realizar uma escrita, além de exigir que todas as réplicas estejam disponíveis.", "E": "Impede o uso de objetos lógicos transparentes e frameworks de middleware.", "F": "Ele quebra a consistência sequencial se a rede for particionada em subconjuntos estáticos."}, "correct": "D", "explanation": "O protocolo clássico **Read-one/Write-all (ROWA)** é ótimo para leituras (basta ler de 1 réplica), porém possui severas desvantagens para escritas: **gera um gargalo de desempenho e disponibilidade por exigir a aplicação de travas (*locks*) e atualização em absolutamente todas as $n$ réplicas**, o que significa que a falha ou indisponibilidade de uma única réplica impede a realização de escritas no sistema."}]}];
+
+  let currentSimIdx = 0;
+  let currentQIdx = 0;
+  let currentScore = 0;
+  let answered = false;
+
+  const savedScores = { 0: null, 1: null, 2: null };
+
+  function updateHomeScores() {
+    for (let i = 0; i < 3; i++) {
+      const el = document.getElementById(`s${i}-score`);
+      if (savedScores[i] !== null) {
+        el.innerText = `Último resultado: ${savedScores[i]}/15 (${Math.round((savedScores[i]/15)*100)}%)`;
+        el.style.color = savedScores[i] >= 11 ? "var(--correct)" : "var(--amber)";
+      }
+    }
+  }
+
+  function returnToHome() {
+    document.getElementById('homeScreen').classList.add('active');
+    document.getElementById('quizScreen').classList.remove('active');
+    document.getElementById('resultsScreen').classList.remove('active');
+    document.getElementById('headerHomeBtn').style.display = 'none';
+    updateHomeScores();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  function startSimulado(simIdx) {
+    currentSimIdx = simIdx;
+    currentQIdx = 0;
+    currentScore = 0;
+
+    document.getElementById('homeScreen').classList.remove('active');
+    document.getElementById('resultsScreen').classList.remove('active');
+    document.getElementById('quizScreen').classList.add('active');
+    document.getElementById('headerHomeBtn').style.display = 'flex';
+
+    loadQuestion();
+  }
+
+  function loadQuestion() {
+    answered = false;
+    const sim = simuladosData[currentSimIdx];
+    const q = sim.questions[currentQIdx];
+
+    const total = sim.questions.length;
+    const pct = ((currentQIdx + 1) / total) * 100;
+    document.getElementById('progressBar').style.width = pct + '%';
+    document.getElementById('questionCounter').innerText = `Questão ${currentQIdx + 1} de ${total}`;
+    document.getElementById('liveScore').innerText = `Acertos: ${currentScore}`;
+
+    document.getElementById('qTopicTag').innerText = `Aula ${q.aula} (Ex ${q.orig_num}) • ${q.topic}`;
+    document.getElementById('qStatement').innerText = q.statement;
+
+    const container = document.getElementById('optionsContainer');
+    container.innerHTML = '';
+
+    const letters = Object.keys(q.options).sort();
+    letters.forEach(letter => {
+      const text = q.options[letter];
+      const btn = document.createElement('div');
+      btn.className = 'option-item';
+      btn.id = `opt-${letter}`;
+      btn.onclick = () => selectAnswer(letter);
+
+      btn.innerHTML = `
+        <span class="option-letter-badge">${letter}</span>
+        <span>${text}</span>
+      `;
+      container.appendChild(btn);
+    });
+
+    document.getElementById('feedbackBox').style.display = 'none';
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  function selectAnswer(chosenLetter) {
+    if (answered) return;
+    answered = true;
+
+    const sim = simuladosData[currentSimIdx];
+    const q = sim.questions[currentQIdx];
+    const isCorrect = (chosenLetter === q.correct);
+
+    if (isCorrect) {
+      currentScore++;
+      document.getElementById(`opt-${chosenLetter}`).classList.add('correct');
+      document.getElementById('feedbackStatus').className = 'feedback-status correct';
+      document.getElementById('feedbackIcon').innerText = '✅';
+      document.getElementById('feedbackTitle').innerText = 'Resposta Correta!';
+    } else {
+      document.getElementById(`opt-${chosenLetter}`).classList.add('wrong');
+      document.getElementById(`opt-${q.correct}`).classList.add('correct');
+      document.getElementById('feedbackStatus').className = 'feedback-status wrong';
+      document.getElementById('feedbackIcon').innerText = '❌';
+      document.getElementById('feedbackTitle').innerText = `Incorreto! A resposta certa é a (${q.correct})`;
+    }
+
+    document.querySelectorAll('.option-item').forEach(el => {
+      el.classList.add('disabled');
+    });
+
+    document.getElementById('liveScore').innerText = `Acertos: ${currentScore}`;
+    document.getElementById('feedbackText').innerHTML = q.explanation;
+    document.getElementById('feedbackBox').style.display = 'block';
+
+    setTimeout(() => {
+      document.getElementById('feedbackBox').scrollIntoView({ behavior: 'smooth', block: 'end' });
+    }, 100);
+  }
+
+  function nextQuestion() {
+    const sim = simuladosData[currentSimIdx];
+    if (currentQIdx < sim.questions.length - 1) {
+      currentQIdx++;
+      loadQuestion();
+    } else {
+      showResults();
+    }
+  }
+
+  function showResults() {
+    const sim = simuladosData[currentSimIdx];
+    savedScores[currentSimIdx] = currentScore;
+
+    document.getElementById('quizScreen').classList.remove('active');
+    document.getElementById('resultsScreen').classList.add('active');
+
+    document.getElementById('resultSubtitle').innerText = `${sim.title} (15 Questões)`;
+    document.getElementById('resultScore').innerText = currentScore;
+
+    const emojiEl = document.getElementById('resultEmoji');
+    const titleEl = document.getElementById('resultTitle');
+    const msgEl = document.getElementById('resultMessage');
+
+    const pct = Math.round((currentScore / 15) * 100);
+
+    if (currentScore >= 14) {
+      emojiEl.innerText = '🥇';
+      titleEl.innerText = 'Aproveitamento Quase Perfeito!';
+      msgEl.innerHTML = `Você fez ${currentScore}/15 (${pct}%). Domínio completo de todas as 5 aulas!`;
+    } else if (currentScore >= 11) {
+      emojiEl.innerText = '🌟';
+      titleEl.innerText = 'Excelente Desempenho!';
+      msgEl.innerHTML = `Você fez ${currentScore}/15 (${pct}%). Muito bem preparado para a P2!`;
+    } else if (currentScore >= 9) {
+      emojiEl.innerText = '👍';
+      titleEl.innerText = 'Bom Desempenho!';
+      msgEl.innerHTML = `Você fez ${currentScore}/15 (${pct}%). Vale a pena revisar as questões que errou.`;
+    } else {
+      emojiEl.innerText = '💪';
+      titleEl.innerText = 'Vamos Revisar!';
+      msgEl.innerHTML = `Você fez ${currentScore}/15 (${pct}%). Releia o <strong>RESUMAO_PRE_PROVA.md</strong> e tente refazer o simulado!`;
+    }
+
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  function retryCurrentSimulado() {
+    startSimulado(currentSimIdx);
+  }
+
+  updateHomeScores();
+</script>
+
+</body>
+</html>
