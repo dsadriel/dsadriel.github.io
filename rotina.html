@@ -1,0 +1,1464 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Rotina Semanal</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'system-ui', '-apple-system', 'sans-serif'],
+            mono: ['JetBrains Mono', 'monospace'],
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    body {
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+      background-color: #FAF9F6;
+      color: #18181B;
+      user-select: none;
+      -webkit-user-select: none;
+    }
+
+    .custom-scrollbar::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    .custom-scrollbar::-webkit-scrollbar-track {
+      background: transparent;
+    }
+    .custom-scrollbar::-webkit-scrollbar-thumb {
+      background: #E4E4E7;
+      border-radius: 9999px;
+    }
+    .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+      background: #D4D4D8;
+    }
+
+    /* Bloco de rotina minimalista */
+    .routine-block {
+      transition: box-shadow 0.14s ease, border-color 0.14s ease;
+      touch-action: none;
+    }
+    .routine-block:hover {
+      z-index: 25 !important;
+      box-shadow: 0 4px 12px -2px rgba(24, 24, 27, 0.08), 0 2px 4px -1px rgba(24, 24, 27, 0.04);
+    }
+    .routine-block.is-selected {
+      outline: 1.5px solid #18181B;
+      outline-offset: 1px;
+      z-index: 30 !important;
+    }
+    .routine-block.is-dragging,
+    .routine-block.is-resizing {
+      opacity: 0.92;
+      z-index: 40 !important;
+      box-shadow: 0 12px 24px -4px rgba(24, 24, 27, 0.14);
+      transition: none;
+    }
+
+    /* Alças discretas de redimensionamento */
+    .resize-handle {
+      position: absolute;
+      left: 0;
+      right: 0;
+      height: 7px;
+      cursor: ns-resize;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      transition: opacity 0.14s ease;
+    }
+    .routine-block:hover .resize-handle,
+    .routine-block.is-selected .resize-handle,
+    .routine-block.is-resizing .resize-handle {
+      opacity: 1;
+    }
+    .resize-handle-top { top: 0; }
+    .resize-handle-bottom { bottom: 0; }
+    .resize-pill {
+      width: 20px;
+      height: 2.5px;
+      border-radius: 9999px;
+      background-color: currentColor;
+      opacity: 0.35;
+    }
+
+    /* Animações sutis para Side Sheet e Modal */
+    @keyframes sheetSlideIn {
+      from { transform: translateX(100%); opacity: 0.6; }
+      to { transform: translateX(0); opacity: 1; }
+    }
+    .sheet-animate {
+      animation: sheetSlideIn 0.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+
+    @keyframes modalPopIn {
+      from { opacity: 0; transform: scale(0.98) translateY(4px); }
+      to { opacity: 1; transform: scale(1) translateY(0); }
+    }
+    .modal-animate {
+      animation: modalPopIn 0.15s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+  </style>
+</head>
+<body class="h-screen flex flex-col overflow-hidden bg-[#FAF9F6] text-zinc-900">
+
+  <!-- Header Ultra-Limpo -->
+  <header class="h-13 bg-white/90 backdrop-blur-sm border-b border-zinc-200/80 px-4 sm:px-6 py-3 flex items-center justify-between shrink-0 z-30">
+    <h1 class="text-sm font-semibold tracking-tight text-zinc-900">Rotina Semanal</h1>
+
+    <button id="openSettingsBtn" type="button"
+      class="inline-flex items-center gap-1.5 px-2.5 py-1.5 text-xs font-medium text-zinc-600 hover:text-zinc-900 hover:bg-zinc-100 rounded-lg transition-colors"
+      aria-label="Configurações">
+      <svg class="w-4 h-4 text-zinc-500" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path>
+        <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+      </svg>
+      <span>Configurações</span>
+    </button>
+  </header>
+
+  <!-- Grade Semanal -->
+  <main class="flex-1 flex flex-col overflow-hidden relative">
+    <div id="calendarScrollContainer" class="flex-1 overflow-auto custom-scrollbar relative">
+      <div class="min-w-[740px] flex flex-col">
+
+        <!-- Cabeçalho Fixo dos Dias -->
+        <div class="sticky top-0 z-20 flex bg-white/95 backdrop-blur-sm border-b border-zinc-200/80">
+          <div class="w-14 sm:w-16 shrink-0 border-r border-zinc-200/70"></div>
+          <div id="daysHeaderRow" class="flex-1 grid grid-cols-7 divide-x divide-zinc-200/70">
+            <!-- Gerado via JS -->
+          </div>
+        </div>
+
+        <!-- Corpo da Grade Horária -->
+        <div class="flex relative">
+          <!-- Eixo de Horas -->
+          <div id="timeLabelsColumn" class="w-14 sm:w-16 shrink-0 bg-[#FAF9F6] border-r border-zinc-200/70 relative select-none">
+            <!-- Gerado via JS -->
+          </div>
+
+          <!-- Colunas Interativas (Seg a Dom) -->
+          <div id="daysGridArea" class="flex-1 grid grid-cols-7 divide-x divide-zinc-200/70 relative bg-white">
+            <!-- Gerado via JS -->
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Dica Sutil no Vazio (some ao criar o primeiro bloco) -->
+    <div id="emptyHint" class="hidden pointer-events-none absolute inset-x-0 bottom-5 flex justify-center z-10 px-4">
+      <p class="text-xs text-zinc-400 bg-white/90 backdrop-blur-sm border border-zinc-200/80 rounded-full px-4 py-1.5 shadow-sm">
+        Arraste ou dê duplo clique em qualquer horário para adicionar um bloco
+      </p>
+    </div>
+  </main>
+
+  <!-- Side Sheet de Configurações -->
+  <div id="settingsOverlay" class="hidden fixed inset-0 z-50 bg-zinc-950/20 backdrop-blur-[1px] flex justify-end">
+    <aside id="settingsSheet" class="w-full max-w-sm bg-white h-full border-l border-zinc-200 shadow-2xl flex flex-col sheet-animate" role="dialog" aria-modal="true" aria-label="Configurações">
+      <!-- Topo da Sheet -->
+      <div class="px-5 py-4 border-b border-zinc-100 flex items-center justify-between">
+        <h2 class="text-sm font-semibold text-zinc-900">Configurações</h2>
+        <button id="closeSettingsBtn" type="button" class="p-1.5 text-zinc-400 hover:text-zinc-700 hover:bg-zinc-100 rounded-lg transition-colors" aria-label="Fechar configurações">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"></path>
+          </svg>
+        </button>
+      </div>
+
+      <!-- Conteúdo da Sheet -->
+      <div class="flex-1 overflow-y-auto custom-scrollbar p-5 space-y-6">
+
+        <!-- Precisão de Snapping -->
+        <section class="space-y-2.5">
+          <div>
+            <h3 class="text-xs font-medium text-zinc-900">Precisão de alinhamento</h3>
+            <p class="text-[11px] text-zinc-500 mt-0.5">Intervalo magnético ao mover ou redimensionar blocos.</p>
+          </div>
+          <div class="grid grid-cols-2 gap-1.5 p-1 bg-zinc-100 rounded-lg border border-zinc-200/60">
+            <button id="snap15Btn" type="button"
+              class="py-1.5 text-xs font-mono font-medium rounded-md transition-all bg-white text-zinc-900 shadow-sm">
+              15 min
+            </button>
+            <button id="snap30Btn" type="button"
+              class="py-1.5 text-xs font-mono font-medium rounded-md transition-all text-zinc-500 hover:text-zinc-900">
+              30 min
+            </button>
+          </div>
+        </section>
+
+        <hr class="border-zinc-100" />
+
+        <!-- Recorte de Horários -->
+        <section class="space-y-3">
+          <div class="flex items-center justify-between">
+            <div>
+              <h3 class="text-xs font-medium text-zinc-900">Recorte de horários</h3>
+              <p class="text-[11px] text-zinc-500 mt-0.5">Faixa visível na grade semanal.</p>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-2 gap-3">
+            <div>
+              <label for="startHourSelect" class="block text-[11px] font-medium text-zinc-600 mb-1">Hora inicial</label>
+              <select id="startHourSelect"
+                class="w-full px-2.5 py-2 text-xs font-mono bg-white border border-zinc-200 rounded-lg focus:outline-none focus:border-zinc-900">
+              </select>
+            </div>
+            <div>
+              <label for="endHourSelect" class="block text-[11px] font-medium text-zinc-600 mb-1">Hora final</label>
+              <select id="endHourSelect"
+                class="w-full px-2.5 py-2 text-xs font-mono bg-white border border-zinc-200 rounded-lg focus:outline-none focus:border-zinc-900">
+              </select>
+            </div>
+          </div>
+
+          <!-- Atalhos rápidos de recorte -->
+          <div class="flex items-center gap-2 pt-0.5">
+            <button id="presetActiveHoursBtn" type="button"
+              class="flex-1 py-1.5 px-2.5 text-[11px] font-medium text-zinc-700 bg-zinc-50 hover:bg-zinc-100 border border-zinc-200 rounded-lg transition-colors">
+              Horário ativo (06h–23h)
+            </button>
+            <button id="presetFullDayBtn" type="button"
+              class="flex-1 py-1.5 px-2.5 text-[11px] font-medium text-zinc-700 bg-zinc-50 hover:bg-zinc-100 border border-zinc-200 rounded-lg transition-colors">
+              24 horas (00h–24h)
+            </button>
+          </div>
+        </section>
+
+        <hr class="border-zinc-100" />
+
+        <!-- Backup e Dados -->
+        <section class="space-y-2.5">
+          <div>
+            <h3 class="text-xs font-medium text-zinc-900">Dados e backup</h3>
+            <p class="text-[11px] text-zinc-500 mt-0.5">Sua rotina é salva automaticamente neste navegador.</p>
+          </div>
+
+          <div class="space-y-2 pt-1">
+            <button id="exportJsonBtn" type="button"
+              class="w-full py-2 px-3 text-xs font-medium text-zinc-700 bg-white hover:bg-zinc-50 border border-zinc-200 rounded-lg flex items-center justify-between transition-colors">
+              <span>Exportar JSON</span>
+              <svg class="w-3.5 h-3.5 text-zinc-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path>
+              </svg>
+            </button>
+
+            <button id="importJsonBtn" type="button"
+              class="w-full py-2 px-3 text-xs font-medium text-zinc-700 bg-white hover:bg-zinc-50 border border-zinc-200 rounded-lg flex items-center justify-between transition-colors">
+              <span>Importar JSON</span>
+              <svg class="w-3.5 h-3.5 text-zinc-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"></path>
+              </svg>
+            </button>
+            <input type="file" id="importFileInput" accept=".json,application/json" class="hidden" />
+
+            <button id="clearWeekBtn" type="button"
+              class="w-full py-2 px-3 text-xs font-medium text-rose-600 bg-white hover:bg-rose-50/70 border border-zinc-200 hover:border-rose-200 rounded-lg flex items-center justify-between transition-colors">
+              <span>Limpar semana</span>
+              <svg class="w-3.5 h-3.5 text-rose-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+              </svg>
+            </button>
+          </div>
+        </section>
+
+      </div>
+    </aside>
+  </div>
+
+  <!-- Modal Minimalista de Criação / Edição de Bloco -->
+  <div id="blockModal" class="hidden fixed inset-0 z-50 bg-zinc-950/25 backdrop-blur-[1px] flex items-center justify-center p-4">
+    <div class="bg-white border border-zinc-200 rounded-2xl shadow-xl w-full max-w-md overflow-hidden modal-animate" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+      <div class="px-5 py-3.5 border-b border-zinc-100 flex items-center justify-between">
+        <h2 id="modalTitle" class="text-sm font-semibold text-zinc-900">Novo bloco</h2>
+        <button id="closeModalBtn" type="button" class="text-zinc-400 hover:text-zinc-700 p-1 rounded-lg hover:bg-zinc-100 transition-colors" aria-label="Fechar">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"></path>
+          </svg>
+        </button>
+      </div>
+
+      <form id="blockForm" class="p-5 space-y-4">
+        <input type="hidden" id="blockIdInput" />
+
+        <!-- Título -->
+        <div>
+          <label for="blockTitleInput" class="block text-xs font-medium text-zinc-700 mb-1">Título</label>
+          <input id="blockTitleInput" type="text" required maxlength="60" placeholder="Nome da atividade..."
+            class="w-full px-3 py-2 text-sm bg-white border border-zinc-200 rounded-lg focus:outline-none focus:border-zinc-900 transition-colors" />
+        </div>
+
+        <!-- Paleta de Cores Curada -->
+        <div>
+          <label class="block text-xs font-medium text-zinc-700 mb-1.5">Cor</label>
+          <div id="colorPaletteSelector" class="flex items-center gap-2.5 flex-wrap">
+            <!-- Swatches gerados via JS -->
+          </div>
+        </div>
+
+        <!-- Dia e Horários -->
+        <div class="grid grid-cols-3 gap-2.5">
+          <div>
+            <label for="blockDaySelect" class="block text-xs font-medium text-zinc-700 mb-1">Dia</label>
+            <select id="blockDaySelect"
+              class="w-full px-2.5 py-2 text-xs bg-white border border-zinc-200 rounded-lg focus:outline-none focus:border-zinc-900">
+              <option value="0">Segunda</option>
+              <option value="1">Terça</option>
+              <option value="2">Quarta</option>
+              <option value="3">Quinta</option>
+              <option value="4">Sexta</option>
+              <option value="5">Sábado</option>
+              <option value="6">Domingo</option>
+            </select>
+          </div>
+
+          <div>
+            <label for="blockStartSelect" class="block text-xs font-medium text-zinc-700 mb-1">Início</label>
+            <select id="blockStartSelect"
+              class="w-full px-2.5 py-2 text-xs font-mono bg-white border border-zinc-200 rounded-lg focus:outline-none focus:border-zinc-900">
+            </select>
+          </div>
+
+          <div>
+            <label for="blockEndSelect" class="block text-xs font-medium text-zinc-700 mb-1">Término</label>
+            <select id="blockEndSelect"
+              class="w-full px-2.5 py-2 text-xs font-mono bg-white border border-zinc-200 rounded-lg focus:outline-none focus:border-zinc-900">
+            </select>
+          </div>
+        </div>
+
+        <!-- Notas -->
+        <div>
+          <label for="blockNotesInput" class="block text-xs font-medium text-zinc-700 mb-1">Notas</label>
+          <textarea id="blockNotesInput" rows="2" maxlength="160" placeholder="Observações opcionais..."
+            class="w-full px-3 py-2 text-xs bg-white border border-zinc-200 rounded-lg focus:outline-none focus:border-zinc-900 resize-none transition-colors"></textarea>
+        </div>
+
+        <p id="modalErrorMsg" class="hidden text-xs text-rose-600"></p>
+
+        <!-- Rodapé do Modal -->
+        <div class="pt-2 border-t border-zinc-100 flex items-center justify-between gap-2">
+          <div id="editOnlyActions" class="flex items-center gap-1">
+            <button id="deleteBlockBtn" type="button"
+              class="px-2.5 py-1.5 text-xs font-medium text-rose-600 hover:bg-rose-50 rounded-lg transition-colors">
+              Excluir
+            </button>
+            <button id="duplicateBlockBtn" type="button"
+              class="px-2.5 py-1.5 text-xs font-medium text-zinc-600 hover:bg-zinc-100 rounded-lg transition-colors">
+              Duplicar
+            </button>
+          </div>
+
+          <div class="flex items-center gap-2 ml-auto">
+            <button id="cancelModalBtn" type="button"
+              class="px-3 py-1.5 text-xs font-medium text-zinc-600 hover:bg-zinc-100 rounded-lg transition-colors">
+              Cancelar
+            </button>
+            <button type="submit"
+              class="px-4 py-1.5 text-xs font-medium text-white bg-zinc-900 hover:bg-zinc-800 rounded-lg transition-colors">
+              Salvar
+            </button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Modal Simples de Confirmação (substitui confirm() nativo) -->
+  <div id="confirmModal" class="hidden fixed inset-0 z-50 bg-zinc-950/25 backdrop-blur-[1px] flex items-center justify-center p-4">
+    <div class="bg-white border border-zinc-200 rounded-2xl shadow-xl w-full max-w-xs p-5 modal-animate">
+      <h3 id="confirmTitle" class="text-sm font-semibold text-zinc-900">Limpar semana?</h3>
+      <p id="confirmMessage" class="text-xs text-zinc-500 mt-1.5 leading-relaxed">Todos os blocos da grade serão removidos.</p>
+      <div class="mt-4 flex justify-end gap-2">
+        <button id="confirmCancelBtn" type="button" class="px-3 py-1.5 text-xs font-medium text-zinc-600 hover:bg-zinc-100 rounded-lg">
+          Cancelar
+        </button>
+        <button id="confirmOkBtn" type="button" class="px-3.5 py-1.5 text-xs font-medium text-white bg-rose-600 hover:bg-rose-700 rounded-lg">
+          Limpar
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    /**
+     * ============================================================================
+     * ROTINA SEMANAL — Minimalist Paper & Grid Scheduler
+     * Persistência silenciosa em cookies com compressão leve de chaves e chunking
+     * ============================================================================
+     */
+
+    const HOUR_HEIGHT_PX = 60; // 60px/hora = 1px/minuto exato
+    const PX_PER_MINUTE = HOUR_HEIGHT_PX / 60;
+
+    const DAYS = [
+      { index: 0, short: 'Seg', full: 'Segunda-feira' },
+      { index: 1, short: 'Ter', full: 'Terça-feira' },
+      { index: 2, short: 'Qua', full: 'Quarta-feira' },
+      { index: 3, short: 'Qui', full: 'Quinta-feira' },
+      { index: 4, short: 'Sex', full: 'Sexta-feira' },
+      { index: 5, short: 'Sáb', full: 'Sábado' },
+      { index: 6, short: 'Dom', full: 'Domingo' },
+    ];
+
+    // Paleta curada de 7 cores equilibradas para modo claro estilo papel
+    const PALETTE = {
+      slate: {
+        id: 'slate',
+        name: 'Grafite',
+        swatch: '#64748B',
+        bg: 'bg-slate-100/90',
+        border: 'border-slate-300/90',
+        bar: 'bg-slate-500',
+        title: 'text-slate-900',
+        meta: 'text-slate-600'
+      },
+      sky: {
+        id: 'sky',
+        name: 'Azul',
+        swatch: '#0EA5E9',
+        bg: 'bg-sky-50/95',
+        border: 'border-sky-200',
+        bar: 'bg-sky-500',
+        title: 'text-sky-950',
+        meta: 'text-sky-700'
+      },
+      indigo: {
+        id: 'indigo',
+        name: 'Índigo',
+        swatch: '#6366F1',
+        bg: 'bg-indigo-50/95',
+        border: 'border-indigo-200',
+        bar: 'bg-indigo-500',
+        title: 'text-indigo-950',
+        meta: 'text-indigo-700'
+      },
+      emerald: {
+        id: 'emerald',
+        name: 'Verde',
+        swatch: '#10B981',
+        bg: 'bg-emerald-50/95',
+        border: 'border-emerald-200',
+        bar: 'bg-emerald-500',
+        title: 'text-emerald-950',
+        meta: 'text-emerald-700'
+      },
+      amber: {
+        id: 'amber',
+        name: 'Âmbar',
+        swatch: '#F59E0B',
+        bg: 'bg-amber-50/95',
+        border: 'border-amber-200',
+        bar: 'bg-amber-500',
+        title: 'text-amber-950',
+        meta: 'text-amber-700'
+      },
+      rose: {
+        id: 'rose',
+        name: 'Coral',
+        swatch: '#F43F5E',
+        bg: 'bg-rose-50/95',
+        border: 'border-rose-200',
+        bar: 'bg-rose-500',
+        title: 'text-rose-950',
+        meta: 'text-rose-700'
+      },
+      violet: {
+        id: 'violet',
+        name: 'Lavanda',
+        swatch: '#8B5CF6',
+        bg: 'bg-violet-50/95',
+        border: 'border-violet-200',
+        bar: 'bg-violet-500',
+        title: 'text-violet-950',
+        meta: 'text-violet-700'
+      }
+    };
+
+    // Estado reativo da aplicação
+    const state = {
+      blocks: [],
+      snapMinutes: 15,   // 15 ou 30
+      startHour: 6,      // 0..10 (padrão 6)
+      endHour: 23,       // 18..24 (padrão 23)
+      selectedBlockId: null,
+      editingColor: 'sky'
+    };
+
+    function getStartMin() { return state.startHour * 60; }
+    function getEndMin() { return state.endHour * 60; }
+
+    // --- Persistência Silenciosa em Cookies (Chunking + Chaves Compactadas) ---
+    const SilentCookieStore = {
+      CHUNK_PREFIX: 'wrs_c',
+      COUNT_KEY: 'wrs_n',
+      PREFS_KEY: 'wrs_p',
+      CHUNK_LIMIT: 3750, // Seguro abaixo do limite de 4096 bytes por cookie
+      MAX_AGE: 365 * 24 * 60 * 60,
+
+      writeCookie(name, value) {
+        const expires = new Date(Date.now() + this.MAX_AGE * 1000).toUTCString();
+        document.cookie = `${name}=${value}; expires=${expires}; max-age=${this.MAX_AGE}; path=/; SameSite=Lax`;
+      },
+
+      eraseCookie(name) {
+        document.cookie = `${name}=; expires=Thu, 01 Jan 1970 00:00:00 GMT; max-age=0; path=/; SameSite=Lax`;
+      },
+
+      readAllCookies() {
+        const result = {};
+        if (!document.cookie) return result;
+        for (const item of document.cookie.split(';')) {
+          const eq = item.indexOf('=');
+          if (eq > -1) {
+            result[item.slice(0, eq).trim()] = item.slice(eq + 1).trim();
+          }
+        }
+        return result;
+      },
+
+      // Chaves compactas: i=id, d=day, s=startMin, e=endMin, t=title, c=color, n=notes
+      encodeBlocks(blocks) {
+        const compact = blocks.map(b => {
+          const obj = { i: b.id, d: b.day, s: b.startMin, e: b.endMin, t: b.title, c: b.color };
+          if (b.notes && b.notes.trim()) obj.n = b.notes.trim();
+          return obj;
+        });
+        return encodeURIComponent(JSON.stringify(compact));
+      },
+
+      decodeBlocks(encodedStr) {
+        const arr = JSON.parse(decodeURIComponent(encodedStr));
+        if (!Array.isArray(arr)) return [];
+        return arr.map(item => ({
+          id: String(item.i || generateId()),
+          day: Math.min(6, Math.max(0, Number(item.d) || 0)),
+          startMin: Math.max(0, Math.min(24 * 60 - 15, Number(item.s) || 0)),
+          endMin: Math.max(15, Math.min(24 * 60, Number(item.e) || 60)),
+          title: String(item.t || 'Sem título').slice(0, 60),
+          color: PALETTE[item.c] ? item.c : 'sky',
+          notes: item.n ? String(item.n).slice(0, 160) : ''
+        }));
+      },
+
+      saveSilently() {
+        try {
+          const existing = this.readAllCookies();
+          const prevCount = parseInt(existing[this.COUNT_KEY] || '0', 10);
+
+          const encoded = this.encodeBlocks(state.blocks);
+          const chunks = [];
+          for (let i = 0; i < encoded.length; i += this.CHUNK_LIMIT) {
+            chunks.push(encoded.slice(i, i + this.CHUNK_LIMIT));
+          }
+
+          chunks.forEach((chunk, idx) => {
+            this.writeCookie(`${this.CHUNK_PREFIX}${idx}`, chunk);
+          });
+
+          // Remove cookies excedentes antigos
+          for (let j = chunks.length; j < prevCount; j++) {
+            this.eraseCookie(`${this.CHUNK_PREFIX}${j}`);
+          }
+
+          this.writeCookie(this.COUNT_KEY, String(chunks.length));
+
+          const prefs = encodeURIComponent(JSON.stringify({
+            sn: state.snapMinutes,
+            sh: state.startHour,
+            eh: state.endHour
+          }));
+          this.writeCookie(this.PREFS_KEY, prefs);
+        } catch (_) {
+          // Falha silenciosa preservando a experiência limpa
+        }
+      },
+
+      load() {
+        try {
+          const map = this.readAllCookies();
+          if (map[this.PREFS_KEY]) {
+            const p = JSON.parse(decodeURIComponent(map[this.PREFS_KEY]));
+            if (p.sn === 15 || p.sn === 30) state.snapMinutes = p.sn;
+            if (typeof p.sh === 'number' && p.sh >= 0 && p.sh <= 10) state.startHour = p.sh;
+            if (typeof p.eh === 'number' && p.eh >= 18 && p.eh <= 24) state.endHour = p.eh;
+          }
+
+          const count = parseInt(map[this.COUNT_KEY] || '0', 10);
+          if (count > 0) {
+            let joined = '';
+            for (let i = 0; i < count; i++) {
+              joined += map[`${this.CHUNK_PREFIX}${i}`] || '';
+            }
+            if (joined) {
+              state.blocks = this.decodeBlocks(joined);
+            }
+          }
+        } catch (_) {
+          state.blocks = [];
+        }
+      }
+    };
+
+    // --- Utilitários ---
+    function generateId() {
+      return Date.now().toString(36) + Math.random().toString(36).slice(2, 5);
+    }
+
+    function minutesToTime(mins) {
+      const clamped = Math.max(0, Math.min(24 * 60, Math.round(mins)));
+      const h = Math.floor(clamped / 60);
+      const m = clamped % 60;
+      return `${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}`;
+    }
+
+    function snapValue(mins, step = state.snapMinutes) {
+      return Math.round(mins / step) * step;
+    }
+
+    function clampToVisibleRange(mins) {
+      return Math.max(getStartMin(), Math.min(getEndMin(), mins));
+    }
+
+    function getTodayIndex() {
+      const d = new Date().getDay();
+      return d === 0 ? 6 : d - 1;
+    }
+
+    function escapeHtml(str) {
+      const div = document.createElement('div');
+      div.textContent = str;
+      return div.innerHTML;
+    }
+
+    // --- Construção e Renderização da Grade ---
+    function renderGridStructure() {
+      const daysHeaderRow = document.getElementById('daysHeaderRow');
+      const timeLabelsColumn = document.getElementById('timeLabelsColumn');
+      const daysGridArea = document.getElementById('daysGridArea');
+      const todayIdx = getTodayIndex();
+
+      // Cabeçalho dos dias
+      daysHeaderRow.innerHTML = DAYS.map(day => {
+        const isToday = day.index === todayIdx;
+        return `
+          <div class="py-2.5 px-2 text-center">
+            <span class="inline-flex items-center gap-1.5 text-xs ${isToday ? 'font-semibold text-zinc-900' : 'font-medium text-zinc-500'}">
+              <span>${day.short}</span>
+              ${isToday ? '<span class="w-1.5 h-1.5 rounded-full bg-zinc-900"></span>' : ''}
+            </span>
+          </div>
+        `;
+      }).join('');
+
+      // Eixo vertical de horas
+      const totalHours = state.endHour - state.startHour;
+      const gridHeightPx = totalHours * HOUR_HEIGHT_PX;
+      timeLabelsColumn.style.height = `${gridHeightPx}px`;
+
+      let labelsHtml = '';
+      for (let h = state.startHour; h <= state.endHour; h++) {
+        const topPx = (h - state.startHour) * HOUR_HEIGHT_PX;
+        const isFirst = h === state.startHour;
+        const isLast = h === state.endHour;
+        const translateClass = isFirst ? 'translate-y-0.5' : (isLast ? '-translate-y-full' : '-translate-y-1/2');
+        labelsHtml += `
+          <div class="absolute right-2.5 text-[11px] font-mono text-zinc-400 ${translateClass}" style="top: ${topPx}px;">
+            ${String(h).padStart(2, '0')}:00
+          </div>
+        `;
+      }
+      timeLabelsColumn.innerHTML = labelsHtml;
+
+      // Colunas dos 7 dias
+      daysGridArea.style.height = `${gridHeightPx}px`;
+      daysGridArea.innerHTML = DAYS.map(day => {
+        const isToday = day.index === todayIdx;
+        let linesHtml = '';
+        for (let h = state.startHour; h < state.endHour; h++) {
+          const topPx = (h - state.startHour) * HOUR_HEIGHT_PX;
+          linesHtml += `
+            <div class="absolute inset-x-0 border-t border-zinc-200/75 pointer-events-none" style="top: ${topPx}px; height: ${HOUR_HEIGHT_PX}px;">
+              <div class="w-full border-t border-dashed border-zinc-100" style="margin-top: ${HOUR_HEIGHT_PX / 2}px;"></div>
+            </div>
+          `;
+        }
+
+        return `
+          <div class="day-column relative h-full ${isToday ? 'bg-zinc-50/60' : 'bg-white'} cursor-crosshair" data-day="${day.index}">
+            ${linesHtml}
+            <div class="blocks-layer absolute inset-0 pointer-events-none"></div>
+          </div>
+        `;
+      }).join('');
+
+      renderCurrentTimeLine();
+      renderBlocks();
+    }
+
+    function renderCurrentTimeLine() {
+      document.querySelectorAll('.now-indicator').forEach(el => el.remove());
+
+      const now = new Date();
+      const nowMins = now.getHours() * 60 + now.getMinutes();
+      if (nowMins < getStartMin() || nowMins > getEndMin()) return;
+
+      const todayCol = document.querySelector(`.day-column[data-day="${getTodayIndex()}"]`);
+      if (!todayCol) return;
+
+      const topPx = (nowMins - getStartMin()) * PX_PER_MINUTE;
+      const indicator = document.createElement('div');
+      indicator.className = 'now-indicator absolute inset-x-0 z-10 pointer-events-none flex items-center';
+      indicator.style.top = `${topPx}px`;
+      indicator.innerHTML = `
+        <div class="w-1.5 h-1.5 rounded-full bg-zinc-900 -ml-[3px]"></div>
+        <div class="flex-1 h-[1px] bg-zinc-900/70"></div>
+      `;
+      todayCol.appendChild(indicator);
+    }
+
+    function renderBlocks() {
+      document.querySelectorAll('.blocks-layer').forEach(l => l.innerHTML = '');
+
+      const visibleStart = getStartMin();
+      const visibleEnd = getEndMin();
+
+      state.blocks.forEach(block => {
+        // Ignora visualmente apenas se estiver totalmente fora do recorte de horário atual
+        if (block.endMin <= visibleStart || block.startMin >= visibleEnd) return;
+
+        const clampedStart = Math.max(visibleStart, block.startMin);
+        const clampedEnd = Math.min(visibleEnd, block.endMin);
+        const duration = clampedEnd - clampedStart;
+        if (duration <= 0) return;
+
+        const layer = document.querySelector(`.day-column[data-day="${block.day}"] .blocks-layer`);
+        if (!layer) return;
+
+        const theme = PALETTE[block.color] || PALETTE.sky;
+        const topPx = (clampedStart - visibleStart) * PX_PER_MINUTE;
+        const heightPx = Math.max(18, duration * PX_PER_MINUTE);
+        const isCompact = duration <= 30;
+        const isSelected = state.selectedBlockId === block.id;
+
+        const el = document.createElement('div');
+        el.className = `routine-block pointer-events-auto absolute left-1 right-1 rounded-lg border ${theme.bg} ${theme.border} ${theme.title} cursor-grab overflow-hidden ${isSelected ? 'is-selected' : ''}`;
+        el.style.top = `${topPx + 1}px`;
+        el.style.height = `${heightPx - 2}px`;
+        el.dataset.id = block.id;
+
+        el.innerHTML = `
+          <div class="resize-handle resize-handle-top" data-resize="top">
+            <span class="resize-pill"></span>
+          </div>
+
+          <div class="flex h-full pointer-events-none">
+            <div class="w-[3px] shrink-0 ${theme.bar}"></div>
+            <div class="flex-1 px-2 ${isCompact ? 'py-0.5 flex items-center justify-between gap-1.5' : 'py-1.5 flex flex-col justify-between'} min-w-0">
+              <div class="min-w-0">
+                <div class="font-medium text-xs leading-snug truncate">${escapeHtml(block.title)}</div>
+                ${!isCompact && block.notes ? `<div class="text-[11px] ${theme.meta} opacity-80 truncate mt-0.5">${escapeHtml(block.notes)}</div>` : ''}
+              </div>
+              <div class="block-time-label font-mono text-[10px] ${theme.meta} shrink-0">
+                ${minutesToTime(block.startMin)}–${minutesToTime(block.endMin)}
+              </div>
+            </div>
+          </div>
+
+          <div class="resize-handle resize-handle-bottom" data-resize="bottom">
+            <span class="resize-pill"></span>
+          </div>
+        `;
+
+        layer.appendChild(el);
+      });
+
+      // Exibe dica sutil apenas quando não há nenhum bloco criado
+      document.getElementById('emptyHint').classList.toggle('hidden', state.blocks.length > 0);
+    }
+
+    function saveAndRender() {
+      SilentCookieStore.saveSilently();
+      renderBlocks();
+    }
+
+    // --- Interações na Grade (Criar por Arraste, Duplo Clique, Mover, Redimensionar) ---
+    function setupGridInteractions() {
+      const daysGridArea = document.getElementById('daysGridArea');
+      let dragState = null;
+
+      function getMinsFromY(clientY) {
+        const rect = daysGridArea.getBoundingClientRect();
+        const relY = clientY - rect.top;
+        return clampToVisibleRange(getStartMin() + relY / PX_PER_MINUTE);
+      }
+
+      function getDayFromX(clientX) {
+        const rect = daysGridArea.getBoundingClientRect();
+        const relX = Math.max(0, Math.min(rect.width - 1, clientX - rect.left));
+        return Math.min(6, Math.max(0, Math.floor(relX / (rect.width / 7))));
+      }
+
+      // Duplo clique em área vazia cria bloco rápido de 1h
+      daysGridArea.addEventListener('dblclick', (e) => {
+        if (e.target.closest('.routine-block')) return;
+        const dayCol = e.target.closest('.day-column');
+        if (!dayCol) return;
+
+        const day = Number(dayCol.dataset.day);
+        const rawMin = getMinsFromY(e.clientY);
+        const startMin = Math.min(getEndMin() - state.snapMinutes, Math.floor(rawMin / state.snapMinutes) * state.snapMinutes);
+        const endMin = Math.min(getEndMin(), startMin + 60);
+
+        openBlockModal({ day, startMin, endMin });
+      });
+
+      daysGridArea.addEventListener('pointerdown', (e) => {
+        if (e.button !== 0 && e.pointerType === 'mouse') return;
+
+        const resizeHandle = e.target.closest('.resize-handle');
+        const blockEl = e.target.closest('.routine-block');
+        const dayCol = e.target.closest('.day-column');
+
+        // 1. Redimensionar
+        if (resizeHandle && blockEl) {
+          e.preventDefault();
+          e.stopPropagation();
+          const id = blockEl.dataset.id;
+          const block = state.blocks.find(b => b.id === id);
+          if (!block) return;
+
+          state.selectedBlockId = id;
+          renderBlocks();
+          document.querySelector(`.routine-block[data-id="${id}"]`)?.classList.add('is-resizing');
+
+          dragState = {
+            mode: resizeHandle.dataset.resize === 'top' ? 'resize-top' : 'resize-bottom',
+            blockId: id,
+            origStart: block.startMin,
+            origEnd: block.endMin,
+            currentStart: block.startMin,
+            currentEnd: block.endMin,
+            moved: false
+          };
+          daysGridArea.setPointerCapture(e.pointerId);
+          return;
+        }
+
+        // 2. Mover ou clicar para editar
+        if (blockEl) {
+          e.preventDefault();
+          e.stopPropagation();
+          const id = blockEl.dataset.id;
+          const block = state.blocks.find(b => b.id === id);
+          if (!block) return;
+
+          state.selectedBlockId = id;
+          renderBlocks();
+
+          const activeEl = document.querySelector(`.routine-block[data-id="${id}"]`);
+          const pointerMins = getMinsFromY(e.clientY);
+
+          dragState = {
+            mode: 'move',
+            blockId: id,
+            el: activeEl,
+            offsetMins: pointerMins - block.startMin,
+            duration: block.endMin - block.startMin,
+            currentDay: block.day,
+            currentStart: block.startMin,
+            startX: e.clientX,
+            startY: e.clientY,
+            moved: false
+          };
+          daysGridArea.setPointerCapture(e.pointerId);
+          return;
+        }
+
+        // 3. Criar por arraste em espaço livre
+        if (dayCol) {
+          e.preventDefault();
+          state.selectedBlockId = null;
+          renderBlocks();
+
+          const day = Number(dayCol.dataset.day);
+          const rawStart = getMinsFromY(e.clientY);
+          const anchorMin = Math.min(getEndMin() - state.snapMinutes, Math.floor(rawStart / state.snapMinutes) * state.snapMinutes);
+          const initialEnd = Math.min(getEndMin(), anchorMin + state.snapMinutes);
+
+          const ghost = document.createElement('div');
+          ghost.className = 'absolute left-1 right-1 rounded-lg border border-dashed border-zinc-900/60 bg-zinc-900/[0.04] text-zinc-800 px-2 py-1 z-30 pointer-events-none flex flex-col justify-between';
+          ghost.style.top = `${(anchorMin - getStartMin()) * PX_PER_MINUTE + 1}px`;
+          ghost.style.height = `${(initialEnd - anchorMin) * PX_PER_MINUTE - 2}px`;
+          ghost.innerHTML = `
+            <span class="text-[11px] font-medium truncate">Novo bloco</span>
+            <span class="ghost-time font-mono text-[10px] text-zinc-500">${minutesToTime(anchorMin)}–${minutesToTime(initialEnd)}</span>
+          `;
+          dayCol.querySelector('.blocks-layer').appendChild(ghost);
+
+          dragState = {
+            mode: 'create',
+            day,
+            anchorMin,
+            currentStart: anchorMin,
+            currentEnd: initialEnd,
+            ghostEl: ghost,
+            dragged: false
+          };
+          daysGridArea.setPointerCapture(e.pointerId);
+        }
+      });
+
+      daysGridArea.addEventListener('pointermove', (e) => {
+        if (!dragState) return;
+
+        if (dragState.mode === 'create') {
+          dragState.dragged = true;
+          const pointerMin = snapValue(getMinsFromY(e.clientY));
+          let start = Math.min(dragState.anchorMin, pointerMin);
+          let end = Math.max(dragState.anchorMin + state.snapMinutes, pointerMin);
+
+          start = clampToVisibleRange(start);
+          end = clampToVisibleRange(end);
+          if (end - start < state.snapMinutes) {
+            end = Math.min(getEndMin(), start + state.snapMinutes);
+          }
+
+          dragState.currentStart = start;
+          dragState.currentEnd = end;
+
+          dragState.ghostEl.style.top = `${(start - getStartMin()) * PX_PER_MINUTE + 1}px`;
+          dragState.ghostEl.style.height = `${Math.max(16, (end - start) * PX_PER_MINUTE - 2)}px`;
+          const timeEl = dragState.ghostEl.querySelector('.ghost-time');
+          if (timeEl) timeEl.textContent = `${minutesToTime(start)}–${minutesToTime(end)}`;
+          return;
+        }
+
+        if (dragState.mode === 'move') {
+          if (Math.hypot(e.clientX - dragState.startX, e.clientY - dragState.startY) > 4) {
+            dragState.moved = true;
+            dragState.el?.classList.add('is-dragging');
+          }
+          if (!dragState.moved) return;
+
+          const newDay = getDayFromX(e.clientX);
+          const pointerMins = getMinsFromY(e.clientY);
+          let newStart = snapValue(pointerMins - dragState.offsetMins);
+          newStart = Math.max(getStartMin(), Math.min(getEndMin() - dragState.duration, newStart));
+          const newEnd = newStart + dragState.duration;
+
+          dragState.currentDay = newDay;
+          dragState.currentStart = newStart;
+
+          if (dragState.el) {
+            const targetLayer = document.querySelector(`.day-column[data-day="${newDay}"] .blocks-layer`);
+            if (targetLayer && dragState.el.parentElement !== targetLayer) {
+              targetLayer.appendChild(dragState.el);
+            }
+            dragState.el.style.top = `${(newStart - getStartMin()) * PX_PER_MINUTE + 1}px`;
+            const timeLabel = dragState.el.querySelector('.block-time-label');
+            if (timeLabel) timeLabel.textContent = `${minutesToTime(newStart)}–${minutesToTime(newEnd)}`;
+          }
+          return;
+        }
+
+        if (dragState.mode === 'resize-bottom') {
+          dragState.moved = true;
+          const pointerMin = snapValue(getMinsFromY(e.clientY));
+          const newEnd = Math.max(dragState.origStart + state.snapMinutes, Math.min(getEndMin(), pointerMin));
+          dragState.currentEnd = newEnd;
+
+          const el = document.querySelector(`.routine-block[data-id="${dragState.blockId}"]`);
+          if (el) {
+            el.style.height = `${Math.max(16, (newEnd - dragState.origStart) * PX_PER_MINUTE - 2)}px`;
+            const timeLabel = el.querySelector('.block-time-label');
+            if (timeLabel) timeLabel.textContent = `${minutesToTime(dragState.origStart)}–${minutesToTime(newEnd)}`;
+          }
+          return;
+        }
+
+        if (dragState.mode === 'resize-top') {
+          dragState.moved = true;
+          const pointerMin = snapValue(getMinsFromY(e.clientY));
+          const newStart = Math.min(dragState.origEnd - state.snapMinutes, Math.max(getStartMin(), pointerMin));
+          dragState.currentStart = newStart;
+
+          const el = document.querySelector(`.routine-block[data-id="${dragState.blockId}"]`);
+          if (el) {
+            el.style.top = `${(newStart - getStartMin()) * PX_PER_MINUTE + 1}px`;
+            el.style.height = `${Math.max(16, (dragState.origEnd - newStart) * PX_PER_MINUTE - 2)}px`;
+            const timeLabel = el.querySelector('.block-time-label');
+            if (timeLabel) timeLabel.textContent = `${minutesToTime(newStart)}–${minutesToTime(dragState.origEnd)}`;
+          }
+        }
+      });
+
+      const endDrag = () => {
+        if (!dragState) return;
+        const current = dragState;
+        dragState = null;
+
+        if (current.mode === 'create') {
+          current.ghostEl.remove();
+          // Apenas abre o modal se houve arraste intencional (clique simples apenas desmarca seleção)
+          if (current.dragged && current.currentEnd > current.currentStart) {
+            openBlockModal({
+              day: current.day,
+              startMin: current.currentStart,
+              endMin: current.currentEnd
+            });
+          }
+          return;
+        }
+
+        if (current.mode === 'move') {
+          if (!current.moved) {
+            const block = state.blocks.find(b => b.id === current.blockId);
+            if (block) openBlockModal(block);
+            return;
+          }
+          const block = state.blocks.find(b => b.id === current.blockId);
+          if (block) {
+            block.day = current.currentDay;
+            block.startMin = current.currentStart;
+            block.endMin = current.currentStart + current.duration;
+            saveAndRender();
+          }
+          return;
+        }
+
+        if (current.mode === 'resize-bottom' || current.mode === 'resize-top') {
+          const block = state.blocks.find(b => b.id === current.blockId);
+          if (block && current.moved) {
+            block.startMin = current.currentStart;
+            block.endMin = current.currentEnd;
+            saveAndRender();
+          } else {
+            renderBlocks();
+          }
+        }
+      };
+
+      daysGridArea.addEventListener('pointerup', endDrag);
+      daysGridArea.addEventListener('pointercancel', endDrag);
+    }
+
+    // --- Modal de Criação / Edição de Bloco ---
+    function populateBlockTimeSelects() {
+      const startSel = document.getElementById('blockStartSelect');
+      const endSel = document.getElementById('blockEndSelect');
+      startSel.innerHTML = '';
+      endSel.innerHTML = '';
+
+      for (let m = 0; m < 24 * 60; m += 15) {
+        const opt = document.createElement('option');
+        opt.value = m;
+        opt.textContent = minutesToTime(m);
+        startSel.appendChild(opt);
+      }
+
+      for (let m = 15; m <= 24 * 60; m += 15) {
+        const opt = document.createElement('option');
+        opt.value = m;
+        opt.textContent = minutesToTime(m);
+        endSel.appendChild(opt);
+      }
+    }
+
+    function renderColorSwatches(selectedId) {
+      state.editingColor = selectedId;
+      const container = document.getElementById('colorPaletteSelector');
+
+      container.innerHTML = Object.values(PALETTE).map(color => {
+        const active = color.id === selectedId;
+        return `
+          <button type="button" data-color="${color.id}" title="${color.name}"
+            class="color-swatch-btn w-7 h-7 rounded-full flex items-center justify-center transition-transform ${
+              active ? 'ring-2 ring-offset-2 ring-zinc-900 scale-105' : 'hover:scale-105 opacity-85 hover:opacity-100'
+            }"
+            style="background-color: ${color.swatch};">
+            ${active ? '<svg class="w-3.5 h-3.5 text-white" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"></path></svg>' : ''}
+          </button>
+        `;
+      }).join('');
+
+      container.querySelectorAll('.color-swatch-btn').forEach(btn => {
+        btn.addEventListener('click', () => renderColorSwatches(btn.dataset.color));
+      });
+    }
+
+    function openBlockModal(data = {}) {
+      const modal = document.getElementById('blockModal');
+      const isEdit = Boolean(data.id);
+
+      document.getElementById('modalTitle').textContent = isEdit ? 'Editar bloco' : 'Novo bloco';
+      document.getElementById('blockIdInput').value = data.id || '';
+      document.getElementById('blockTitleInput').value = data.title || '';
+      document.getElementById('blockDaySelect').value = data.day !== undefined ? String(data.day) : String(getTodayIndex());
+
+      const startVal = data.startMin !== undefined ? data.startMin : getStartMin();
+      const endVal = data.endMin !== undefined ? data.endMin : Math.min(24 * 60, startVal + 60);
+
+      document.getElementById('blockStartSelect').value = String(startVal);
+      document.getElementById('blockEndSelect').value = String(endVal);
+      document.getElementById('blockNotesInput').value = data.notes || '';
+      document.getElementById('modalErrorMsg').classList.add('hidden');
+
+      renderColorSwatches(data.color || 'sky');
+      document.getElementById('editOnlyActions').classList.toggle('invisible', !isEdit);
+
+      modal.classList.remove('hidden');
+      setTimeout(() => document.getElementById('blockTitleInput').focus(), 20);
+    }
+
+    function closeBlockModal() {
+      document.getElementById('blockModal').classList.add('hidden');
+    }
+
+    function setupBlockModalEvents() {
+      const form = document.getElementById('blockForm');
+      const startSel = document.getElementById('blockStartSelect');
+      const endSel = document.getElementById('blockEndSelect');
+      const errorMsg = document.getElementById('modalErrorMsg');
+
+      startSel.addEventListener('change', () => {
+        const s = Number(startSel.value);
+        const e = Number(endSel.value);
+        if (e <= s) {
+          endSel.value = String(Math.min(24 * 60, s + state.snapMinutes));
+        }
+      });
+
+      form.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const id = document.getElementById('blockIdInput').value;
+        const title = document.getElementById('blockTitleInput').value.trim();
+        const day = Number(document.getElementById('blockDaySelect').value);
+        const startMin = Number(startSel.value);
+        const endMin = Number(endSel.value);
+        const notes = document.getElementById('blockNotesInput').value.trim();
+        const color = state.editingColor;
+
+        if (!title) {
+          errorMsg.textContent = 'Digite um título para o bloco.';
+          errorMsg.classList.remove('hidden');
+          return;
+        }
+        if (endMin <= startMin) {
+          errorMsg.textContent = 'O término deve ser posterior ao início.';
+          errorMsg.classList.remove('hidden');
+          return;
+        }
+
+        if (id) {
+          const existing = state.blocks.find(b => b.id === id);
+          if (existing) {
+            existing.title = title;
+            existing.day = day;
+            existing.startMin = startMin;
+            existing.endMin = endMin;
+            existing.color = color;
+            existing.notes = notes;
+            state.selectedBlockId = id;
+          }
+        } else {
+          const newId = generateId();
+          state.blocks.push({ id: newId, title, day, startMin, endMin, color, notes });
+          state.selectedBlockId = newId;
+        }
+
+        saveAndRender();
+        closeBlockModal();
+      });
+
+      document.getElementById('deleteBlockBtn').addEventListener('click', () => {
+        const id = document.getElementById('blockIdInput').value;
+        if (!id) return;
+        state.blocks = state.blocks.filter(b => b.id !== id);
+        if (state.selectedBlockId === id) state.selectedBlockId = null;
+        saveAndRender();
+        closeBlockModal();
+      });
+
+      document.getElementById('duplicateBlockBtn').addEventListener('click', () => {
+        const id = document.getElementById('blockIdInput').value;
+        const orig = state.blocks.find(b => b.id === id);
+        if (!orig) return;
+
+        let nextDay = (orig.day + 1) % 7;
+        let nextStart = orig.startMin;
+        let nextEnd = orig.endMin;
+
+        if (orig.day === 6) {
+          nextDay = 6;
+          const dur = orig.endMin - orig.startMin;
+          if (orig.endMin + 30 <= getEndMin()) {
+            nextStart = orig.endMin + 30;
+            nextEnd = nextStart + dur;
+          }
+        }
+
+        const copyId = generateId();
+        state.blocks.push({ ...orig, id: copyId, day: nextDay, startMin: nextStart, endMin: nextEnd });
+        state.selectedBlockId = copyId;
+        saveAndRender();
+        closeBlockModal();
+      });
+
+      document.getElementById('closeModalBtn').addEventListener('click', closeBlockModal);
+      document.getElementById('cancelModalBtn').addEventListener('click', closeBlockModal);
+      document.getElementById('blockModal').addEventListener('click', (e) => {
+        if (e.target.id === 'blockModal') closeBlockModal();
+      });
+    }
+
+    // --- Side Sheet de Configurações ---
+    function populateHourRangeSelects() {
+      const startHourSel = document.getElementById('startHourSelect');
+      const endHourSel = document.getElementById('endHourSelect');
+
+      startHourSel.innerHTML = '';
+      for (let h = 0; h <= 10; h++) {
+        const opt = document.createElement('option');
+        opt.value = h;
+        opt.textContent = `${String(h).padStart(2, '0')}:00`;
+        startHourSel.appendChild(opt);
+      }
+
+      endHourSel.innerHTML = '';
+      for (let h = 18; h <= 24; h++) {
+        const opt = document.createElement('option');
+        opt.value = h;
+        opt.textContent = `${String(h).padStart(2, '0')}:00`;
+        endHourSel.appendChild(opt);
+      }
+    }
+
+    function syncSettingsUI() {
+      const btn15 = document.getElementById('snap15Btn');
+      const btn30 = document.getElementById('snap30Btn');
+
+      if (state.snapMinutes === 15) {
+        btn15.className = 'py-1.5 text-xs font-mono font-medium rounded-md transition-all bg-white text-zinc-900 shadow-sm';
+        btn30.className = 'py-1.5 text-xs font-mono font-medium rounded-md transition-all text-zinc-500 hover:text-zinc-900';
+      } else {
+        btn30.className = 'py-1.5 text-xs font-mono font-medium rounded-md transition-all bg-white text-zinc-900 shadow-sm';
+        btn15.className = 'py-1.5 text-xs font-mono font-medium rounded-md transition-all text-zinc-500 hover:text-zinc-900';
+      }
+
+      document.getElementById('startHourSelect').value = String(state.startHour);
+      document.getElementById('endHourSelect').value = String(state.endHour);
+    }
+
+    function openSettingsSheet() {
+      syncSettingsUI();
+      document.getElementById('settingsOverlay').classList.remove('hidden');
+    }
+
+    function closeSettingsSheet() {
+      document.getElementById('settingsOverlay').classList.add('hidden');
+    }
+
+    function showConfirmModal(onConfirm) {
+      const modal = document.getElementById('confirmModal');
+      modal.classList.remove('hidden');
+      const cancelBtn = document.getElementById('confirmCancelBtn');
+      const okBtn = document.getElementById('confirmOkBtn');
+
+      const cleanup = () => {
+        modal.classList.add('hidden');
+        cancelBtn.onclick = null;
+        okBtn.onclick = null;
+      };
+
+      cancelBtn.onclick = cleanup;
+      okBtn.onclick = () => {
+        cleanup();
+        onConfirm();
+      };
+    }
+
+    function setupSettingsEvents() {
+      document.getElementById('openSettingsBtn').addEventListener('click', openSettingsSheet);
+      document.getElementById('closeSettingsBtn').addEventListener('click', closeSettingsSheet);
+      document.getElementById('settingsOverlay').addEventListener('click', (e) => {
+        if (e.target.id === 'settingsOverlay') closeSettingsSheet();
+      });
+
+      // Snapping
+      document.getElementById('snap15Btn').addEventListener('click', () => {
+        state.snapMinutes = 15;
+        syncSettingsUI();
+        SilentCookieStore.saveSilently();
+      });
+
+      document.getElementById('snap30Btn').addEventListener('click', () => {
+        state.snapMinutes = 30;
+        syncSettingsUI();
+        SilentCookieStore.saveSilently();
+      });
+
+      // Recorte de horários
+      const startHourSel = document.getElementById('startHourSelect');
+      const endHourSel = document.getElementById('endHourSelect');
+
+      startHourSel.addEventListener('change', () => {
+        state.startHour = Number(startHourSel.value);
+        SilentCookieStore.saveSilently();
+        renderGridStructure();
+      });
+
+      endHourSel.addEventListener('change', () => {
+        state.endHour = Number(endHourSel.value);
+        SilentCookieStore.saveSilently();
+        renderGridStructure();
+      });
+
+      document.getElementById('presetActiveHoursBtn').addEventListener('click', () => {
+        state.startHour = 6;
+        state.endHour = 23;
+        syncSettingsUI();
+        SilentCookieStore.saveSilently();
+        renderGridStructure();
+      });
+
+      document.getElementById('presetFullDayBtn').addEventListener('click', () => {
+        state.startHour = 0;
+        state.endHour = 24;
+        syncSettingsUI();
+        SilentCookieStore.saveSilently();
+        renderGridStructure();
+      });
+
+      // Exportar JSON
+      document.getElementById('exportJsonBtn').addEventListener('click', () => {
+        const data = {
+          snapMinutes: state.snapMinutes,
+          startHour: state.startHour,
+          endHour: state.endHour,
+          blocks: state.blocks
+        };
+        const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'rotina-semanal.json';
+        a.click();
+        URL.revokeObjectURL(url);
+      });
+
+      // Importar JSON
+      const importInput = document.getElementById('importFileInput');
+      document.getElementById('importJsonBtn').addEventListener('click', () => importInput.click());
+
+      importInput.addEventListener('change', (e) => {
+        const file = e.target.files?.[0];
+        if (!file) return;
+        const reader = new FileReader();
+        reader.onload = (ev) => {
+          try {
+            const parsed = JSON.parse(String(ev.target?.result || '{}'));
+            const list = Array.isArray(parsed) ? parsed : parsed.blocks;
+            if (!Array.isArray(list)) return;
+
+            state.blocks = list.map(b => ({
+              id: String(b.id || generateId()),
+              day: Math.min(6, Math.max(0, Number(b.day) || 0)),
+              startMin: Math.max(0, Math.min(24 * 60 - 15, Number(b.startMin) || 0)),
+              endMin: Math.max(15, Math.min(24 * 60, Number(b.endMin) || 60)),
+              title: String(b.title || 'Sem título').slice(0, 60),
+              color: PALETTE[b.color] ? b.color : 'sky',
+              notes: b.notes ? String(b.notes).slice(0, 160) : ''
+            }));
+
+            if (parsed.snapMinutes === 15 || parsed.snapMinutes === 30) state.snapMinutes = parsed.snapMinutes;
+            if (typeof parsed.startHour === 'number' && parsed.startHour >= 0 && parsed.startHour <= 10) state.startHour = parsed.startHour;
+            if (typeof parsed.endHour === 'number' && parsed.endHour >= 18 && parsed.endHour <= 24) state.endHour = parsed.endHour;
+
+            syncSettingsUI();
+            SilentCookieStore.saveSilently();
+            renderGridStructure();
+            closeSettingsSheet();
+          } catch (_) {
+            // Ignora arquivos inválidos silenciosamente
+          } finally {
+            importInput.value = '';
+          }
+        };
+        reader.readAsText(file);
+      });
+
+      // Limpar Semana
+      document.getElementById('clearWeekBtn').addEventListener('click', () => {
+        showConfirmModal(() => {
+          state.blocks = [];
+          state.selectedBlockId = null;
+          saveAndRender();
+          closeSettingsSheet();
+        });
+      });
+
+      // Atalhos globais de teclado (Esc, Delete, Backspace)
+      document.addEventListener('keydown', (e) => {
+        const blockOpen = !document.getElementById('blockModal').classList.contains('hidden');
+        const settingsOpen = !document.getElementById('settingsOverlay').classList.contains('hidden');
+        const confirmOpen = !document.getElementById('confirmModal').classList.contains('hidden');
+
+        if (e.key === 'Escape') {
+          if (confirmOpen) {
+            document.getElementById('confirmModal').classList.add('hidden');
+          } else if (blockOpen) {
+            closeBlockModal();
+          } else if (settingsOpen) {
+            closeSettingsSheet();
+          } else if (state.selectedBlockId) {
+            state.selectedBlockId = null;
+            renderBlocks();
+          }
+          return;
+        }
+
+        const tag = document.activeElement?.tagName;
+        const isInput = tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT';
+
+        if (!blockOpen && !settingsOpen && !confirmOpen && !isInput && state.selectedBlockId) {
+          if (e.key === 'Delete' || e.key === 'Backspace') {
+            e.preventDefault();
+            state.blocks = state.blocks.filter(b => b.id !== state.selectedBlockId);
+            state.selectedBlockId = null;
+            saveAndRender();
+          }
+        }
+      });
+    }
+
+    // --- Inicialização ---
+    window.addEventListener('DOMContentLoaded', () => {
+      SilentCookieStore.load();
+      populateHourRangeSelects();
+      populateBlockTimeSelects();
+      syncSettingsUI();
+      renderGridStructure();
+      setupGridInteractions();
+      setupBlockModalEvents();
+      setupSettingsEvents();
+
+      setInterval(renderCurrentTimeLine, 60 * 1000);
+    });
+  </script>
+</body>
+</html>
