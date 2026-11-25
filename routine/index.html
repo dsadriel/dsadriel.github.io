@@ -1,0 +1,833 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="h-full">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0" />
+  <title>Rotina Semanal</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+    html, body { height: 100%; margin: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background: #fafaf9; color: #18181b; }
+    
+    /* Evita zoom automático no Safari iOS */
+    input, textarea, select { font-size: 16px !important; }
+
+    /* Navegação fluida no mobile */
+    #scrollArea, .day-col, .routine-block, .resize-handle {
+      touch-action: pan-x pan-y;
+      user-select: none;
+      -webkit-user-select: none;
+    }
+
+    /* Quando segurar o bloco para mover/redimensionar */
+    .dragging-active {
+      touch-action: none !important;
+      z-index: 40 !important;
+      transform: scale(1.02);
+      box-shadow: 0 12px 24px -6px rgba(0, 0, 0, 0.22) !important;
+      opacity: 0.94;
+    }
+
+    /* Grade horária */
+    .grid-lines {
+      background-image: linear-gradient(to bottom, #e4e4e7 1px, transparent 1px),
+                        linear-gradient(to bottom, #f4f4f5 1px, transparent 1px);
+    }
+
+    /* Scrollbar discreta */
+    ::-webkit-scrollbar { width: 6px; height: 6px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: #d4d4d8; border-radius: 9999px; }
+  </style>
+</head>
+<body class="h-full flex flex-col overflow-hidden bg-stone-50 text-zinc-900">
+
+  <!-- Switch oculto para Taptic Engine no iOS Safari 17.4+ -->
+  <div style="position:fixed;width:0;height:0;overflow:hidden;opacity:0;pointer-events:none;">
+    <input type="checkbox" id="iosHapticSwitch" switch />
+  </div>
+
+  <!-- Cabeçalho Minimalista -->
+  <header class="shrink-0 h-14 px-4 bg-white border-b border-zinc-200 flex items-center justify-between z-20">
+    <h1 class="text-base font-semibold tracking-tight text-zinc-900">Rotina Semanal</h1>
+    <button id="openSettingsBtn" type="button" aria-label="Configurações" title="Configurações"
+      class="p-2 rounded-lg text-zinc-600 hover:text-zinc-900 hover:bg-zinc-100 active:scale-95 transition">
+      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+        stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/>
+        <circle cx="12" cy="12" r="3"/>
+      </svg>
+    </button>
+  </header>
+
+  <!-- Grade Principal -->
+  <main class="flex-1 min-h-0 flex flex-col relative">
+    <div id="scrollArea" class="flex-1 min-h-0 overflow-auto relative">
+      <div id="calendarWrapper" class="min-w-[740px] flex flex-col">
+        
+        <!-- Cabeçalho dos Dias da Semana -->
+        <div class="sticky top-0 z-20 flex bg-white/95 backdrop-blur border-b border-zinc-200">
+          <div class="w-14 shrink-0 border-r border-zinc-200 bg-white"></div>
+          <div id="daysHeader" class="flex-1 grid grid-cols-7 divide-x divide-zinc-200"></div>
+        </div>
+
+        <!-- Corpo da Grade Horária -->
+        <div class="flex relative">
+          <!-- Coluna de Horas -->
+          <div id="hoursColumn" class="sticky left-0 z-10 w-14 shrink-0 bg-white border-r border-zinc-200 text-[11px] font-medium text-zinc-400"></div>
+          <!-- Colunas dos Dias -->
+          <div id="daysGrid" class="flex-1 grid grid-cols-7 divide-x divide-zinc-200 relative bg-white"></div>
+        </div>
+
+      </div>
+    </div>
+  </main>
+
+  <!-- Modal de Criação / Edição de Bloco -->
+  <div id="blockModal" class="fixed inset-0 z-50 hidden items-end sm:items-center justify-center bg-black/30 backdrop-blur-[1px] p-0 sm:p-4">
+    <div class="w-full sm:max-w-md bg-white rounded-t-2xl sm:rounded-2xl shadow-xl border border-zinc-200 p-5 space-y-4">
+      <div class="flex items-center justify-between">
+        <h2 id="modalTitle" class="text-base font-semibold text-zinc-900">Novo Bloco</h2>
+        <button type="button" id="closeModalBtn" class="p-1.5 rounded-lg text-zinc-400 hover:text-zinc-700 hover:bg-zinc-100">
+          ✕
+        </button>
+      </div>
+
+      <form id="blockForm" class="space-y-4">
+        <input type="hidden" id="blockId" />
+
+        <div>
+          <label class="block text-xs font-medium text-zinc-500 mb-1">Título</label>
+          <input type="text" id="blockTitle" required placeholder="Ex: Academia, Estudo, Trabalho..."
+            class="w-full px-3 py-2 rounded-lg border border-zinc-300 focus:outline-none focus:border-zinc-900 text-base" />
+        </div>
+
+        <div class="grid grid-cols-3 gap-2">
+          <div>
+            <label class="block text-xs font-medium text-zinc-500 mb-1">Dia</label>
+            <select id="blockDay" class="w-full px-2.5 py-2 rounded-lg border border-zinc-300 bg-white focus:outline-none focus:border-zinc-900 text-base">
+              <option value="0">Seg</option>
+              <option value="1">Ter</option>
+              <option value="2">Qua</option>
+              <option value="3">Qui</option>
+              <option value="4">Sex</option>
+              <option value="5">Sáb</option>
+              <option value="6">Dom</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-xs font-medium text-zinc-500 mb-1">Início</label>
+            <input type="time" id="blockStart" required
+              class="w-full px-2.5 py-2 rounded-lg border border-zinc-300 focus:outline-none focus:border-zinc-900 text-base" />
+          </div>
+          <div>
+            <label class="block text-xs font-medium text-zinc-500 mb-1">Fim</label>
+            <input type="time" id="blockEnd" required
+              class="w-full px-2.5 py-2 rounded-lg border border-zinc-300 focus:outline-none focus:border-zinc-900 text-base" />
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-xs font-medium text-zinc-500 mb-1.5">Cor</label>
+          <div id="colorPicker" class="flex items-center gap-2.5"></div>
+        </div>
+
+        <div>
+          <label class="block text-xs font-medium text-zinc-500 mb-1">Notas</label>
+          <textarea id="blockNotes" rows="2" placeholder="Detalhes opcionais..."
+            class="w-full px-3 py-2 rounded-lg border border-zinc-300 focus:outline-none focus:border-zinc-900 text-base resize-none"></textarea>
+        </div>
+
+        <div class="flex items-center justify-between pt-2 border-t border-zinc-100">
+          <div class="flex items-center gap-2">
+            <button type="button" id="deleteBlockBtn" class="hidden px-3 py-2 rounded-lg text-sm font-medium text-red-600 hover:bg-red-50">
+              Excluir
+            </button>
+            <button type="button" id="duplicateBlockBtn" class="hidden px-3 py-2 rounded-lg text-sm font-medium text-zinc-600 hover:bg-zinc-100">
+              Duplicar
+            </button>
+          </div>
+          <div class="flex items-center gap-2 ml-auto">
+            <button type="button" id="cancelModalBtn" class="px-3.5 py-2 rounded-lg text-sm font-medium text-zinc-600 hover:bg-zinc-100">
+              Cancelar
+            </button>
+            <button type="submit" class="px-4 py-2 rounded-lg text-sm font-medium bg-zinc-900 text-white hover:bg-zinc-800">
+              Salvar
+            </button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Side Sheet de Configurações -->
+  <div id="settingsOverlay" class="fixed inset-0 z-50 hidden justify-end bg-black/30 backdrop-blur-[1px]">
+    <div class="w-full max-w-xs sm:max-w-sm h-full bg-white shadow-2xl border-l border-zinc-200 flex flex-col">
+      <div class="h-14 px-5 border-b border-zinc-200 flex items-center justify-between">
+        <h2 class="text-base font-semibold text-zinc-900">Configurações</h2>
+        <button type="button" id="closeSettingsBtn" class="p-1.5 rounded-lg text-zinc-400 hover:text-zinc-700 hover:bg-zinc-100">
+          ✕
+        </button>
+      </div>
+
+      <div class="flex-1 overflow-y-auto p-5 space-y-6">
+        <!-- Snapping -->
+        <div class="space-y-2">
+          <label class="block text-xs font-semibold uppercase tracking-wider text-zinc-400">Precisão (Snapping)</label>
+          <div class="grid grid-cols-2 gap-2">
+            <button type="button" data-snap="15" class="snap-btn py-2 px-3 rounded-lg border text-sm font-medium transition">
+              15 min
+            </button>
+            <button type="button" data-snap="30" class="snap-btn py-2 px-3 rounded-lg border text-sm font-medium transition">
+              30 min
+            </button>
+          </div>
+        </div>
+
+        <!-- Recorte de Horários -->
+        <div class="space-y-3">
+          <div class="flex items-center justify-between">
+            <label class="block text-xs font-semibold uppercase tracking-wider text-zinc-400">Horário da Grade</label>
+            <div class="flex gap-1.5">
+              <button type="button" id="presetDayBtn" class="text-xs px-2 py-0.5 rounded bg-zinc-100 hover:bg-zinc-200 text-zinc-700">06h–23h</button>
+              <button type="button" id="presetFullBtn" class="text-xs px-2 py-0.5 rounded bg-zinc-100 hover:bg-zinc-200 text-zinc-700">24h</button>
+            </div>
+          </div>
+          <div class="grid grid-cols-2 gap-3">
+            <div>
+              <span class="block text-xs text-zinc-500 mb-1">Início</span>
+              <select id="startHourSelect" class="w-full px-3 py-2 rounded-lg border border-zinc-300 bg-white text-base"></select>
+            </div>
+            <div>
+              <span class="block text-xs text-zinc-500 mb-1">Fim</span>
+              <select id="endHourSelect" class="w-full px-3 py-2 rounded-lg border border-zinc-300 bg-white text-base"></select>
+            </div>
+          </div>
+        </div>
+
+        <!-- Haptics -->
+        <div class="flex items-center justify-between pt-2 border-t border-zinc-100">
+          <div>
+            <p class="text-sm font-medium text-zinc-900">Feedback tátil</p>
+            <p class="text-xs text-zinc-500">Vibração sutil ao mover e encaixar</p>
+          </div>
+          <input type="checkbox" id="hapticsToggle" class="w-5 h-5 accent-zinc-900 rounded cursor-pointer" />
+        </div>
+
+        <!-- Backup e Limpeza -->
+        <div class="space-y-2.5 pt-4 border-t border-zinc-100">
+          <label class="block text-xs font-semibold uppercase tracking-wider text-zinc-400">Dados (Cookies)</label>
+          <div class="grid grid-cols-2 gap-2">
+            <button type="button" id="exportJsonBtn" class="py-2 px-3 rounded-lg border border-zinc-300 text-sm font-medium text-zinc-700 hover:bg-zinc-50">
+              Exportar JSON
+            </button>
+            <label class="py-2 px-3 rounded-lg border border-zinc-300 text-sm font-medium text-zinc-700 hover:bg-zinc-50 text-center cursor-pointer">
+              Importar JSON
+              <input type="file" id="importJsonInput" accept=".json" class="hidden" />
+            </label>
+          </div>
+          <button type="button" id="clearAllBtn" class="w-full py-2 px-3 rounded-lg border border-red-200 text-sm font-medium text-red-600 hover:bg-red-50">
+            Limpar toda a semana
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    (() => {
+      const DAYS = ['Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado', 'Domingo'];
+      const COLORS = [
+        { id: 'zinc',   bg: '#f4f4f5', border: '#a1a1aa', text: '#18181b' },
+        { id: 'blue',   bg: '#eff6ff', border: '#60a5fa', text: '#1e3a8a' },
+        { id: 'emerald',bg: '#ecfdf5', border: '#34d399', text: '#064e3b' },
+        { id: 'amber',  bg: '#fffbeb', border: '#fbbf24', text: '#78350f' },
+        { id: 'rose',   bg: '#fff1f2', border: '#fb7185', text: '#881337' },
+        { id: 'violet', bg: '#f5f3ff', border: '#a78bfa', text: '#4c1d95' },
+        { id: 'cyan',   bg: '#ecfeff', border: '#22d3ee', text: '#164e63' }
+      ];
+
+      const HOUR_HEIGHT = 60; // 1px = 1 minuto
+
+      let state = {
+        snap: 15,
+        startHour: 6,
+        endHour: 23,
+        haptics: true,
+        blocks: []
+      };
+
+      let selectedColor = 'blue';
+
+      // --- HAPTICS (Android + iOS Safari 17.4+ fallback) ---
+      const Haptics = {
+        lastTick: 0,
+        trigger(pattern = 10) {
+          if (!state.haptics) return;
+          if (navigator.vibrate) {
+            navigator.vibrate(pattern);
+          } else {
+            const sw = document.getElementById('iosHapticSwitch');
+            if (sw) {
+              sw.checked = !sw.checked;
+              sw.dispatchEvent(new Event('change'));
+            }
+          }
+        },
+        tick() {
+          const now = Date.now();
+          if (now - this.lastTick < 45) return;
+          this.lastTick = now;
+          this.trigger(6);
+        },
+        medium() { this.trigger(16); },
+        success() { this.trigger([12, 40, 18]); },
+        warning() { this.trigger([20, 40, 20]); }
+      };
+
+      // --- PERSISTÊNCIA SILENCIOSA EM COOKIES COM CHUNKING ---
+      function saveToCookies() {
+        const payload = encodeURIComponent(JSON.stringify(state));
+        const chunkSize = 3500;
+        const chunks = [];
+        for (let i = 0; i < payload.length; i += chunkSize) {
+          chunks.push(payload.slice(i, i + chunkSize));
+        }
+        const expires = new Date(Date.now() + 365 * 864e5).toUTCString();
+        document.cookie = `wrs_len=${chunks.length}; expires=${expires}; path=/; SameSite=Lax`;
+        chunks.forEach((chunk, idx) => {
+          document.cookie = `wrs_c${idx}=${chunk}; expires=${expires}; path=/; SameSite=Lax`;
+        });
+      }
+
+      function loadFromCookies() {
+        const cookies = Object.fromEntries(
+          document.cookie.split('; ').filter(Boolean).map(c => {
+            const eq = c.indexOf('=');
+            return [c.slice(0, eq), c.slice(eq + 1)];
+          })
+        );
+        const len = parseInt(cookies.wrs_len || '0', 10);
+        if (!len) return;
+        let raw = '';
+        for (let i = 0; i < len; i++) {
+          raw += cookies[`wrs_c${i}`] || '';
+        }
+        try {
+          const parsed = JSON.parse(decodeURIComponent(raw));
+          state = { ...state, ...parsed };
+        } catch (e) {
+          console.warn('Erro ao ler cookies:', e);
+        }
+      }
+
+      // --- UTILITÁRIOS DE TEMPO ---
+      const minsToStr = m => {
+        const h = Math.floor(m / 60);
+        const min = m % 60;
+        return `${String(h).padStart(2, '0')}:${String(min).padStart(2, '0')}`;
+      };
+
+      const strToMins = s => {
+        const [h, m] = s.split(':').map(Number);
+        return h * 60 + m;
+      };
+
+      const snapMins = m => Math.round(m / state.snap) * state.snap;
+
+      // --- RENDERIZAÇÃO DA GRADE ---
+      function renderGrid() {
+        const daysHeader = document.getElementById('daysHeader');
+        const hoursCol = document.getElementById('hoursColumn');
+        const daysGrid = document.getElementById('daysGrid');
+
+        daysHeader.innerHTML = DAYS.map(d =>
+          `<div class="py-2.5 text-center text-xs font-semibold text-zinc-700">${d}</div>`
+        ).join('');
+
+        const totalHours = state.endHour - state.startHour;
+        const totalHeight = totalHours * HOUR_HEIGHT;
+
+        let hoursHtml = '';
+        for (let h = state.startHour; h < state.endHour; h++) {
+          hoursHtml += `<div style="height:${HOUR_HEIGHT}px" class="relative pr-2 text-right">
+            <span class="-top-2 relative">${String(h).padStart(2, '0')}:00</span>
+          </div>`;
+        }
+        hoursCol.innerHTML = hoursHtml;
+        hoursCol.style.height = `${totalHeight}px`;
+
+        daysGrid.style.height = `${totalHeight}px`;
+        daysGrid.innerHTML = DAYS.map((_, dayIdx) => `
+          <div data-day="${dayIdx}"
+            style="height:${totalHeight}px; background-size: 100% ${HOUR_HEIGHT}px, 100% ${HOUR_HEIGHT / 2}px;"
+            class="day-col relative grid-lines">
+          </div>
+        `).join('');
+
+        setupGridCreation();
+        renderBlocks();
+      }
+
+      // --- RENDERIZAÇÃO DOS BLOCOS ---
+      function renderBlocks() {
+        document.querySelectorAll('.routine-block').forEach(el => el.remove());
+
+        const minGrid = state.startHour * 60;
+        const maxGrid = state.endHour * 60;
+
+        state.blocks.forEach(block => {
+          const col = document.querySelector(`.day-col[data-day="${block.day}"]`);
+          if (!col) return;
+
+          const start = Math.max(block.start, minGrid);
+          const end = Math.min(block.end, maxGrid);
+          if (end <= start) return;
+
+          const top = ((start - minGrid) / 60) * HOUR_HEIGHT;
+          const height = Math.max(((end - start) / 60) * HOUR_HEIGHT, 18);
+          const color = COLORS.find(c => c.id === block.color) || COLORS[1];
+
+          const el = document.createElement('div');
+          el.className = 'routine-block absolute left-1 right-1 rounded-lg border-l-4 px-2 py-1 shadow-xs overflow-hidden cursor-grab transition-shadow';
+          el.dataset.id = block.id;
+          el.style.top = `${top}px`;
+          el.style.height = `${height}px`;
+          el.style.backgroundColor = color.bg;
+          el.style.borderColor = color.border;
+          el.style.color = color.text;
+
+          el.innerHTML = `
+            <div class="resize-handle top-handle absolute top-0 left-0 right-0 h-2 cursor-ns-resize"></div>
+            <div class="text-xs font-semibold leading-tight truncate pointer-events-none">${escapeHtml(block.title)}</div>
+            ${height >= 34 ? `<div class="text-[10px] opacity-75 pointer-events-none">${minsToStr(block.start)} – ${minsToStr(block.end)}</div>` : ''}
+            ${height >= 52 && block.notes ? `<div class="text-[11px] opacity-80 mt-0.5 line-clamp-2 pointer-events-none">${escapeHtml(block.notes)}</div>` : ''}
+            <div class="resize-handle bottom-handle absolute bottom-0 left-0 right-0 h-2 cursor-ns-resize"></div>
+          `;
+
+          setupBlockInteraction(el, block);
+          col.appendChild(el);
+        });
+      }
+
+      function escapeHtml(str) {
+        return String(str).replace(/[&<>"']/g, m => ({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[m]));
+      }
+
+      // --- CRIAÇÃO NA GRADE (Long-Press Mobile + Duplo Clique / Botão Direito Desktop) ---
+      function setupGridCreation() {
+        document.querySelectorAll('.day-col').forEach(col => {
+          const day = Number(col.dataset.day);
+          let pressTimer = null;
+          let startX = 0, startY = 0;
+
+          const getMinutesAtY = clientY => {
+            const rect = col.getBoundingClientRect();
+            const relY = Math.max(0, Math.min(rect.height, clientY - rect.top));
+            const rawMins = state.startHour * 60 + (relY / HOUR_HEIGHT) * 60;
+            return Math.min(state.endHour * 60 - 60, Math.max(state.startHour * 60, snapMins(rawMins)));
+          };
+
+          col.addEventListener('pointerdown', e => {
+            if (e.target !== col) return;
+            if (e.pointerType === 'mouse' && e.button !== 0) return;
+
+            startX = e.clientX;
+            startY = e.clientY;
+            clearTimeout(pressTimer);
+
+            if (e.pointerType === 'touch' || e.pointerType === 'pen') {
+              pressTimer = setTimeout(() => {
+                Haptics.medium();
+                const start = getMinutesAtY(startY);
+                openModal({ day, start, end: Math.min(state.endHour * 60, start + 60) });
+              }, 380);
+            }
+          });
+
+          col.addEventListener('pointermove', e => {
+            if (!pressTimer) return;
+            if (Math.hypot(e.clientX - startX, e.clientY - startY) > 8) {
+              clearTimeout(pressTimer);
+              pressTimer = null;
+            }
+          });
+
+          const cancelPress = () => { clearTimeout(pressTimer); pressTimer = null; };
+          col.addEventListener('pointerup', cancelPress);
+          col.addEventListener('pointercancel', cancelPress);
+
+          col.addEventListener('dblclick', e => {
+            if (e.target !== col) return;
+            const start = getMinutesAtY(e.clientY);
+            openModal({ day, start, end: Math.min(state.endHour * 60, start + 60) });
+          });
+
+          col.addEventListener('contextmenu', e => {
+            if (e.target !== col) return;
+            e.preventDefault();
+            Haptics.medium();
+            const start = getMinutesAtY(e.clientY);
+            openModal({ day, start, end: Math.min(state.endHour * 60, start + 60) });
+          });
+        });
+      }
+
+      // --- ARRASTE E REDIMENSIONAMENTO (Imediato no Mouse, Segurar 350ms no Mobile) ---
+      function setupBlockInteraction(el, block) {
+        let mode = null; // 'move' | 'resize-top' | 'resize-bottom'
+        let active = false;
+        let holdTimer = null;
+        let startX = 0, startY = 0;
+        let origDay = block.day, origStart = block.start, origEnd = block.end;
+        let lastSnapStart = origStart, lastSnapEnd = origEnd, lastDay = origDay;
+
+        el.addEventListener('pointerdown', e => {
+          if (e.pointerType === 'mouse' && e.button !== 0) return;
+          e.stopPropagation();
+
+          startX = e.clientX;
+          startY = e.clientY;
+          origDay = block.day;
+          origStart = block.start;
+          origEnd = block.end;
+          lastSnapStart = origStart;
+          lastSnapEnd = origEnd;
+          lastDay = origDay;
+
+          if (e.target.classList.contains('top-handle')) mode = 'resize-top';
+          else if (e.target.classList.contains('bottom-handle')) mode = 'resize-bottom';
+          else mode = 'move';
+
+          if (e.pointerType === 'mouse') {
+            active = true;
+            el.classList.add('dragging-active');
+            el.setPointerCapture(e.pointerId);
+          } else {
+            // Mobile: permite pan livre; ativa arraste só se segurar ~350ms
+            holdTimer = setTimeout(() => {
+              active = true;
+              Haptics.medium();
+              el.classList.add('dragging-active');
+              try { el.setPointerCapture(e.pointerId); } catch (_) {}
+            }, 350);
+          }
+        });
+
+        el.addEventListener('pointermove', e => {
+          if (!active) {
+            if (holdTimer && Math.hypot(e.clientX - startX, e.clientY - startY) > 8) {
+              clearTimeout(holdTimer);
+              holdTimer = null;
+            }
+            return;
+          }
+
+          e.preventDefault();
+          const deltaMins = snapMins(((e.clientY - startY) / HOUR_HEIGHT) * 60);
+          const minLimit = state.startHour * 60;
+          const maxLimit = state.endHour * 60;
+          const duration = origEnd - origStart;
+
+          if (mode === 'move') {
+            const gridRect = document.getElementById('daysGrid').getBoundingClientRect();
+            const colWidth = gridRect.width / 7;
+            const newDay = Math.max(0, Math.min(6, Math.floor((e.clientX - gridRect.left) / colWidth)));
+            let newStart = Math.max(minLimit, Math.min(maxLimit - duration, origStart + deltaMins));
+            let newEnd = newStart + duration;
+
+            if (newStart !== lastSnapStart || newDay !== lastDay) {
+              Haptics.tick();
+              lastSnapStart = newStart;
+              lastDay = newDay;
+            }
+
+            block.day = newDay;
+            block.start = newStart;
+            block.end = newEnd;
+
+            const targetCol = document.querySelector(`.day-col[data-day="${newDay}"]`);
+            if (targetCol && el.parentElement !== targetCol) targetCol.appendChild(el);
+            el.style.top = `${((newStart - minLimit) / 60) * HOUR_HEIGHT}px`;
+
+          } else if (mode === 'resize-bottom') {
+            let newEnd = Math.max(origStart + state.snap, Math.min(maxLimit, origEnd + deltaMins));
+            if (newEnd !== lastSnapEnd) {
+              Haptics.tick();
+              lastSnapEnd = newEnd;
+            }
+            block.end = newEnd;
+            el.style.height = `${((newEnd - origStart) / 60) * HOUR_HEIGHT}px`;
+
+          } else if (mode === 'resize-top') {
+            let newStart = Math.min(origEnd - state.snap, Math.max(minLimit, origStart + deltaMins));
+            if (newStart !== lastSnapStart) {
+              Haptics.tick();
+              lastSnapStart = newStart;
+            }
+            block.start = newStart;
+            el.style.top = `${((newStart - minLimit) / 60) * HOUR_HEIGHT}px`;
+            el.style.height = `${((origEnd - newStart) / 60) * HOUR_HEIGHT}px`;
+          }
+        });
+
+        const finishInteraction = e => {
+          const wasHeld = Boolean(holdTimer);
+          clearTimeout(holdTimer);
+          holdTimer = null;
+
+          if (active) {
+            active = false;
+            el.classList.remove('dragging-active');
+            Haptics.medium();
+            saveToCookies();
+            renderBlocks();
+          } else if (wasHeld && Math.hypot(e.clientX - startX, e.clientY - startY) < 8) {
+            // Toque rápido no mobile abre edição
+            openModal(block);
+          }
+        };
+
+        el.addEventListener('pointerup', finishInteraction);
+        el.addEventListener('pointercancel', () => {
+          clearTimeout(holdTimer);
+          holdTimer = null;
+          if (active) {
+            active = false;
+            el.classList.remove('dragging-active');
+            renderBlocks();
+          }
+        });
+
+        el.addEventListener('click', e => {
+          if (e.pointerType === 'mouse' && Math.hypot(e.clientX - startX, e.clientY - startY) < 5) {
+            openModal(block);
+          }
+        });
+      }
+
+      // --- MODAL DE EDIÇÃO / CRIAÇÃO ---
+      const modal = document.getElementById('blockModal');
+      const form = document.getElementById('blockForm');
+
+      function renderColorPicker() {
+        const container = document.getElementById('colorPicker');
+        container.innerHTML = COLORS.map(c => `
+          <button type="button" data-color="${c.id}"
+            style="background-color:${c.border};"
+            class="w-7 h-7 rounded-full transition transform ${selectedColor === c.id ? 'ring-2 ring-offset-2 ring-zinc-900 scale-110' : 'opacity-80 hover:opacity-100'}">
+          </button>
+        `).join('');
+
+        container.querySelectorAll('button').forEach(btn => {
+          btn.onclick = () => {
+            selectedColor = btn.dataset.color;
+            Haptics.tick();
+            renderColorPicker();
+          };
+        });
+      }
+
+      function openModal(data = {}) {
+        const isEdit = Boolean(data.id);
+        document.getElementById('modalTitle').textContent = isEdit ? 'Editar Bloco' : 'Novo Bloco';
+        document.getElementById('blockId').value = data.id || '';
+        document.getElementById('blockTitle').value = data.title || '';
+        document.getElementById('blockDay').value = data.day ?? 0;
+        document.getElementById('blockStart').value = minsToStr(data.start ?? state.startHour * 60);
+        document.getElementById('blockEnd').value = minsToStr(data.end ?? (state.startHour + 1) * 60);
+        document.getElementById('blockNotes').value = data.notes || '';
+        selectedColor = data.color || 'blue';
+        renderColorPicker();
+
+        document.getElementById('deleteBlockBtn').classList.toggle('hidden', !isEdit);
+        document.getElementById('duplicateBlockBtn').classList.toggle('hidden', !isEdit);
+
+        modal.classList.remove('hidden');
+        modal.classList.add('flex');
+        setTimeout(() => document.getElementById('blockTitle').focus(), 50);
+      }
+
+      function closeModal() {
+        modal.classList.add('hidden');
+        modal.classList.remove('flex');
+      }
+
+      form.onsubmit = e => {
+        e.preventDefault();
+        const id = document.getElementById('blockId').value;
+        const title = document.getElementById('blockTitle').value.trim();
+        const day = Number(document.getElementById('blockDay').value);
+        let start = strToMins(document.getElementById('blockStart').value);
+        let end = strToMins(document.getElementById('blockEnd').value);
+        const notes = document.getElementById('blockNotes').value.trim();
+
+        if (!title) return;
+        if (end <= start) end = start + state.snap;
+
+        if (id) {
+          const idx = state.blocks.findIndex(b => b.id === id);
+          if (idx !== -1) state.blocks[idx] = { id, title, day, start, end, color: selectedColor, notes };
+        } else {
+          state.blocks.push({ id: String(Date.now()), title, day, start, end, color: selectedColor, notes });
+        }
+
+        Haptics.success();
+        saveToCookies();
+        renderBlocks();
+        closeModal();
+      };
+
+      document.getElementById('deleteBlockBtn').onclick = () => {
+        const id = document.getElementById('blockId').value;
+        state.blocks = state.blocks.filter(b => b.id !== id);
+        Haptics.warning();
+        saveToCookies();
+        renderBlocks();
+        closeModal();
+      };
+
+      document.getElementById('duplicateBlockBtn').onclick = () => {
+        const id = document.getElementById('blockId').value;
+        const orig = state.blocks.find(b => b.id === id);
+        if (!orig) return;
+        state.blocks.push({
+          ...orig,
+          id: String(Date.now()),
+          day: (orig.day + 1) % 7
+        });
+        Haptics.success();
+        saveToCookies();
+        renderBlocks();
+        closeModal();
+      };
+
+      document.getElementById('closeModalBtn').onclick = closeModal;
+      document.getElementById('cancelModalBtn').onclick = closeModal;
+      modal.onclick = e => { if (e.target === modal) closeModal(); };
+
+      // --- SIDE SHEET DE CONFIGURAÇÕES ---
+      const settingsOverlay = document.getElementById('settingsOverlay');
+
+      function populateHourSelects() {
+        const startSel = document.getElementById('startHourSelect');
+        const endSel = document.getElementById('endHourSelect');
+        startSel.innerHTML = '';
+        endSel.innerHTML = '';
+
+        for (let h = 0; h <= 23; h++) {
+          startSel.innerHTML += `<option value="${h}">${String(h).padStart(2, '0')}:00</option>`;
+        }
+        for (let h = 1; h <= 24; h++) {
+          endSel.innerHTML += `<option value="${h}">${String(h).padStart(2, '0')}:00</option>`;
+        }
+        startSel.value = state.startHour;
+        endSel.value = state.endHour;
+      }
+
+      function syncSettingsUI() {
+        document.querySelectorAll('.snap-btn').forEach(btn => {
+          const active = Number(btn.dataset.snap) === state.snap;
+          btn.className = `snap-btn py-2 px-3 rounded-lg border text-sm font-medium transition ${
+            active ? 'bg-zinc-900 text-white border-zinc-900' : 'bg-white text-zinc-700 border-zinc-300 hover:bg-zinc-50'
+          }`;
+        });
+        populateHourSelects();
+        document.getElementById('hapticsToggle').checked = state.haptics;
+      }
+
+      document.getElementById('openSettingsBtn').onclick = () => {
+        syncSettingsUI();
+        settingsOverlay.classList.remove('hidden');
+        settingsOverlay.classList.add('flex');
+      };
+
+      const closeSettings = () => {
+        settingsOverlay.classList.add('hidden');
+        settingsOverlay.classList.remove('flex');
+      };
+      document.getElementById('closeSettingsBtn').onclick = closeSettings;
+      settingsOverlay.onclick = e => { if (e.target === settingsOverlay) closeSettings(); };
+
+      document.querySelectorAll('.snap-btn').forEach(btn => {
+        btn.onclick = () => {
+          state.snap = Number(btn.dataset.snap);
+          Haptics.tick();
+          syncSettingsUI();
+          saveToCookies();
+        };
+      });
+
+      document.getElementById('startHourSelect').onchange = e => {
+        const val = Number(e.target.value);
+        state.startHour = Math.min(val, state.endHour - 1);
+        saveToCookies();
+        renderGrid();
+      };
+
+      document.getElementById('endHourSelect').onchange = e => {
+        const val = Number(e.target.value);
+        state.endHour = Math.max(val, state.startHour + 1);
+        saveToCookies();
+        renderGrid();
+      };
+
+      document.getElementById('presetDayBtn').onclick = () => {
+        state.startHour = 6; state.endHour = 23;
+        syncSettingsUI(); saveToCookies(); renderGrid();
+      };
+
+      document.getElementById('presetFullBtn').onclick = () => {
+        state.startHour = 0; state.endHour = 24;
+        syncSettingsUI(); saveToCookies(); renderGrid();
+      };
+
+      document.getElementById('hapticsToggle').onchange = e => {
+        state.haptics = e.target.checked;
+        if (state.haptics) Haptics.medium();
+        saveToCookies();
+      };
+
+      document.getElementById('exportJsonBtn').onclick = () => {
+        const blob = new Blob([JSON.stringify(state, null, 2)], { type: 'application/json' });
+        const a = document.createElement('a');
+        a.href = URL.createObjectURL(blob);
+        a.download = 'rotina-semanal.json';
+        a.click();
+      };
+
+      document.getElementById('importJsonInput').onchange = e => {
+        const file = e.target.files[0];
+        if (!file) return;
+        const reader = new FileReader();
+        reader.onload = ev => {
+          try {
+            const imported = JSON.parse(ev.target.result);
+            state = { ...state, ...imported };
+            Haptics.success();
+            saveToCookies();
+            syncSettingsUI();
+            renderGrid();
+          } catch (_) {
+            alert('Arquivo JSON inválido.');
+          }
+        };
+        reader.readAsText(file);
+      };
+
+      document.getElementById('clearAllBtn').onclick = () => {
+        if (!confirm('Apagar todos os blocos da semana?')) return;
+        state.blocks = [];
+        Haptics.warning();
+        saveToCookies();
+        renderBlocks();
+        closeSettings();
+      };
+
+      // --- INICIALIZAÇÃO ---
+      loadFromCookies();
+      renderGrid();
+    })();
+  </script>
+</body>
+</html>
